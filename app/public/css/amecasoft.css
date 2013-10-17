@@ -1,0 +1,176 @@
+@CHARSET "ISO-8859-1";
+
+.facebook_azul{
+    background-color: #3B5999;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #FFF;
+    font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+.paginador_azul{
+    background-color: #3B5999;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 25px;
+	width: 25px;
+    color: #FFF;
+    font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+.facebook_verde{
+    background-color: #146431;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #EEE;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+.facebook_rojo{
+    background-color: #BF281F;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #EEE;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+.facebook_gris{
+    background-color: #CCCCCC;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #000;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+#facebook_azul{
+    background-color: #3B5999;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #FFF;
+    font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+#facebook_verde{
+    background-color: #146431;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #EEE;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+#facebook_rojo{
+    background-color: #BF281F;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #EEE;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+#facebook_gris{
+    background-color: #CCCCCC;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #000;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	text-decoration: none;
+}
+
+.verde{
+	background-color: #146431;
+	color: #EEE;
+}
+
+.rojo{
+	background-color: #BF281F;
+	color: #EEE;
+}
+
+.gris{
+	background-color: #AAAAAA;
+	color: #000;
+}
+
+input{
+	padding: 5px 3px 1px 3px;
+	height: 20px;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+}
+
+select{
+	padding: 2px 2px 2px 0px;
+	height: 30px;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	vertical-align: center;
+}
+
+option{
+	padding-bottom: 5px;
+	height: 30px;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	vertical-align: center;
+}
+
+.tgrande{
+    width: 990px; 
+}
+
+.tmediano{
+    width: 474px;
+}
+
+.tchico{
+    width: 212px;
+}
+
+.fchico{
+    width: 212px;
+}
+
+.sgrande{
+    width: 999px; 
+}
+
+.smediano{
+    width: 484px;
+}
+
+.schico{
+    width: 220px;
+}

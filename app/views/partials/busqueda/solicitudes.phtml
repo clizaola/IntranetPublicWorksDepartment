@@ -1,0 +1,111 @@
+<?= Load::lib("amecasoft") ?>
+<?php
+	$nsolicitudes = Solicitud::total($sql);
+	$solicitudes = Solicitud::reporte($sql);
+?>
+<?php $titulo = "Listado de Solicitudes" ?>
+<?php $subtitulo = "Las Solicitudes son entregadas por ciudadanos o por personal del mismo gobierno, estas deberán ser analizadas." ?>
+<?php $modelo = "Solicitud"; ?>
+<?php 
+    $titulos = array(
+    	"codigo" => "Código|100",
+        "nombre" => "Nombre|350",
+    	"solicitante_nombre" => "Solicitante|200",
+        "fecha" => "Fecha|100",
+    	"estado" => "Estado Actual|150"
+    );
+?>
+
+<table class="formulario">
+    <tr>
+        <th width="1024" height="25" id="mensaje">
+            &nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" style="width: 1000px;" align="left">
+                    	<table border="0" width="1000">
+                            <tr>
+                                <td width="700">
+                                    <h2 id="titulo">
+                                        <?= $titulo ?>
+                                    </h2>
+                                    <span id="subtitulo">
+                                    	<?= $subtitulo ?>
+                                    </span>
+                                    <br /><br />
+                                </td>
+                                <td width="50">
+                                	<?= Html::link("escritorio/busquedaGeneral/".str_replace(" ","-",$busqueda)."/solicitudes","Solicitudes","class: ".($filtro == "solicitudes" ? "boton2" : "boton1")) ?>
+                                </td>
+                                <td width="50">
+                                	<?= Html::link("escritorio/busquedaGeneral/".str_replace(" ","-",$busqueda)."/proyectos","Proyectos","class: ".($filtro == "proyectos" ? "boton2" : "boton1")) ?>
+                                </td>
+                                <td width="50">
+                                	<?= Html::link("escritorio/busquedaGeneral/".str_replace(" ","-",$busqueda)."/obras","Obras","class: ".($filtro == "obras" ? "boton2" : "boton1")) ?>
+                                </td>
+                            </tr>
+                        </table>
+                        <?= Formulario::fin() ?>
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr height="25">
+                    <td colspan="7" style="width: 1000px;" align="center">
+                        
+                            <table class="formulario" >
+                               <tr id="encabezado">
+                                    <?php if($titulos) foreach($titulos as $field => $value){ $titulo = substr($value,0,strpos($value,"|")); $tam = substr($value,strpos($value,"|")+1); ?>
+							            <th width="<?= $tam ?>">
+							            	<?= $titulo ?>
+							            </th>
+						            <?php } ?>								
+						            <th height="50" width="50" align="center">
+						            	
+                                    </th>
+                                </tr>
+                        <?php if($solicitudes){ ?>
+                            <?php $i=0; foreach($solicitudes as $registro){ $i++; if($i%2==0) $x = "fila1"; else $x="fila2"; ?>
+                                <tr id="<?= $x ?>">
+                                    <td height="25" align="center">
+                                        <?= $registro -> codigo ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        <?= $registro -> nombre ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        <?= $registro -> solicitante_nombre ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        <?= $registro -> fecha ?>
+                                    </td>
+                                    <td height="25" align="center" style="padding: 5px;">
+                                    	<div id="estado<?= $registro -> id ?>">
+                                        	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"solicitudes","estado")){ ?>
+                                        		<?= Acl::linkAjax("solicitudes/estado/".$registro -> id,$registro -> estado,"estado".$registro -> id,"style: color: #000; font-family: Verdana; font-size; 10px;") ?>
+                                        	<?php } else { echo $registro -> estado; } ?>
+                                        </div>
+                                    </td>
+                                    <td width="25" align="center">
+                                    	<?= Acl::link("solicitudes/consulta/".$registro -> id,Html::imagen("icons/preview.png","Consultar ".$modelo,20,20)) ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        <?php } ?>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <b>Número de Registros: <?= $nsolicitudes; ?></b>
+            <br /><br />     
+        </td>
+    </tr>
+</table>

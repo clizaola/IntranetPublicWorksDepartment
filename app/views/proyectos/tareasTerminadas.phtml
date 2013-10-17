@@ -1,0 +1,113 @@
+<?= Load::lib("amecasoft") ?>
+<?= View::partial("menuProyecto",false,array("proyecto" => $proyecto -> id,"opcion" => "tareas")) ?>
+<?= Formulario::inicioAjax($controller_name."/asignarTarea","opciones") ?>
+<input type="hidden" name="id" value="<?= $proyecto -> id ?>" />
+<table class="formulario" height="940">
+    <tr>
+        <th style="background-color: #156333" width="340" height="25" >
+            &nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="340" id="contenido" align="center" valign="top">
+            <br />
+            <div id="tareas">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                    	<div align="right"><?= Html::linkAjax("proyectos/tareas/".$proyecto -> id,"Pendientes","opciones","id: boton3") ?></div>
+                        <h2 id="titulo">
+                        	Tareas Terminadas
+                        </h2>
+                        <span id="subtitulo">
+                            Las tareas terminadas son mostradas a continuación.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			    		<?php $tareas = PTarea::reporte("proyectos_id=".$proyecto -> id." AND estado = 'OK'"); ?>
+			            <?php if($tareas){ ?>
+				        	<table border="0">
+				            	<?php foreach($tareas as $tarea){ ?>
+				            		<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				                    	<td style="padding: 5px;" width="285"><?= strtoupper($tarea -> nombre) ?></td>
+					                    <td style="padding: 5px;"><?= Acl::linkAjax("proyectos/consultarTarea/".$tarea -> id,Html::imagen("icons/preview.png","Consultar Tarea",20,20),"tareas") ?></td>
+									</tr>
+				            	<?php } ?>
+							</table>
+				        <?php } ?>
+					</td>
+			   	</tr>
+                <tr>
+                    <td colspan="7" height="10" align="center">
+                    	<br /><hr /><br/>
+                        <b>TAREA NUEVA</b>
+                        <br /><br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+						<table border="0">
+							<tr>
+			                    <td colspan="2">
+			                    	<div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::autocompleteModelo("empleado",Empleado::reporte(),"nombre","","class: tmediano","style: width: 300px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Empleado<span id="asterisco">*</span></div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="2">
+			                        <?= Formulario::mayusculas("nombre","","class: tmediano","style: width: 300px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Nombre de la Tarea<span id="asterisco">*</span></div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="2">
+			                        <?= Formulario::textarea("descripcion","","style: width: 307px; height: 70px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Descripción de Actividades<span id="asterisco">*</span></div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                        <?= Formulario::fecha("creacion","","dd/mm/yy",false,0,"class: fchico","style: width: 142px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Fecha Asignación<span id="asterisco">*</span></div>
+			                    </td>
+			                    <td>
+			                        <?= Formulario::fecha("limite","","dd/mm/yy",0,false,"class: fchico","style: width: 142px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Fecha Límite<span id="asterisco">*</span></div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td height="25" align="right" colspan="2">
+			                        <?= Formulario::submit("Asignar Tarea","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+						</div>
+					</td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>
+</div>

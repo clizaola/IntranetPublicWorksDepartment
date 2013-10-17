@@ -1,0 +1,123 @@
+<?= Load::lib("amecasoft") ?>
+<?php $obra = Obra::consultar($obra); ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "finanzas")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuFinanzasObra",false,array("obra" => $obra -> id,"opcion" => "nominas")) ?></center>
+    	</td>
+    </tr>
+</table>
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Nominas
+                        </h2>
+                        <span id="subtitulo">
+                            Las nominas registran los empleados que trabajan en la obra, así como días en que asistieron y sueldos pagados.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $nominas = $obra -> nominas(); ?>
+			            <?php if($nominas){ ?>
+				        	<table border="0">
+				        		<tr>
+				        			<th width="30"></th>
+				        			<th height="25" width="175" colspan="2">Semana</th>
+				        			<th width="75">Importe</th>
+				        			<th width="30"></th>
+				        		</tr>
+				            	<?php $i=0; foreach($nominas as $nomina){ $i++; ?>
+				            		<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				                    	<td width="25" align="center" style="padding: 5px;">
+					                    	<?php if($nomina -> estado == "OK"){ ?>
+					                    		<?= Html::imagen("miniconos/accept.png","Nomina Aprobada y Pagada",18,18) ?>	
+					                    	<?php } else { ?>
+					                    		<?= Acl::linkAjax("obras/eliminarNomina/".$nomina -> id,Html::imagen("miniconos/delete.png","Eliminar Nomina",18,18),"opciones","") ?>
+					                    	<?php } ?>
+					                    </td>
+				                    	<td height="25" align="center" style="padding: 5px;"><?= formatoFecha($nomina -> fecha_inicio) ?></td>
+					                    <td align="center" style="padding: 5px;"><?= formatoFecha($nomina -> fecha_fin) ?></td>
+					                    <td align="center" style="padding: 5px;">$ <?= number_format($nomina -> importe(),2) ?></td>
+					                    <td width="25" align="center" style="padding: 5px;">
+					                    	<?php if($nomina -> estado == "KO"){ ?>
+					                    		<?= Acl::linkAjax("",Html::imagen("miniconos/table_edit.png","Editar Nomina",18,18),"id: boton".$nomina -> id) ?>
+				            				<?php } ?>
+				            				<?php if($nomina -> estado == "OK"){ ?>
+				            					<?= Acl::linkAjax("",Html::imagen("miniconos/table_add.png","Nomina Aprobada",18,18),"id: boton".$nomina -> id) ?>
+				            				<?php } ?>
+					                    </td>
+									</tr>
+				            	<?php } ?>
+							</table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO NOMINAS</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+                    <?= Formulario::inicioAjax("obras/nominar","opciones") ?>
+						<input type="hidden" name="id" value="<?= $obra -> id ?>" />
+						<table border="0">
+							<tr>
+			                    <td colspan="2" width="150">
+			                    	<br />
+			                        <div id="texto_arriba">Datos de la Nomina</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td width="150">
+			                        <?= Formulario::fecha("fecha_inicio","","dd/mm/yy",false,false,"style: width: 140px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Inicio</div>
+			                    </td>
+			                    <td width="150" align="right">
+			                        <?= Formulario::fecha("fecha_fin","","dd/mm/yy",false,false,"style: width: 140px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Fin</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" height="25" align="right">
+			                        <?= Formulario::submit("Agregar Nomina","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+						<?= Formulario::fin() ?>
+						<br />
+					</td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+</div>
+
+<?php if($nominas) foreach($nominas as $nomina){ ?>
+	<?= Html::jsDialogo("factura".$nomina -> id,"boton".$nomina -> id) ?>
+	<div id="factura<?= $nomina -> id ?>" title="Detalle de la Nomina">
+		<center><?= View::partial("verNomina",false,array("nomina" => $nomina -> id,"opcion" => "nominas")) ?></center> 
+	</div>
+<?php } ?> 

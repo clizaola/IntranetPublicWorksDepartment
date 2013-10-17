@@ -1,0 +1,254 @@
+<?= Load::lib("amecasoft") ?>
+<?= Load::lib("google_maps") ?>
+<table border="0">
+	<tr>
+		<td valign="top">
+			<?= $obra ? Formulario::inicio($controller_name."/modificar") : Formulario::inicio($controller_name."/registrar") ?>
+			<input type="hidden" name="id" value="<?= $id ?>" />
+			<table class="formulario">
+			    <tr>
+			        <th id="mensaje" width="1024" height="25" >
+			            <?= $mensaje; ?>&nbsp;
+			        </th>
+			    </tr>
+			    <tr>
+			        <td width="1040" height="205" id="contenido" align="center">
+			            <div align="right">
+			            	<?= Formulario::cancelar("Regresar",$controller_name."/reporte","class: boton1") ?>
+			            </div>
+			            <table border="0" cellpadding="0" cellspacing="0">
+			                <tr height="25">
+			                    <td colspan="7" width="1024"align="left">
+			                        <h2 id="titulo">
+			                        	<?= $obra ? "Modificación de la Obra" : "Registro de Nueva Obra" ?>
+			                        </h2>
+			                        <span id="subtitulo">
+			                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+			                        </span>
+			                        <table style="border: 0px; float: right; text-align: center;">
+			                        	<tr>
+			                        		<td><?= Html::link('pdf/obra/'.$id,Html::imagen('icons/adobe_pdf_document.png','PDF',30).'<br />Ficha<br />Informativa','style: color: #333; text-decoration: none;') ?></td>
+			                        		<td>&nbsp;</td>
+			                        		<td><?= Html::link('pdf/obraDescriptiva/'.$id,Html::imagen('icons/adobe_pdf_document.png','PDF',30).'<br />Ficha<br />Descriptiva','style: color: #333; text-decoration: none;') ?></td>
+			                        	</tr>			                        	
+			                        </table>
+			                        
+			                        <br /><br />
+			                        <hr />
+			                        <br />
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Datos de la Obra</div>
+			                        <?= Formulario::mayusculas("nombre",$obra ? $obra -> nombre : (isset($proyectando) ? $proyectando -> nombre : ""),"class: tmediano","validate: required:true",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">Nombre <span id="asterisco">*</span></div>
+			                    </td>
+			                    <td width="25"></td>                    
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Acta de Cabildo</div>
+			                        <?= Formulario::selectModelo("cabildo",Cabildo::reporte(),"nombre","id",$obra ? $obra -> cabildo_id : (isset($proyectando) ? $proyectando -> cabildo_id : ""),"class: smediano",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">&nbsp;</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::mayusculas("codigo",$obra ? $obra -> codigo : "","class: tchico","validate: required:true",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>    
+			                        <div id="texto_abajo">Código <span id="asterisco">*</span></div>
+			                    </td>
+			                    <td width="25"></td>
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::selectModelo("tipo",TipoObra::reporte(),"nombre","id",$obra ? $obra -> tipoobra_id : (isset($proyectando) ? $proyectando -> tipoobra_id : ""),"class: schico","validate: required:true",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">Tipo de Obra <span id="asterisco">*</span></div>
+			                    </td>   
+			                    <td width="25"></td>              
+			                    <td colspan="3" rowspan="9" align="left">
+			                    	<?php if($obra) $tmp = explode(",",$obra -> georeferencia); else if(isset($proyectando)) $tmp = explode(",",$proyectando -> georeferencia); ?>
+			                        <?= $obra ? GoogleMaps::input("mapa",$tmp[0],$tmp[1],14,480,480,$obra -> estado == "TERMINADA" ? false : true) :  GoogleMaps::input("mapa",false,false,14,480,480) ?>
+			                    </td>
+			                </tr>     
+			                <tr>
+			                    <td colspan="4" height="10"></td>
+			                </tr>
+			                <tr>
+			                	<td colspan="3">
+			                        <table> 
+			                        	<?php if($obra){ ?>
+			                            <tr>  
+			                                <td width="150" style="font-size: 14px;">
+			                                    <?= Formulario::checkbox("l",$obra ? substr($obra -> alcance,0,1) == "L" : true,"value: OK",$obra ? ($obra -> estado == "TERMINADA") : false ? true : false) ?> Local        
+			                                </td> 
+			                                <td width="150" style="font-size: 14px;"> 
+			                                    <?= Formulario::checkbox("mu",$obra ? substr($obra -> alcance,1,1) == "M" : false,"value: OK",$obra ? ($obra -> estado == "TERMINADA") : false ? true : false) ?> Municipal
+			                                </td> 
+			                                <td width="150" style="font-size: 14px;"> 
+			                                    <?= Formulario::checkbox("r",$obra ? substr($obra -> alcance,2,1) == "R" : false,"value: OK",$obra ? ($obra -> estado == "TERMINADA") : false ? true : false) ?> Regional
+			                                </td> 
+			                            </tr> 
+			                            <?php } else { ?>
+			                            <tr>  
+			                                <td width="150" style="font-size: 14px;">
+			                                    <?= Formulario::checkbox("l",isset($proyectando) ? substr($proyectando -> alcance,0,1) == "L" : true,"value: OK") ?> Local        
+			                                </td> 
+			                                <td width="150" style="font-size: 14px;"> 
+			                                    <?= Formulario::checkbox("mu",isset($proyectando) ? substr($proyectando -> alcance,1,1) == "M" : false,"value: OK") ?> Municipal
+			                                </td> 
+			                                <td width="150" style="font-size: 14px;"> 
+			                                    <?= Formulario::checkbox("r",isset($proyectando) ? substr($proyectando -> alcance,2,1) == "R" : false,"value: OK") ?> Regional
+			                                </td> 
+			                            </tr> 
+			                            <?php } ?>
+			                        </table>
+			                    </td>
+			                    <td width="25"></td>        
+			                </tr>     
+			                <tr>
+			                    <td colspan="4" height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Localidad <span id="asterisco">*</span></div>
+			                        <?= Formulario::selectModelo("localidad",Localidad::reporte(),"nombre","id",$obra ? $obra -> localidades_id : (isset($proyectando) ? $proyectando -> localidades_id : ""),"class: smediano","validate: required:true",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                    </td>
+			                    <td width="25"></td>        
+			                </tr>
+			                <tr>
+			                    <td colspan="4" height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Descripción</div>
+			                        <?= Formulario::textarea("descripcion",$obra ? $obra -> descripcion : (isset($proyectando) ? $proyectando -> descripcion : ""),"style: width: 480px; height: 70px;","validate: required:true",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                    </td>
+			                    <td width="25"></td>        
+			                </tr>
+			                <tr>
+			                    <td colspan="4" height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Objetivo</div>
+			                        <?= Formulario::textarea("objetivo",$obra ? $obra -> objetivo : (isset($proyectando) ? $proyectando -> objetivo : ""),"style: width: 480px; height: 70px;",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                    </td>
+			                    <td width="25"></td>        
+			                </tr> 
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Supervisor <span id="asterisco">*</span></div>
+			                        <?= Formulario::selectModelo("supervisor",Empleado::reporte("puesto LIKE '%Supervisor%'"),"nombre","id",$obra ? $obra -> supervisores_id : (isset($proyectando) ? $proyectando -> supervisores_id : ""),"class: smediano","validate: required:true",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                         <div id="texto_abajo">&nbsp;</div>
+			                    </td>
+			                    <td width="25"></td>                    
+			                    <td colspan="3">
+			                    	<div id="texto_arriba">&nbsp;</div>
+			                        <?php if(isset($proyectando)){ ?>
+			                        	<?= Formulario::selectModelo("proyecto",Proyecto::reporte("estado='NUEVO'"),"nombre","id",$proyectando -> id,"class: smediano","validate: required:true",$obra -> estado == "TERMINADA" ? "disabled: disabled" : "") ?>
+			                        <?php } else { ?>
+			                        	<?= Formulario::selectModelo("proyecto",Proyecto::reporte("estado='NUEVO'".($obra ? " OR id=".$obra -> proyectos_id : "")),"nombre","id",$obra ? $obra -> proyectos_id : "","class: smediano",$obra ? $obra -> proyectos_id>0 ? "disabled: disabled" : "" : "",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <?php } ?>
+			                        <div id="texto_abajo">Proyecto que la Genera</div>
+			                    </td>     
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                        <div id="texto_arriba">Presupuesto</div>    
+			                        <?= Formulario::dinero("f",$obra ? $obra -> pfederal : (isset($proyectando) ? $proyectando -> pfederal : ""),"class: tchico",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">Federal</div>
+			                    </td>
+			                    <td width="25"></td>
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::dinero("e",$obra ? $obra -> pestatal : (isset($proyectando) ? $proyectando -> pestatal : ""),"class: tchico",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">Estatal</div>
+			                    </td>
+			                    <td width="25"></td>                    
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>    
+			                        <?= Formulario::dinero("m",$obra ? $obra -> pmunicipal : (isset($proyectando) ? $proyectando -> pmunicipal : ""),"class: tchico",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">Municipal</div>
+			                    </td>
+			                    <td width="25"></td>
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::dinero("b",$obra ? $obra -> pbeneficiarios : (isset($proyectando) ? $proyectando -> pbeneficiarios : ""),"class: tchico",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">Beneficiarios</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                        <?= Formulario::dinero("presupuestado",$obra ? $obra -> presupuestado : (isset($proyectando) ? $proyectando -> costo : ""),"class: tchico",$obra ? ($obra -> estado == "TERMINADA") : false ? "disabled: disabled" : "") ?>
+			                        <div id="texto_abajo">Monto Asignado (Presupuestado)</div>
+			                    </td>
+			                    <td width="25"></td>                    
+			                    <td>
+			                        <?= Formulario::dinero("aprobado",$obra ? $obra -> asignado : "","class: tchico","disabled: disabled") ?>
+			                        <div id="texto_abajo">Monto Ejercido (Facturado)</div>
+			                    </td>
+			                    <td width="25"></td>
+			                    <td>
+			                        <?= Formulario::dinero("ejecutado",$obra ? $obra -> ejecutado : "","class: tchico","disabled: disabled") ?>
+			                        <div id="texto_abajo">Monto Ejecutado (Gastado)</div>
+			                    </td>
+			                    <td width="25"></td>
+			                    <td>
+			                        <?= Formulario::select("estado",array("NUEVA" => "NUEVA","CANCELADA" => "CANCELADA","EN PROCESO" => "EN PROCESO","TERMINADA" => "TERMINADA"),$obra ? $obra -> estado : "NUEVA","class: schico","validate: required:true") ?>
+			                        <div id="texto_abajo">Estado de la Obra <span id="asterisco">*</span></div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td width="1024" height="25" colspan="7" align="right">
+			                        <?= Formulario::cancelar("REGRESAR",$controller_name."/reporte","class: boton3") ?>
+			                        <?= $obra && $obra -> estado != "TERMINADA" ? Acl::linkConfirmado($controller_name."/eliminar/".$obra -> id,"Eliminar","Estas seguro que deseas eliminar la obra?","class: boton2") : "" ?>
+			                        <?php if(Acl::tienePermiso(Session::get("usuario_id"),$controller_name,"modificar")){ ?>
+			                        	<?= $obra ? Formulario::submit("Modificar","class: boton1") : Formulario::submit("Registrar","class: boton1") ?>
+			                        <?php } ?>
+			                    </td>
+			                </tr>
+			            </table>
+			            <br />    
+			        </td>
+			    </tr>
+			</table>
+			<?= Formulario::fin() ?>
+		</td>
+		<?php		
+		if(Session::get('pantalla') >= 1470){
+			echo '<td valign="top" style="padding: 0px 0px 0px 0px;">';	
+		}else{
+			echo '</tr></table>';
+		}
+		?>		
+		<?php 
+			if($obra){ ?>
+				<div id="menuObra">
+					<div id="opciones" style="z-index: 1000;">
+						<?= View::partial($partial,false,array("obra" => $obra -> id)) ?>
+					</div>
+				</div>
+		<?php		
+	 		}
+	 	if(Session::get('pantalla') >= 1470){
+			echo '</td></tr></table>';	
+		} 
+	 	?>		
+	

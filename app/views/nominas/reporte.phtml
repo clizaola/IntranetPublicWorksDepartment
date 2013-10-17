@@ -1,0 +1,153 @@
+<?= Load::lib("amecasoft") ?>
+<?php $titulo = "Listado de Nominas" ?>
+<?php $subtitulo = "Las nominas son un desgloze de los salarios pagados por el trabajo semanal en determinada obra." ?>
+<?php $modelo = "Nomina"; ?>
+<?php 
+    $titulos = array(
+    	"id" => "Número|100",
+    	"obra_id" => "Nombre de la Obra|400",
+    	"fecha_inicio" => "Fecha de Inicio|125",
+    	"fecha_fin" => "Fecha de Fin|125",
+    	"total" => "Importe|150"
+    );
+?>
+<?php $obras = Obra::reporte(); ?>
+<table class="formulario">
+    <tr>
+        <th width="1024" height="25" id="mensaje">
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" style="width: 1000px;" align="left">
+                    	<?= Formulario::inicio($controller_name."/buscar") ?>
+                        <table border="0" width="1000">
+                            <tr>
+                                <td>
+                                    <h2 id="titulo">
+                                        <?= $titulo ?>
+                                    </h2>
+                                    <span id="subtitulo">
+                                    	<?= $subtitulo ?>
+                                    </span>
+                                    <br /><br />
+                                </td>
+                                <td width="25">
+                                
+                                </td>
+                                <td width="300">
+                                	<?= Formulario::texto("filtro","","style: width: 300px;") ?>
+                                </td>
+                                <td width="50">
+                                	<?= Formulario::submit("Filtrar","class: boton1") ?>
+                                </td>
+                            </tr>
+                        </table>
+                        <?= Formulario::fin() ?>
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr height="25">
+                    <td colspan="7" style="width: 1000px;" align="center">
+                        
+                            <table class="formulario" >
+                                <tr id="encabezado">
+                                    <?php if($titulos) foreach($titulos as $field => $value){ $titulo = substr($value,0,strpos($value,"|")); $tam = substr($value,strpos($value,"|")+1); ?>
+							            <th width="<?= $tam ?>">
+							                <?= Html::link($controller_name."/reporte/".$filtro."/".$field."-".($campo==$field ? $orden : "ASC")."/1", $titulo,"principal","style: color: #000; text-decoration: none;") ?>
+							                <?php 
+							                    if($campo == $field){
+							                        if($orden=="ASC"){
+							                            echo Html::link($controller_name."/reporte/".$filtro."/".$field."-".($campo==$field ? $orden : "ASC")."/1",Html::imagen("decendente.png","Ordenar Ascendente",12,12),"principal","style: color: #000; text-decoration: none;");
+							                        }
+							                        else{
+							                            echo Html::link($controller_name."/reporte/".$filtro."/".$field."-".($campo==$field ? $orden : "ASC")."/1",Html::imagen("ascendente.png","Ordenar Descendente",12,12),"principal","style: color: #000; text-decoration: none;");
+							                        }
+							                    }
+							                ?>
+							            </th>
+						            <?php } ?>									
+						            <th height="50" width="50" align="center">
+						            	
+                                    </th>
+                                </tr>
+                        <?php if($registros){ ?>
+                            <?php $i=0; foreach($registros as $registro){ $i++; if($i%2==0) $x = "fila1"; else $x="fila2"; $obra = $registro -> obra(); ?>
+                                <tr id="<?= $x ?>">
+                                    <td height="25" align="center">
+                                        <?= formatoNumero($registro -> id,4) ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        <?= $obra ? $obra -> nombre : "" ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        <?= formatoFecha($registro -> fecha_inicio) ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        <?= formatoFecha($registro -> fecha_fin) ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        $ <?= number_format($registro -> total,2) ?>
+                                    </td>
+                                    <td height="40" width="25" align="center">
+                                    	<?php if($registro -> estado == "KO"){ ?>
+                                    		<?= Acl::link("nominas/consulta/".$registro -> id,Html::imagen("miniconos/table.png","Consultar Nomina",18,18)) ?>
+                                    		<?= Acl::linkConfirmado("nominas/eliminar/".$registro -> id,Html::imagen("miniconos/delete.png","Eliminar Nomina",18,18),"Estas seguro que deseas eliminar la nomina?") ?>
+                                    	<?php } else { ?>
+                                    		<?= Acl::link("nominas/consulta/".$registro -> id,Html::imagen("miniconos/table_add.png","Consultar Nomina",18,18)) ?>
+                                    	<?php } ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        <?php } ?>
+                        <?php if($registros){ ?>
+                                <tr>
+                                    <th colspan="<?= count($titulos)+1 ?>" align="right" height="30">
+                                        <?php if($nps > 1){ ?>
+                                        <table border="0">
+                                            <tr>
+                                                <?php if($np > 1){ ?>
+                                                    <td id="paginador">
+                                                    	<?= Html::link($controller_name."/reporte/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".($np - 1),"<") ?>
+                                                    </td>
+                                                <?php } ?>
+                                                <?php for($i=1;$i<=$nps;$i++){ ?>
+                                                    <?php if($np == $i){ ?>
+                                                        <td id="paginador2">
+                                                        	<?= Html::link($controller_name."/reporte/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".$i,$i) ?>
+                                                        </td>
+                                                    <?php } else{ ?>
+                                                        <td id="paginador">
+                                                        	<?= Html::link($controller_name."/reporte/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".$i,$i) ?>
+                                                        </td>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                                <?php if($np < $nps){ ?>
+                                                    <td id="paginador">
+                                                    	<?= Html::link($controller_name."/reporte/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".($np + 1),">") ?>
+                                                    </td>
+                                                <?php } ?>
+                                                <td width="2"></td>
+                                            </tr>
+                                        </table>
+                                        <?php } ?>
+                                    </th>
+                                </tr>
+                        <?php } ?>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <b>Número de Registros: <?= $nregistros; ?></b>
+            <br /><br />     
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,12 @@
+<div id="botones" style="padding: 0px 0px 0px 0px;">
+	<table border="0">
+		<tr>
+			<td align="center">
+				<?= Acl::linkAjax("obras/insumos/".$obra,"Insumos","opciones",($opcion=="insumos" ? "id: boton1" : "id: boton3")) ?><br /><br/>		
+			</td>
+			<td align="center">
+				<?= Acl::linkAjax("obras/conceptos/".$obra,"Conceptos","opciones",($opcion=="insumos" ? "id: boton1" : "id: boton3")) ?><br /><br/>		
+			</td>
+		</tr>
+	</table>
+</div>

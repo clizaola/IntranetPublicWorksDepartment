@@ -1,0 +1,295 @@
+<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+<?= Load::lib("amecasoft") ?>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load('visualization', '1.1', {
+		packages: ['controls']
+	});
+</script>
+<?php $Obras = Obra::reporte('id>0','fecha ASC') ?>
+<script type="text/javascript">
+	function drawVisualization() {
+		// Prepare the data
+		var data = google.visualization.arrayToDataTable([
+		['Codigo','Nombre', 'Tipo de Obra','Localidad','Estado','Supervisor','Beneficiarios','Municipal','Estatal','Federal','Programa','Contratista']		
+		<?php foreach($Obras as $obra){
+			echo ",[";
+			echo "'".$obra -> codigo."',";			
+			echo "'".strtoupper( $obra -> nombre)."',";
+			echo "'".$obra -> tipoobra() -> nombre."',";
+			echo "'".$obra -> localidad() -> nombre."',";			
+			echo "'".$obra -> estado."',";
+			echo "'".$obra -> supervisor() -> nombre."',";
+			echo $obra -> pbeneficiarios.",";
+			echo $obra -> pmunicipal.",";
+			echo $obra -> pestatal.",";
+			echo $obra -> pfederal.",";
+			echo "'".$obra -> programa2()."',";			
+			echo "'".$obra -> contratista2()."'";
+			echo "]";
+		} 		
+		?>
+		]);
+
+		// Define a slider control for the Age column.
+		/*
+		var slider = new google.visualization.ControlWrapper({
+			'controlType': 'NumberRangeFilter',
+			'containerId': 'control1',
+			'options': {
+				'filterColumnLabel': 'Donuts eaten',
+				'ui': {
+					'labelStacking': 'vertical'
+				}
+			}
+		});
+		*/
+		// Define a category picker control for the Gender column
+		var categoryPicker = new google.visualization.ControlWrapper({
+			'controlType': 'CategoryFilter',
+			'containerId': 'control1',
+			'options': {
+				'filterColumnLabel': 'Tipo de Obra',
+				'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': true,
+					'allowMultiple': false
+				}
+			}
+		});
+		
+		var categoryPicker2 = new google.visualization.ControlWrapper({
+			'controlType': 'CategoryFilter',
+			'containerId': 'control2',
+			'options': {
+				'filterColumnLabel': 'Localidad',
+				'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': true,
+					'allowMultiple': false
+				}
+			}
+		});
+		
+		var categoryPicker3 = new google.visualization.ControlWrapper({
+			'controlType': 'CategoryFilter',
+			'containerId': 'control3',
+			'options': {
+				'filterColumnLabel': 'Estado',
+				'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': true,
+					'allowMultiple': false
+				}
+			}
+		});
+		
+		var categoryPicker4 = new google.visualization.ControlWrapper({
+			'controlType': 'CategoryFilter',
+			'containerId': 'control4',
+			'options': {
+				'filterColumnLabel': 'Supervisor',
+				'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': true,
+					'allowMultiple': false
+				}
+			}
+		});
+		
+		var categoryPicker5 = new google.visualization.ControlWrapper({
+			'controlType': 'CategoryFilter',
+			'containerId': 'control5',
+			'options': {
+				'filterColumnLabel': 'Programa',
+				'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': true,
+					'allowMultiple': false
+				}
+			}
+		});		
+		
+		var categoryPicker6 = new google.visualization.ControlWrapper({
+			'controlType': 'CategoryFilter',
+			'containerId': 'control6',
+			'options': {
+				'filterColumnLabel': 'Contratista',
+				'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': true,
+					'allowMultiple': false
+				}
+			}
+		});
+		
+		var categoryPicker7 = new google.visualization.ControlWrapper({
+			'controlType': 'CategoryFilter',
+			'containerId': 'control7',
+			'options': {
+				'filterColumnLabel': 'Nombre',
+				'ui': {
+					'labelStacking': 'vertical',
+					'allowTyping': true,
+					'allowMultiple': true
+				}
+			}
+		});
+		
+		// Define a Pie chart
+		var pie = new google.visualization.ChartWrapper({
+			'chartType': 'PieChart',
+			'containerId': 'chart1',
+			'options': {
+				'width': 300,
+				'height': 300,
+				'legend': 'none',
+				'title': 'Presupuesto de Beneficiarios',
+				'chartArea': {
+					'left': 15,
+					'top': 15,
+					'right': 0,
+					'bottom': 0
+				},
+				'pieSliceText': 'label'
+			},
+			// Instruct the piechart to use colums 0 (Name) and 3 (Donuts Eaten)
+			// from the 'data' DataTable.
+			'view': {
+				'columns': [1, 6]
+			}
+		});
+		
+		var pie2 = new google.visualization.ChartWrapper({
+			'chartType': 'PieChart',
+			'containerId': 'chart2',
+			'options': {
+				'width': 300,
+				'height': 300,
+				'legend': 'none',
+				'title': 'Presupuesto Municipal',
+				'chartArea': {
+					'left': 15,
+					'top': 15,
+					'right': 0,
+					'bottom': 0
+				},
+				'pieSliceText': 'label'
+			},
+			// Instruct the piechart to use colums 0 (Name) and 3 (Donuts Eaten)
+			// from the 'data' DataTable.
+			'view': {
+				'columns': [1, 7]
+			}
+		});
+		
+		var pie3 = new google.visualization.ChartWrapper({
+			'chartType': 'PieChart',
+			'containerId': 'chart3',
+			'options': {
+				'width': 300,
+				'height': 300,
+				'legend': 'none',
+				'title': 'Presupuesto Estatal',
+				'chartArea': {
+					'left': 15,
+					'top': 15,
+					'right': 0,
+					'bottom': 0
+				},
+				'pieSliceText': 'label'
+			},
+			// Instruct the piechart to use colums 0 (Name) and 3 (Donuts Eaten)
+			// from the 'data' DataTable.
+			'view': {
+				'columns': [1, 8]
+			}
+		});
+		
+		var pie4 = new google.visualization.ChartWrapper({
+			'chartType': 'PieChart',
+			'containerId': 'chart4',
+			'options': {
+				'width': 300,
+				'height': 300,
+				'legend': 'none',
+				'title': 'Presupuesto Federal',
+				'chartArea': {
+					'left': 15,
+					'top': 15,
+					'right': 0,
+					'bottom': 0
+				},
+				'pieSliceText': 'label'
+			},
+			// Instruct the piechart to use colums 0 (Name) and 3 (Donuts Eaten)
+			// from the 'data' DataTable.
+			'view': {
+				'columns': [1, 9]
+			}
+		});
+		
+		var table = new google.visualization.ChartWrapper({
+			'chartType': 'Table',
+			'containerId': 'chart5',
+			'options': {
+				'width': '1500px'
+			}
+		});
+
+		// Create a dashboard
+		new google.visualization.Dashboard(document.getElementById('dashboard')).
+		// Establish bindings, declaring the both the slider and the category
+		// picker will drive both charts.
+		bind([categoryPicker, categoryPicker2, categoryPicker3, categoryPicker4, categoryPicker5, categoryPicker6, categoryPicker7], [pie,pie2,pie3,pie4,table]).
+		// Draw the entire dashboard.
+		draw(data);
+	}
+
+	google.setOnLoadCallback(drawVisualization);
+</script>
+<div id="dashboard">
+	<table style="background-color: #fff;">
+		<tr>
+			<td colspan="2">
+				<div id="control7">
+				</div>
+			</td>
+		</tr>
+		<tr style='vertical-align: top'>
+			<td style='width: 250px; font-size: 0.9em;'>
+				<div id="control1">
+				</div>
+				<div id="control2">
+				</div>
+				<div id="control3">
+				</div>
+				<div id="control4">
+				</div>
+				<div id="control5">
+				</div>
+				<div id="control6">
+				</div>				
+			</td>
+			<td>
+				<div style="float: left;" id="chart1">
+				</div>
+				<div style="float: left;" id="chart2">
+				</div>
+				<div style="float: left;" id="chart3">
+				</div>
+				<div style="float: left;" id="chart4">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div style="float: left;" id="chart5">
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>

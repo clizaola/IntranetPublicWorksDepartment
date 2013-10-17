@@ -1,0 +1,190 @@
+<?= Load::lib("amecasoft") ?>
+<?php
+	Load::lib("fancybox");
+?>
+<?php $obra = Obra::consultar($obra); ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "finanzas")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuFinanzasObra",false,array("obra" => $obra -> id,"opcion" => "beneficiarios")) ?></center>
+    	</td>
+    </tr>
+</table>
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Beneficiarios
+                        </h2>
+                        <span id="subtitulo">
+                            Las aportaciones de los beneficiarios son parte importante en el desarrollo de la obra.
+                        </span>
+                    </td>
+                </tr>
+                <?php $beneficiarios = $obra -> beneficiarios(); ?>
+                <?php if($beneficiarios -> id > 0){ ?>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>                                        
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $aportaciones = $beneficiarios -> aportaciones(); ?>
+			            <?php if($aportaciones){ ?>
+			            	<table border="0">
+				        		<tr>
+				        			<th></th>
+				        			<th height="25" width="50">Fecha</th>
+				        			<th width="200">Concepto</th>
+				        			<th width="75">Monto</th>
+				        		</tr>
+				            	<?php $i=0; foreach($aportaciones as $aportacion){ $i++; ?>
+				            		<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				            			<td width="25" align="center" style="padding: 5px;">
+				            				<?php if($obra -> estado != "TERMINADA"){ ?>
+					                    		<?= Acl::linkAjax("obras/desaportar/".$aportacion -> id,Html::imagen("miniconos/delete.png","Eliminar Aportacion",18,18),"opciones","") ?>
+					                    	<?php } ?>
+					                    </td>
+				                    	<td height="25" align="center" style="padding: 5px;"><?= formatoFecha($aportacion -> fecha) ?></td>
+					                    <td align="center" style="padding: 5px;"><?= $aportacion -> concepto ?></td>
+					                    <td align="center" style="padding: 5px;">$ <?= $aportacion -> monto ?></td>
+									</tr>
+				            	<?php } ?>
+							</table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO APORTACIONES</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+			   	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","aportar") && $obra -> estado != "TERMINADA"){ ?>
+			   	<tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+                    <?= Formulario::inicioAjax("obras/aportar","opciones") ?>
+						<input type="hidden" name="obra_id" value="<?= $obra -> id ?>" />
+						<input type="hidden" name="id" value="<?= $beneficiarios -> id ? $beneficiarios -> id : 0 ?>" />
+						<table border="0">
+							<tr>
+			                    <td width="150" colspan="2">
+			                    	<div id="texto_arriba" style="text-align: center">AGREGAR APORTACION</div><br />
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td width="150">
+			                    	<?= Formulario::fecha("fecha_aportacion",date("d/m/Y"),"dd/mm/yy",false,false,"style: width: 140px;","maxlength: 13","validate: required:true") ?>
+			                        <div id="texto_abajo">Fecha</div>
+			                    </td>
+			                    <td width="150" align="right">
+			                    	<?= Formulario::dinero("monto_aportacion","","style: width: 140px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Monto</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" width="150">
+			                        <?= Formulario::mayusculas("concepto_aportacion","","style: width: 300px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Concepto</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" width="150">
+			                        <?= Formulario::mayusculas("observaciones_aportacion","","style: width: 300px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Observaciones</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			               
+			                <tr>
+			                    <td colspan="2" height="25" align="right">
+			                    	<?= Formulario::submit("Agregar Aportacion","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+                </tr>
+			   	<?php } ?>
+			   	<?php } ?>
+			   	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","beneficiar") && $obra -> estado != "TERMINADA"){ ?>
+			   	<tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+                    <?= Formulario::inicioAjax("obras/beneficiar","opciones") ?>
+						<input type="hidden" name="obra_id" value="<?= $obra -> id ?>" />
+						<input type="hidden" name="id" value="<?= $beneficiarios -> id ? $beneficiarios -> id : 0 ?>" />
+						<table border="0">
+							<tr>
+			                    <td width="150" colspan="2">
+			                    	<div id="texto_arriba" style="text-align: center"><?= $beneficiado ? "DATOS ACTUALIZADOS CORRECTAMENTE" : "Representante de los Beneficiarios" ?></div><br />
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" width="150">
+			                        <?= Formulario::mayusculas("nombre_representante",$beneficiarios -> nombre_representante,"style: width: 300px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Nombre</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" width="150">
+			                        <?= Formulario::mayusculas("domicilio_representante",$beneficiarios -> domicilio_representante,"style: width: 300px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Dirección</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td width="150">
+			                    	<?= Formulario::numerico("telefono_representante",$beneficiarios -> telefono_representante,"style: width: 140px;","maxlength: 13","validate: required:true") ?>
+			                        <div id="texto_abajo">Teléfono</div>
+			                    </td>
+			                    <td width="150" align="right">
+			                    	<?= Formulario::dinero("acumulado",$beneficiarios -> acumulado,"style: width: 140px;","validate: required:true", "disabled: disabled") ?>
+			                        <div id="texto_abajo">Acumulado</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" height="25" align="right">
+			                    	<?php if($beneficiarios -> id > 0){ ?>
+			                        	<?= Formulario::submit("Actualizar","class: boton1") ?>
+			                        <?php } else { ?>
+			                        	<?= Formulario::submit("Registrar","class: boton1") ?>
+			                        <?php } ?>
+			                    </td>
+			                </tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+                </tr>
+                <?php } ?>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+</div>

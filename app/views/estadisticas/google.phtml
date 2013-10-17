@@ -1,0 +1,73 @@
+<?= Load::lib('google_image_chart')?>
+<?php 
+       $color = array( 
+        '#687e9b', 
+        '#c4ccd8',        
+    ); 
+     /*
+    $dataMultiple = array(array(0,1,2,3), array(4,5,6,7)); 
+     
+	$googleChart = new GoogleChart();
+    $googleChart->setChartAttrs(  
+        array( 
+            'type'         => 'bar-vertical', 
+            'title'     => 'algo', 
+            'data'         => $dataMultiple, 
+            'size'         => array( 400, 200 ), 
+            'color'     => $color, 
+            'labelsXY'     => true, 
+            'min'        => array(min(array(0,1,2,3)),min(array(4,5,6,7))), 
+            'max'        => array(max(array(0,1,2,3)),max(array(4,5,6,7))), 
+            'legend'    => array('2008', '2009') 
+        ) 
+    ); 
+     
+    // Print chart 
+    echo $googleChart; 
+	
+	
+	
+	$dataMultiple = array(3,1,2,2); 
+     
+	$googleChart = new GoogleChart();
+    $googleChart->setChartAttrs(  
+        array( 
+            'type'         => 'pie-3d', 
+            'title'     => 'GRAFICA DE LA OBRA FULANITA', 
+            'data'         => $dataMultiple, 
+            'size'         => array( 400, 200 ), 
+            'color'     => $color, 
+            'labelsXY'     => true, 
+            'min'        => array(min(array(0,1,2,3)),min(array(4,5,6,7))), 
+            'max'        => array(max(array(0,1,2,3)),max(array(4,5,6,7))), 
+            'legend'    => array('2008', '2009','2010','2011') 
+        ) 
+    ); 
+     
+    // Print chart 
+    echo $googleChart;
+	
+	
+	*/
+	
+	$dataMultiple = array(array(70,70,10), array(100,50,30)); 
+     
+	$googleChart = new GoogleChart();
+    $googleChart->setChartAttrs(  
+        array( 
+            'type'         => 'venn', 
+            'title'     => 'algo', 
+            'data'         => $dataMultiple, 
+            'size'         => array( 600, 300 ), 
+            'color'     => $color, 
+            'labelsXY'     => true, 
+            'min'        => array(min(array(0,1,2,3)),min(array(4,5,6,7))), 
+            'max'        => array(max(array(0,1,2,3)),max(array(4,5,6,7))), 
+            'legend'    => array('2008', '2009') 
+        ) 
+    ); 
+     
+    // Print chart
+    echo "<br>";
+    echo $googleChart; 
+    ?> 

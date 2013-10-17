@@ -1,0 +1,14 @@
+<?= Load::lib("amecasoft") ?>
+<?= Formulario::inicioAjax("proyectos/cambiarEstado","estado".$registro -> id) ?>
+<?= Formulario::oculto("proyecto",$registro -> id) ?>
+	<table>
+		<tr>
+			<td valign="bottom">
+				<?= Formulario::select("estado",array("NUEVO" => "NUEVO", "DELEGADO" => "DELEGADO", "EN PROCESO" => "EN PROCESO", "EN OBRA" => "EN OBRA", "CANCELADO" => "CANCELADO", "TERMINADO" => "TERMINADO"),$registro -> estado) ?>
+			</td>
+			<td valign="bottom">
+				<?= Formulario::imagen("Cambiar Estado","icons/save.png","style: width: 25px; height: 25px;") ?>
+			</td>
+		</tr>
+	</table>
+<?= Formulario::fin(); ?>

@@ -1,0 +1,168 @@
+<?php Load::lib("formato") ?>
+<?php Load::lib("html") ?>
+<?php Load::lib("aclx") ?>
+<?php Load::lib("formulario") ?>
+<?php $factura = Factura::consultar($id) ?>
+<?php $conceptos = $factura -> conceptos(); ?>
+<style type="text/css">
+	* {
+		text-transform: uppercase;
+	}
+</style>
+
+<div id="factura_desglozada">
+	<table>
+		<tr>
+			<td>
+				<table border="0" class="tabla">
+					<tr>
+						<td width="155" class="formato1">
+							<b>RFC:</b>
+						</td>
+						<td width="155" class="formato4">
+							<?= $factura -> rfc_emisor ?>
+						</td>
+						<td width="155" class="formato1">
+							<b>No. Factura:</b>
+						</td>
+						<td width="155" class="formato4">
+							<?= $factura -> numero_factura ?>
+						</td>
+					</tr>
+					<tr>
+						<td width="155" class="formato1">
+							<b>Proveedor:</b>
+						</td>
+						<td colspan="3" class="formato4">
+							<?= $factura -> nombre_emisor ?>
+						</td>
+					</tr>
+					<tr>
+						<td width="155" class="formato1">
+							<b>Fecha:</b>
+						</td>
+						<td width="155" class="formato4">
+							<?= Formato::fecha($factura -> fecha_emision) ?>
+						</td>
+						<td width="155" class="formato1">
+							<b>Importe con IVA:</b>
+						</td>
+						<td width="155" class="formato4">
+							$ <?= number_format($factura -> importe,2) ?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="10">
+				<br />
+				<?php if(isset($notificacion)){ ?>
+				<div class="success_message" style="padding: 5px;">
+					<?= $notificacion ?>
+				</div>
+				<?php } ?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?= Formulario::inicioAjax("obras/agregarConceptoFactura","factura_desglozada") ?>
+					<?= Formulario::oculto("id",$factura -> id) ?>
+					<table class="tabla">
+						<tr>
+							<th width="70" class="formato1">
+								Cantidad
+							</th>
+							<th width="325" class="formato1">
+								Concepto
+							</th>
+							<th width="82" class="formato1">
+								Precio Unitario
+							</th>
+							<th width="100" class="formato1">
+								Importe
+							</th>
+							<?php if($factura -> estado != "PAGADA" && $factura -> estado != "CANCELADA" && $factura -> obra() -> estado != "TERMINADA"){ ?>
+								<th class="formato1"></th>
+							<?php } ?>	
+						</tr>
+						<?php if($factura -> estado != "PAGADA" && $factura -> estado != "CANCELADA" && $factura -> obra() -> estado != "TERMINADA"){ ?>
+						<tr>
+							<th width="75" class="formato4">
+								<?= Formulario::numerico("cantidad","","style: text-align: center; width:55px;","validate: required:true") ?>
+							</th>
+							<th width="325" class="formato4">
+								<?= Formulario::mayusculas("concepto","","style: text-align: center; width:300px;","validate: required:true") ?>
+							</th>
+							<th width="82" class="formato4">
+								<?= Formulario::numerico("precio","","style: text-align: center; width:70px;","validate: required:true") ?>
+							</th>
+							<th width="100" class="formato4">
+								<?= Formulario::numerico("importe","","style: text-align: center; width:80px;","disabled: disabled") ?>
+							</th>
+							<td class="formato4">
+								<?= Formulario::imagen("Agregar Concepto","miniconos/add.png") ?>
+							</td>
+						</tr>
+						<?php } ?>
+					</table>
+				<?= Formulario::fin() ?>
+				<br />
+					
+				<?php if(isset($notificacion)){ ?>
+					<div style="height: 246px; overflow: auto;">
+				<?php } else { ?>
+					<?php if($factura -> estado != "PAGADA" && $factura -> estado != "CANCELADA" && $factura -> obra() -> estado != "TERMINADA"){  ?>
+						<div style="height: 278px; overflow: auto;">
+					<?php } else { ?>
+						<div style="height: 286px; overflow: auto;">
+					<?php } ?>
+				<?php } ?>	
+					<div id="conceptos">
+					
+					<table class="tabla">
+						<tr>
+							<th width="70" class="formato1">
+								Cantidad
+							</th>
+							<th width="325" class="formato1">
+								Concepto
+							</th>
+							<th width="90" class="formato1">
+								Precio Unitario
+							</th>
+							<th width="100" class="formato1">
+								Importe
+							</th>
+							<?php if($factura -> estado != "PAGADA" && $factura -> estado != "CANCELADA" && $factura -> obra() -> estado != "TERMINADA"){ ?>
+								<th width="25" class="formato1"></th>
+							<?php } ?>	
+						</tr>
+						<?php if($conceptos) foreach($conceptos as $concepto){ ?>
+						<tr>
+							<td width="75" align="center" class="formato4">
+								<?= $concepto -> cantidad ?>
+							</td>
+							<td width="<?= ($factura -> estado == "PAGADA" || $factura -> estado == "CANCELADA") ? 340 : 325 ?>" align="center" class="formato4">
+								<?= $concepto -> concepto ?>
+							</td>
+							<td width="90" align="right" class="formato4">
+								$ <?= number_format($concepto -> precio_unitario,2) ?>
+							</td>
+							<td width="100" align="right" class="formato4">
+								$ <?= number_format($concepto -> importe,2) ?>
+							</td>
+							<?php if($factura -> estado != "PAGADA" && $factura -> estado != "CANCELADA" && $factura -> obra() -> estado != "TERMINADA"){ ?>
+							<td class="formato4" align="center" valign="middle">
+								<?= Acl::linkAjaxConfirmado("obras/eliminarConceptoFactura/".$concepto -> id,Html::imagen("miniconos/delete.png","Eliminar Concepto",18,18),"factura_desglozada","") ?>
+							</td>
+							<?php } ?>
+						</tr> 
+						<?php } ?>
+					</table>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>

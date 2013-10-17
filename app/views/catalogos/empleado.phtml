@@ -1,0 +1,89 @@
+<?= Load::lib("amecasoft") ?>
+
+<?= $empleado ? Formulario::inicio($controller_name."/modificarEmpleado") : Formulario::inicio($controller_name."/registrarEmpleado") ?>
+<input type="hidden" name="id" value="<?= $id ?>" />
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <div align="right">
+            	<?= Formulario::cancelar("Regresar",$controller_name."/empleados","class: boton1") ?>
+            </div>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                        	<?= $empleado ? "Modificación del Empleado" : "Registro de Nuevo Empleado" ?>
+                        </h2>
+                        <span id="subtitulo">
+                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="texto_arriba">Nombre del Empleado<span id="asterisco">*</span></div>
+                        <?= Formulario::mayusculas("nombre",$empleado ? $empleado -> nombre : "","class: tmediano","validate: required:true") ?>
+                        
+                    </td>
+                    <td width="20"></td>
+                    <td colspan="3">
+                        <div id="texto_arriba">Puesto<span id="asterisco">*</span></div>
+                        <?php $opciones = array("" => "","ASISTENTE DEL DIRECTOR" => "ASISTENTE DEL DIRECTOR","ASISTENTE DEL SUBDIRECTOR" => "ASISTENTE DEL SUBDIRECTOR","AUXILIAR TECNICO" => "AUXILIAR TECNICO","DIBUJANTE" => "DIBUJANTE","DIRECTOR" => "DIRECTOR","MANTENIMIENTO" => "MANTENIMIENTO","SUBDIRECTOR" => "SUBDIRECTOR","SUPERVISOR" => "SUPERVISOR","TECNICO EN TOPOGRAFIA" => "TECNICO EN TOPOGRAFIA","PRESIDENTE" => "PRESIDENTE","REGIDOR" => "REGIDOR","FINANZAS" => "FINANZAS") ?>
+                        <?= Formulario::select("puesto",$opciones,$empleado ? strtoupper($empleado -> puesto) : "","class: smediano","validate: required:true") ?>
+                    </td>
+                </tr>     
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+                    <td>
+                        <div id="texto_arriba">Datos de Contacto</div>
+                        <?= Formulario::texto("direccion",$empleado ? ($empleado -> direccion != "." ? $empleado -> direccion : "") : "","class: tchico") ?>
+                        <div id="texto_abajo">Domicilio</div>  
+                    </td>
+                    <td width="30"></td>                    
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::numerico("telefono",$empleado ? ($empleado -> telefono != "." ? $empleado -> telefono : "") : "","class: tchico") ?>
+                        <div id="texto_abajo">Teléfono</div>    
+                    </td>
+                    <td width="20"></td>
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::numerico("celular",$empleado ? ($empleado -> celular != "." ? $empleado -> celular : "") : "","class: tchico") ?>
+                        <div id="texto_abajo">Celular</div>    
+                    </td>
+                    <td width="30"></td>                    
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::texto("correo",$empleado ? ($empleado -> correo != "." ? $empleado -> correo : "") : "","class: tchico","validate: email:true") ?>
+                        <div id="texto_abajo">Correo Electrónico</div>    
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td width="1000" height="25" colspan="7" align="right">
+                        <?= Formulario::cancelar("Cancelar",$controller_name."/empleados","class: boton3") ?>
+                        <?= $empleado ? Acl::linkConfirmado($controller_name."/eliminarEmpleado/".$empleado -> id,"Eliminar","Estas seguro que deseas eliminar el empleado?","class: boton2") : "" ?>
+                    	<?= $empleado ? Formulario::submit("Modificar","class: boton1") : Formulario::submit("Registrar","class: boton1") ?>
+                    </td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>

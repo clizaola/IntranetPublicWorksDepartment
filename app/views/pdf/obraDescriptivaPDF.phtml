@@ -1,0 +1,185 @@
+<?= Load::lib("html") ?>
+<?= Load::lib("formato") ?>
+<style type="text/css">
+<!--
+	h2{ color: #<?= SAM_COLOR1 ?>; font-size: 20px;}
+	table.page_header {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 18px; text-transform: uppercase; }
+	.page_header table{ padding: 0px; margin: 0px; text-transform: uppercase;}
+	table.informacion {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 11px; text-transform: uppercase; }
+	table.informacion td {border: 1px solid #333; padding: 5px; text-transform: uppercase; border: 1px solid #333;}
+	table.page_footer {width: 100%; border: none; background-color: #<?= SAM_COLOR2 ?>; padding: 2mm; color: #FFF; font-size: 12px; text-transform: uppercase;}	
+	.firma, div.standard .firma td{	border: 0px; }
+	.formato1{
+		background-color: #<?= SAM_COLOR1 ?>;
+		color:#fff;		
+		font-weight: bold;
+		padding: 5px 2px;
+		text-align: center;		
+	}
+	.formato2{
+		background-color: #<?= SAM_COLOR3 ?>;
+		color:#333;		
+		font-weight: bold;	
+		text-align: center;	
+	}	
+-->
+</style>
+<?php $cont = 0; ?>
+<?php if($obras) foreach($obras as $obra){ ?>
+<?php if($cont == 0){ ?>
+<page backtop="0mm" backbottom="14mm" backleft="0mm" backright="0mm" style="font-size: 12pt">
+<page_footer>
+		<table class="page_footer">
+			<tr>
+				<td style="width: 50%; text-align: left">
+					<?= SAM_ADMINISTRACION ?><br />
+					PÁGINA [[page_cu]]
+				</td>				
+				<td style="width: 50%; text-align: right">
+					<?= APLICACION_PAGINA ?><br />
+					Impreso desde SAM <?= date('d/m/Y H:i') ?> Hrs.
+				</td>
+			</tr>			
+		</table>
+	</page_footer>
+<?php }else{
+	echo '<page pageset="old">';
+}
+	$obra = Obra::buscar($obra);
+?>	
+		<table border="0" class="page_header">
+			<tr>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/ameca.jpg","H. Ayuntamiento de Ameca",100) ?>
+				</td>
+				<td width="475" align="center">
+					<br />
+					<h2><?= $obra -> nombre ?></h2>
+					<b style="font-size: 12px;">FICHA DESCRIPTIVA</b>
+				</td>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/titulo.jpg","Departamento de Obras Publicas",150) ?>
+				</td>
+			</tr>			
+		</table>
+		<br />
+		<table cellpadding="0" cellspacing="0" class="informacion">
+			<tr style="height: 0px;">
+				<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="2">
+					OBRA:
+				</td>
+				<td width="580" colspan="13">
+					<?= $obra -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="2">
+					CÓDIGO:
+				</td>
+				<td colspan="3">
+					<?= $obra -> codigo ?>
+				</td>
+				<td class="formato1" colspan="2">
+					ACTA:
+				</td>
+				<td colspan="3">
+					<?//= $obra -> acta_id ?>
+				</td>
+				<td class="formato1" colspan="2">
+					LUGAR:
+				</td>
+				<td colspan="3">
+					<?= $obra -> localidad() -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="3">
+					TIPO DE OBRA:
+				</td>
+				<td colspan="7">
+					<?= $obra -> tipoobra() -> nombre ?>
+				</td>
+				<td class="formato1" colspan="2">
+					ESTADO:
+				</td>
+				<td colspan="3">
+					<?= $obra -> estado ?>
+				</td>
+			</tr>
+		</table>					
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=25;$i<=400; $i+=25){ echo '<td style="border: 0px; height: 0px;" height="0" width="27"></td>'; } ?>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="4">MONTO APROBADO</td>
+			<td class="formato1" colspan="4">MONTO EJERCIDO</td>
+			<td class="formato1" colspan="4">AVANCE</td>
+			<td class="formato1" colspan="4">BENEFICIADOS</td>
+		</tr>
+		<tr style="font-weight: bold; text-align: center;">
+			<td colspan="4"><?= Formato::dinero($obra -> presupuestado) ?></td>
+			<td colspan="4"><?= Formato::dinero($obra -> ejecutado) ?></td>
+			<td colspan="4"><?= $obra -> porcentaje() ?></td>
+			<td colspan="4">450,000</td>
+		</tr>
+		<tr>			
+			<td style="height: 20px; border: 0px;"></td>
+		</tr>
+		<tr>			
+			<td class="formato2" style="font-size: 14px;" colspan="16">
+				APORTACIONES
+			</td>
+		</tr>	
+		<tr>
+			<td class="formato1" colspan="4">BENEFICIARIOS</td>
+			<td class="formato1" colspan="4">MUNICIPAL</td>
+			<td class="formato1" colspan="4">ESTATAL</td>
+			<td class="formato1" colspan="4">FEDERAL</td>
+		</tr>
+		<tr style="font-weight: bold; text-align: center;">
+			<td colspan="3"><?= Formato::dinero($obra -> pbeneficiarios) ?></td>
+			<td><?= substr($obra -> presupuesto,12,3)+0 ?>%</td>
+			<td colspan="3"><?= Formato::dinero($obra -> pmunicipal) ?></td>
+			<td><?= substr($obra -> presupuesto,8,3)+0 ?>%</td>
+			<td colspan="3"><?= Formato::dinero($obra -> pestatal) ?></td>
+			<td><?= substr($obra -> presupuesto,4,3)+0 ?>%</td>
+			<td colspan="3"><?= Formato::dinero($obra -> pfederal) ?></td>
+			<td><?= substr($obra -> presupuesto,0,3)+0 ?>%</td>
+		</tr>
+		<tr>			
+			<td style="height: 20px; border: 0px;"></td>
+		</tr>
+		<tr>			
+			<td class="formato1" style="font-size: 14px;" colspan="16">
+				DESCRIPCION
+			</td>
+		</tr>
+		<tr>
+			<td colspan="16">
+				<div style="text-align: justify; width: 740px;">
+					<?= nl2br($obra -> descripcion) ?>
+				</div>
+			</td>
+		</tr>
+		<tr>			
+			<td style="height: 20px; border: 0px;"></td>
+		</tr>
+		<tr>			
+			<td class="formato1" style="font-size: 14px;" colspan="16">
+				OBJETIVO
+			</td>
+		</tr>
+		<tr>
+			<td colspan="16">
+				<div style="text-align: justify; width: 740px;">
+					<?= nl2br($obra -> objetivo) ?>
+				</div>
+			</td>
+		</tr>	
+	</table>
+</page>
+<?php $cont++; } ?>

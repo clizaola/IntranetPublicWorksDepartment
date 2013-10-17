@@ -1,0 +1,46 @@
+@CHARSET "ISO-8859-1";
+
+.facebook_azul{
+    background-color: #3B5999;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #FFF;
+    font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+}
+
+.facebook_gris{
+    background-color: #CCCCCC;
+    border: 1px solid #000000;
+    padding: 5px 5px 5px 5px;
+	height: 30px;
+    color: #000;
+	font-weight: bold;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+}
+
+input{
+	padding: 3px 3px 3px 3px;
+	height: 20px;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+}
+
+select{
+	padding: 3px 3px 3px 3px;
+	height: 30px;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	vertical-align: center;
+}
+
+option{
+	padding-bottom: 5px;
+	height: 30px;
+	font-family: "Trebuchet MS", Verdana;
+	font-size: 12px;
+	vertical-align: center;
+}

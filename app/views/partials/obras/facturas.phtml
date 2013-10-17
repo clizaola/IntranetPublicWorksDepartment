@@ -1,0 +1,171 @@
+<?= Load::lib("amecasoft") ?>
+<?php
+	Load::lib("fancybox");
+?>
+<?php $obra = Obra::consultar($obra); ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "finanzas")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuFinanzasObra",false,array("obra" => $obra -> id,"opcion" => "facturas")) ?></center>
+    	</td>
+    </tr>
+</table>
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Facturas
+                        </h2>
+                        <span id="subtitulo">
+                            Las facturas sirven para comprobar los gastos realizados y definen la cantidad a pagar por la obra.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                        
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $facturas = $obra -> facturas(); ?>
+			            <?php if($facturas){ ?>
+			            	<?php $fancybox = new Fancybox(array("autoScale" => false,"titlePosition" => "outside", "transitionIn" => "fade", "transitionOut" => "fade","overlayColor" => "#000","overlayOpacity" => 0.75)) ?>
+			            	<table>
+				        		<?php $i=0; foreach($facturas as $factura){ $i++; ?>
+				        		<?= $i>1 ? '<tr><td height="10"></td></tr>' : '' ?>
+				        		<tr><td>
+				        			<table border="0" style="border: solid 1px; background-color: #DDD;">
+					            		<tr>
+					            			<td colspan="2" height="25" align="center"><?= $factura -> nombre_emisor ?></td>
+					            			<td colspan="<?= file_exists(APP_PATH."/public/files/facturas_obras/".$factura -> imagen) ? 1 : 2 ?>" width="18" height="18" align="center" valign="middle" style="padding: 5px 5px 0 5px;border: solid 1px; background-color: #EEE;">
+					            				<?php if($obra -> estado == "TERMINADA"){ ?>
+						            				<?php if($factura -> estado == "PAGADA"){ ?>
+							                    		<?= Html::imagen("miniconos/accept.png","Factura Pagada",18,18) ?>
+							                    	<?php } else { ?>
+							                    		<?= Html::imagen("miniconos/money.png","Factura NO Pagada",18,18) ?>
+							                    	<?php } ?>
+						                    	<?php } else { ?>
+						                    		<?php if($factura -> estado == "PAGADA"){ ?>
+							                    		<?= Acl::linkAjax("obras/despagar/".$factura -> id,Html::imagen("miniconos/accept.png","Cancelar Pago",18,18),"opciones","") ?>
+							                    	<?php } else { ?>
+							                    		<?= Acl::linkAjax("obras/pagar/".$factura -> id,Html::imagen("miniconos/money.png","Registrar Pago",18,18),"opciones","") ?>
+							                    	<?php } ?>
+						                    	<?php } ?>
+					            			</td>
+					            			<?php if(file_exists(APP_PATH."/public/files/facturas_obras/".$factura -> imagen)){ ?>
+					            			<td width="18" height="18" align="center" valign="middle" style="padding: 5px 5px 0 5px;border: solid 1px; background-color: #EEE;">
+						                    	<?= Acl::link("files/facturas_obras/".$factura -> imagen,Html::imagen("miniconos/folder_explore.png","Factura Original",18,18),"target: blank") ?>
+					            			</td>
+					            			<?php } ?>
+					            		</tr>
+					            		<tr>
+					            			<td width="125" align="center"><?= formatoFecha($factura -> fecha_emision) ?></td>
+					            			<td width="125" align="center">$ <?= number_format($factura -> importe,2) ?></td>
+					            			<td width="18" height="18" align="center" valign="middle" style="padding: 5px 5px 0 5px;border: solid 1px; background-color: #EEE;">
+					            				<?php if($factura -> estado == "NUEVA" && $obra -> estado != "TERMINADA"){ ?>
+						                    		<?= $fancybox -> ajax("obras/desglozada/".$factura -> id,Html::imagen("miniconos/table_edit.png","Desgloze de la Factura",18,18),"<center>Esta factura puede ser modificada mientras esta no tenga el estado de 'PAGADA'</center>") ?>					                    		
+					            				<?php } ?>
+					            				<?php if($factura -> estado == "PAGADA" || $obra -> estado == "TERMINADA"){ ?>
+					            					<?= $fancybox -> ajax("obras/desglozada/".$factura -> id,Html::imagen("miniconos/table.png","Factura Desglozada",18,18),"<center>Esta factura NO puede ser modificada por que ya fue asignado su pago.</center>") ?>
+					            				<?php } ?>
+					            			</td>
+					            			<?php if($factura -> estado == "NUEVA" && $obra -> estado != "TERMINADA"){ ?>
+					            			<td width="18" height="18" align="center" valign="middle" style="padding: 5px 5px 0 5px;border: solid 1px; background-color: #EEE;">
+					                    		<?= Acl::linkAjaxConfirmado("obras/desfacturar/".$factura -> id,Html::imagen("miniconos/delete.png","Eliminar Factura",18,18),"opciones","") ?>
+					            			</td>
+					            			<?php } else { ?>
+					            			<td width="18" height="18" align="center" valign="middle" style="padding: 5px 5px 0 5px;border: solid 1px; background-color: #EEE;">
+					                    		<?= $fancybox -> ajax("obras/requisicionesFactura/".$factura -> id,Html::imagen("miniconos/folder_page.png","Requisiciones",18,18),"<center>Requisiciones que cubre esta Factura.</center>") ?>
+					            			</td>
+					            			<?php } ?>
+					            		</tr>
+					            	</table>
+				            	</td></tr>
+				            	<?php } ?>
+				            </table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO FACTURAS</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+			   	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","facturar") && $obra -> estado != "TERMINADA"){ ?>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+                    <?= Formulario::inicioAjax("obras/facturar","opciones") ?>
+						<input type="hidden" name="id" value="<?= $obra -> id ?>" />
+						<table border="0">
+							<tr>
+			                    <td width="150">
+			                    	<div id="texto_arriba">Datos de la Factura</div><br />
+			                        <?= Formulario::mayusculas("rfc","","style: width: 140px;","maxlength: 13","validate: required:true") ?>
+			                        <div id="texto_abajo">RFC</div>
+			                    </td>
+			                    <td width="150" align="right">
+			                    	<div id="texto_arriba">&nbsp;</div><br />
+			                        <?= Formulario::mayusculas("numero","","style: width: 140px;","validate: required:true") ?>
+			                        <div id="texto_abajo">No. de Factura</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+							<tr>
+			                    <td colspan="2" width="150">
+			                        <?= Formulario::mayusculas("emisor","","style: width: 300px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Emisor</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td width="150">
+			                        <?= Formulario::fecha("fecha_emision","","dd/mm/yy",false,false,"style: width: 140px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Fecha</div>
+			                    </td>
+			                    <td width="150" align="right">
+			                        <?= Formulario::dinero("importe","","style: width: 140px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Importe</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" width="150">
+			                    	<div id="texto_arriba">Imagen de la Factura Escaneada</div>
+			                        <?= Formulario::archivo("factura","","style: width: 300px;") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" height="25" align="right">
+			                        <?= Formulario::submit("Agregar Factura","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+                </tr>
+                <?php } ?>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+</div>

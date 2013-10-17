@@ -1,0 +1,172 @@
+*{
+	padding: 0px;
+	margin: 0px;
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    @import url(http://fonts.googleapis.com/css?family=Varela+Round);
+    font-family: 'Varela Round', sans-serif;
+    text-transform: uppercase;
+}
+
+body *{
+	font-size: 12px;	
+}
+
+.contenido table{
+	font-size: 12px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+}
+
+.contenido td, .contenido th{
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+}
+
+.contenido td{
+	padding: 0px 2px 0px 2px;
+	font-size: 11px;
+}
+
+.contenido th{
+	padding: 0px 0px 0px 3px;
+	background-color: #C8F0AA;
+	font-size: 12px;
+}
+
+.contenido fieldset{
+	font-size: 14px;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-khtml-border-radius: 15px;
+}
+
+img{
+	border: 0px;
+}
+
+.barra{
+	width:100%;
+	height: 40px;
+	/*background: #C8F0AA;*/
+    background-color: #3D9C48; 
+	color: #FFF; 
+	font-weight: bold;
+	font-size: 18px;
+	padding: 10px 0 0 0px;
+	border-bottom: #BF281F 3px solid;
+}
+
+.barra img{
+	border: 0px;
+}
+
+.barra a{
+	color: #333333;
+	text-decoration: none;
+}
+
+.barra a:hover{
+	color: #666666;
+}
+
+.titulo{
+	float: left;
+	margin-top: 5px;
+	padding-left: 40px;
+	font-size: 16px;
+}
+
+.buscar{
+	float: left;
+	margin-left: 50px;
+}
+
+.menu{
+    width: 100%;
+    background-color:  #EEE;
+    border-bottom: #BF281F 3px solid;
+    z-index: 3;
+}
+
+.pie{ 
+	width:100%; 
+	/*background: #E6FFC8;*/ 
+	background-color: #3D9C48;
+	color: #FFF; 
+	font-size: 10px; 
+	font-weight: bold; 
+	text-align: center; 
+	padding: 10px 0px; 
+	border-top: #BF281F 3px solid;
+	bottom: 0px; 
+	position: static; 	
+}
+
+.pie a{ 
+	font-size: 10px;
+	font-weight: bold;
+	text-decoration: none; 
+	color:#FFF;
+}
+
+.lateral{
+	width: 180px;
+	background: #1E8246;
+	color: #FFFFFF;
+	/*float: left;*/
+	padding: 5px 0 0 10px;
+	min-height: 700px;
+	border-right: 2px solid #BF281F;
+}
+
+.lateral a{
+	color: #FFFFFF;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+.lateral a:hover{
+	color: #DDDDDD;
+	text-decoration: underline;
+}
+
+.lateral ul{
+	background: #146431;
+}
+
+.lateral ul ul{
+	background: #1E8246;
+	padding-left: 15px;
+}
+
+.contenedor{
+	clear:both;
+	width: 100%;
+	/*min-height: 700px;*/
+}
+
+.contenido{
+	width: 100%;
+	background: #DEDEDE;	
+	/*float: left;*/
+	padding: 10px 0 0 0px;
+	overflow-x:auto;
+	min-height: 700px;
+}
+
+.editarUsuario input{
+	width: 100%;
+}
+
+.editarUsuario select, .editarUsuario option{
+	width: 100%;
+}
+
+.mapaGoogle{
+    z-index: -1;
+}

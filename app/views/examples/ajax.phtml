@@ -1,0 +1,22 @@
+<?= Load::lib("amecasoft") ?>
+
+LINK NORMAL: <?= Html::link("web/index","Link") ?><br />
+LINK AJAX: <?= Html::linkAjax("web/index","Link","contenedor") ?><br /><br />
+LINK FB AJAX: <?= Html::linkFBAzulAjax("web/index","Link","contenedor") ?><br />
+
+<br /><br />
+
+--- FORMULARIO NORMAL ---
+<?= Formulario::inicioAjax("examples/prueba1","contenedor") ?>
+    <?= Formulario::mayusculas("campo1") ?>
+    <?= Formulario::numerico("campo2") ?>
+    <?= Formulario::dinero("campo3") ?>
+    <?= Formulario::fecha("fecha") ?>
+    <?= Formulario::archivo("archivo") ?>
+    <?= Formulario::submitFBAzul("Enviar") ?>
+<?= Formulario::fin() ?>
+--- FIN FORMULARIO NORMAL ---
+
+<br /><br />
+
+<div id="contenedor">DIV PARA LAS PRUEBAS</div>

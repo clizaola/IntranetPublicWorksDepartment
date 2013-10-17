@@ -1,0 +1,81 @@
+<?= Load::lib("amecasoft") ?>
+<?= Formulario::inicio("seguridad/registrarUsuario") ?>
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <div align="right"><?= Formulario::cancelar("Regresar","seguridad/usuarios","class: boton1"); ?></div>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                            Registro de Nuevo Usuario
+                        </h2>
+                        <span id="subtitulo">
+                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="texto_arriba">Empleado <span id="asterisco">*</span></div>
+                        <?= Formulario::autocompleteModelo("nombre",$empleados,"nombre","","class: tmediano","validate: required:true","case: mayusculas") ?>
+                        <div id="texto_abajo">&nbsp;</div> 
+                    </td>
+                    <td width="20"></td>
+                    <td>
+                        <div id="texto_arriba">Datos de Acceso</div>
+                        <?= Formulario::texto("usuario","","class: tchico","validate: required:true") ?>
+                        <div id="texto_abajo">Usuario <span id="asterisco">*</span></div>    
+                    </td>
+                    <td width="20"></td>
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::password("password","","class: tchico","validate: required:true") ?>
+                        <div id="texto_abajo">Contraseña <span id="asterisco">*</span></div>    
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="texto_arriba">Rol de Usuario <span id="asterisco">*</span></div>
+                        <?= Formulario::selectModelo("rol",$roles,"nombre","id","class: schico","validate: required:true"); ?>
+                    </td>
+                    <td width="20"></td>
+                    <td>
+                        <div id="texto_arriba">Estado <span id="asterisco">*</span></div>
+                        <?= Formulario::select("estado",array("OK" => "ACTIVO", "KO" => "INACTIVO"),"","class: schico","validate: required:true") ?>
+                    </td>
+                    <td width="10"></td>
+                    <td colspan="3">
+                        <div id="texto_arriba">Departamento <span id="asterisco">*</span></div>
+                        <?= Formulario::selectModelo("aplicacion",$departamentos,"nombre","id","","class: smediano","validate: required:true") ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="30"></td>
+                </tr>
+                <tr>
+                    <td width="1000" height="25" colspan="7" align="right">
+                    	<?= Formulario::cancelar("Cancelar","seguridad/usuarios","class: boton3") ?>
+                    	<?= Formulario::submit("Registrar","class: boton1") ?>
+                    </td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+</form>

@@ -1,0 +1,151 @@
+<?= Load::lib("amecasoft") ?>
+<?php
+	Load::lib("fancybox");
+?>
+<?php $obra = Obra::consultar($obra); ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "finanzas")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuFinanzasObra",false,array("obra" => $obra -> id,"opcion" => "requisiciones")) ?></center>
+    	</td>
+    </tr>
+</table>
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Requisiciones
+                        </h2>
+                        <span id="subtitulo">
+                            LAS REQUISICIONES SERÁN ENVIADAS AL DEPARTAMENTO DE FINANZAS, PARA SU POSTERIOR APROBACIÓN.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                        
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $requisiciones = $obra -> requisiciones(); ?>
+			            <?php if($requisiciones){ ?>
+			            <?php $fancybox = new Fancybox(array("autoScale" => false,"titlePosition" => "outside", "transitionIn" => "fade", "transitionOut" => "fade","overlayColor" => "#000","overlayOpacity" => 0.75)) ?>
+				        	<table border="0">
+				        		<tr>
+				        			<th width="30"></th>
+				        			<th height="25" width="75">Fecha</th>
+				        			<th width="200">Concepto</th>
+				        			<th width="30" colspan="2"></th>
+				        		</tr>
+				            	<?php $i=0; foreach($requisiciones as $requisicion){ $i++; ?>
+				            		<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				                    	<td width="25" align="center" style="padding: 5px;">
+					                    	<?php if($requisicion -> estado == "APROBADA"){ ?>
+					                    		<?= Html::imagen("miniconos/accept.png","Requsicion Aprobada",18,18) ?>	
+					                    	<?php } else { ?>
+					                    		<?php if($requisicion -> estado == "ENVIADA"){ ?>
+						                    		<?= Html::imagen("miniconos/information.png","Requsicion Enviada",18,18) ?>	
+						                    	<?php } else { ?>
+													<?php if($obra -> estado != "TERMINADA"){ ?>
+						                    			<?= Acl::linkAjax("obras/cancelarRequisicion/".$requisicion -> id,Html::imagen("miniconos/delete.png","Eliminar Requisicion",18,18),"opciones","") ?>
+						                    		<?php } ?>
+						                    	<?php } ?>
+					                    	<?php } ?>
+					                    </td>
+				                    	<td height="25" align="center" style="padding: 5px;"><?= formatoFecha($requisicion -> fecha) ?></td>
+					                    <td align="center" style="padding: 5px;"><?= $requisicion -> concepto ?></td>
+					                    <td width="25" align="center" style="padding: 5px;">
+					                    	<?php if($requisicion -> estado == "NUEVA" && $obra -> estado != "TERMINADA"){ ?>
+					                    		<?= $fancybox -> ajax("obras/requisicion/".$requisicion -> id,Html::imagen("miniconos/table_edit.png","Editar Requisicion",18,18),"<center>Esta requisicion PUEDE ser modificada por que ya que aun no ha sido enviada.<br /><br />".Html::link("obras/terminarRequisicion/".$requisicion -> id,"ENVIAR REQUISICION","class: boton2")."</center>") ?>
+				            				<?php } ?>
+				            				<?php if($requisicion -> estado == "ENVIADA" || $obra -> estado == "TERMINADA"){ ?>
+				            					<?= $fancybox -> ajax("obras/requisicion/".$requisicion -> id,Html::imagen("miniconos/table.png","Requisicion Enviada",18,18),"<center>Esta requisicion NO PUEDE ser modificada por que ya fue enviada.</center>") ?>
+				            				<?php } ?>
+				            				<?php if($requisicion -> estado == "APROBADA" || $obra -> estado == "TERMINADA"){ ?>
+				            					<?= $fancybox -> ajax("obras/requisicion/".$requisicion -> id,Html::imagen("miniconos/table_add.png","Requisicion Aprobada",18,18),"<center>Esta requisicion NO PUEDE ser modificada por que ya fue aprobada.</center>") ?>
+				            				<?php } ?>
+					                    </td>
+					                    <td width="25" align="center" style="padding: 5px;">
+					                    	<?= $fancybox -> ajax("obras/facturasRequisicion/".$requisicion -> id,Html::imagen("miniconos/folder_page.png","Facturas",18,18),"<center>Facturas que cubren esta Requisicion.</center>") ?>
+					                    </td>
+									</tr>
+				            	<?php } ?>
+							</table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO NOMINAS</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+			   	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","facturar") && $obra -> estado != "TERMINADA"){ ?>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+                    <?= Formulario::inicioAjax("obras/requisitar","opciones") ?>
+						<input type="hidden" name="id" value="<?= $obra -> id ?>" />
+						<?php $usuario = SeguridadUsuario::consultar(Session::get("usuario_id")); ?>
+						<input type="hidden" name="elaboro" value="<?= $usuario -> empleado_id ?>" />
+						<table border="0">
+							<tr>
+			                    <td height="10" colspan="2">
+			                    	<div id="texto_arriba">Datos de la Requisición</div><br />
+			                    </td>
+			                </tr>
+							<tr>
+			                    <td width="150" align="right">
+			                    	<?= Formulario::fecha("fecha",date("d/m/Y"),"dd/mm/yy",false,false,"style: width: 140px; text-align: center;","validate: required:true") ?>
+			                        <div id="texto_abajo">Fecha</div>
+			                    </td>
+			                    <td width="150" align="right">
+			                    	 <?= Formulario::select("estado",array("NUEVA"),"NUEVA","style: width: 150px;","validate: required:true","disabled: disabled") ?>
+			                        <div id="texto_abajo">Estado</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+							<tr>
+			                    <td colspan="2" width="150">
+			                    	<?= Formulario::mayusculas("concepto","","style: width: 300px;text-align: center;","validate: required:true") ?>
+			                        <div id="texto_abajo">Concepto</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" width="150">
+			                        <?= Formulario::selectModelo("supervisor",Empleado::reporte("puesto LIKE '%Supervisor%'"),"nombre","id",$obra ? $obra -> supervisores_id : "","style: width: 310px;text-align: center;","validate: required:true","readonly: readonly") ?>
+			                        <div id="texto_abajo">Supervisor</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10" colspan="2"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="2" height="25" align="right">
+			                        <?= Formulario::submit("Agregar","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+                </tr>
+                <?php } ?>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+</div>

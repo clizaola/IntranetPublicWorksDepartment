@@ -1,0 +1,225 @@
+    .reporte{
+        background-color: #CCCCCC;
+        padding: 15px 15px 15px 15px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+        font-size: 11px;
+        min-width: 600px; 
+        width: 800px;
+        padding-right: 5px;
+        margin-right: 5px;
+    }
+    
+    .reporte th{
+        background-color: #93B2FF;
+        height: 30px;
+    }
+    
+    .reporte td{
+        text-align: center;
+        height: 30px;
+        font-size: 12px;
+    }
+    
+    .reporte .paginacion{
+        padding: 5px 5px 5px 5px;
+        height: 35px;
+        vertical-align: middle;
+    }        
+    
+    .reporte .paginas{
+        width: 20px;
+        height: 20px;
+        background-color: #3B5999;
+        padding: 0px 5px 0px 5px;
+        border-width: 1px;
+        border-color: #000;
+        border-style: solid;
+    }
+    
+    .reporte .paginas a{
+        color: #FFF;
+        font-weight: bold;
+        display: block;
+    }
+    
+    .reporte .paginas a:hover{
+        text-decoration: none;
+    }
+    
+    .reporte .actual{
+        width: 20px;
+        height: 20px;
+        background-color: #CCCCCC;
+        padding: 0px 5px 0px 5px;
+        border-width: 1px;
+        border-color: #000;
+        border-style: solid;
+    }
+    
+    .reporte .actual a{
+        color: #000;
+        font-weight: bold;
+        display: block;
+    }
+    
+    .reporte .actual a:hover{
+        text-decoration: none;
+    }
+    
+    .reporte .botonFBAzul{
+        background-color: #3B5999;
+        border: 1px solid #000000;
+        padding: 0px 5px 0px 5px;
+        color: #FFF;
+        font-weight: bold;
+        font-size: 14px;
+        height: 30px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    }
+    
+    .reporte .botonFBGris{
+        background-color: #CCCCCC;
+        border: 1px solid #000000;
+        padding: 0px 5px 0px 5px;
+        color: #000;
+        font-size: 14px;
+        height: 30px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    }   
+    
+    .formulario{
+        background-color: #93B2FF;
+        padding: 10px 10px 10px 10px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+        min-width: 600px; 
+        width: 800px;
+        margin-right: 5px;
+    }
+    
+    .titulo{
+        text-align: left;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;  
+        font-size: 14px;  
+    }
+
+    .subtitulo{
+        text-align: left;
+        font-size: 11px;
+        font-style: italic;
+    }
+    
+    .formulario table{
+        width: 100%; 
+    }
+    
+    .formulario td{
+        padding: 5px 5px 5px 5px;
+        vertical-align: top;
+    }
+    
+    .formulario input{
+        background-color: #D7E5F2;
+        border: 1px solid #D7E5F2;
+        font-size: 14px;
+        height: 20px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    }
+    
+    .formulario textarea{
+        background-color: #D7E5F2;
+        border: 1px solid #D7E5F2;
+        font-size: 14px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    }
+    
+    .formulario select{
+        background-color: #D7E5F2;
+        border: 1px solid #D7E5F2;
+        font-size: 14px;
+        height: 30px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    }
+    
+    .formulario textarea{
+        background-color: #D7E5F2;
+        border: 1px solid #D7E5F2;
+        font-size: 14px;
+        height: 30px;
+        font-family: "Trebuchet MS", "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    }
+    
+    .formulario .texto_chico{
+        padding: 5px 5px 5px 5px;
+        width: 90%;
+    }
+    
+    .formulario .fecha_chico{
+        margin-right: 5px;
+        padding: 5px 5px 5px 5px;
+        width: 75%;
+    }
+    
+    .formulario .select_chico{
+        padding: 5px 5px 5px 5px;
+        width: 94%;
+    }
+    
+    .formulario .texto_mediano{
+        padding: 5px 5px 5px 5px;
+        width: 95%;
+    }
+    
+    .formulario .area_mediana{
+        padding: 0px 5px 0px 5px;
+        width: 95%;
+        height: 88px;
+    }
+    
+    .formulario .select_mediano{
+        padding: 5px 5px 5px 5px;
+        width: 97%;
+    }
+    
+    .formulario .texto_grande{
+        padding: 5px 5px 5px 5px;
+        width: 90%;
+    }
+    
+    .formulario .select_grande{
+        padding: 5px 0px 5px 5px;
+        width: 50%;
+    }
+    
+    .formulario .texto_arriba{
+        font-size: 11px;
+        text-align: left; 
+        font-weight: bold;
+        padding-right: 10px;
+        padding-bottom: 5px;
+    }
+    
+    .formulario .texto_abajo{
+        font-size: 9px;
+        text-align: right; 
+        font-style: italic;
+        padding-right: 10px;
+    }
+    
+    .formulario .TDboton{
+        padding-right: 15px;
+    }
+    
+    .botonFBAzul{
+        background-color: #3B5999;
+        border: 1px solid #000000;
+        padding: 0px 5px 0px 5px;
+        color: #FFF;
+        font-weight: bold;
+    }
+    
+    .botonFBGris{
+        background-color: #CCCCCC;
+        border: 1px solid #000000;
+        padding: 0px 5px 0px 5px;
+        color: #000;
+    }

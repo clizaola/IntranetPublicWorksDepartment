@@ -1,0 +1,107 @@
+<?= Load::lib("amecasoft") ?>
+<?= Formulario::inicioAjax($controller_name."/avanzar","opciones") ?>
+<input type="hidden" name="id" value="<?= $proyecto -> id ?>" />
+<table class="formulario" height="940">
+    <tr>
+		<td class="formato1" height="45">
+			<?= View::partial("menuProyecto",false,array("proyecto" => $proyecto -> id,"opcion" => "avances")) ?>
+		</td>
+	</tr>
+    <tr>
+        <td class="formato2" height="50">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td width="340" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Avances del Proyecto
+                        </h2>
+                        <span id="subtitulo">
+                            Los Avances nos ayudarán a monitorear el progreso del Proyecto.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $avances = $proyecto -> avances(); $n = count($avances); ?>
+			            <?php if($avances){ ?>
+				        	<table border="0">
+				            	<?php $x=0; foreach($avances as $avance){ $x++; ?>
+				            		<?= tr_color("#CCCCCC","#CCCCCC","#DDDDDD","#DDDDDD") ?>
+				                    	<td style="padding: 5px;" width="50" align="center"><b><?= $avance -> porcentaje ?>%</b></td>
+				                    	<td style="padding: 5px;" width="235" align="center"><?= fechaExtendida($avance -> fecha) ?></td>
+					                    <td style="padding: 5px;"><?= Acl::linkAjaxConfirmado($controller_name."/desavanzar/".$avance -> id,Html::imagen("icons/close.png","Eliminar Avance",20,20),"opciones","Estas seguro que deseas eliminar el Avance?") ?></td>
+									</tr>
+									<?= tr_color("#CCCCCC","#CCCCCC","#DDDDDD","#DDDDDD") ?>
+										<td colspan="3" height="50" style="padding: 5px;">
+											<div align="justify" style="font-size: 10px;">
+												<?= $avance -> descripcion ?>
+											</div>
+										</td>
+									</tr>
+									<?php if($x<$n){ ?>
+									<tr>
+										<td colspan="3">&nbsp;</td>
+									</tr>
+									<?php } ?>
+				            	<?php } ?>
+							</table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO AVANCES</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+						<table border="0">
+							<tr>
+			                    <td>
+			                        <div id="texto_arriba">Fecha <span id="asterisco">*</span></div>
+			                        <?= Formulario::fecha("fecha","","dd/mm/yy",false,false,"class: fchico","style: width: 142px;","validate: required:true") ?>
+			                    </td>
+			                    <td>
+			                        <div id="texto_arriba">Porcentaje <span id="asterisco">*</span></div>
+			                        <?php $porcentajes = array("" => ""); for($i=$proyecto -> porcentaje()+1;$i<=100; $i++){ $porcentajes[$i] = $i."%"; } ?>
+			                        <?= Formulario::select("porcentaje",$porcentajes,"","class: schico","style: width: 152px;","validate: required:true") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="2">
+			                        <div id="texto_arriba">Descripción de Actividades <span id="asterisco">*</span></div>
+			                        <?= Formulario::textarea("descripcion","","style: width: 307px; height: 70px;","validate: required:true") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td height="25" align="right" colspan="2">
+			                        <?= Formulario::submit("Registrar Avance","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+					</td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>
+</div>

@@ -1,0 +1,71 @@
+<?= Load::lib("amecasoft") ?>
+<?= Load::lib("formato") ?>
+
+<?= $aviso ? Formulario::inicio($controller_name."/modificar") : Formulario::inicio($controller_name."/registrar") ?>
+<input type="hidden" name="id" value="<?= $id ?>" />
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <div align="right">
+            	<?= Formulario::cancelar("Regresar",$controller_name."/reporte","class: boton1") ?>
+            </div>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                        	<?= $aviso ? "Modificación del Aviso" : "Registro de Nuevo Aviso" ?>
+                        </h2>
+                        <span id="subtitulo">
+                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="texto_arriba">Fecha Limite del Aviso<span id="asterisco">*</span></div>
+                        <?= Formulario::fecha("fecha_limite",$aviso ? Formato::fecha($aviso -> fecha_limite) : "","dd/mm/yy",date('d/m/Y'),false,"class: tmediano","validate: required:true") ?>
+                        
+                    </td>
+                    <td width="20"></td>
+                    <td colspan="3">
+                        <div id="texto_arriba">Usuario(s) a quien va dirigido<span id="asterisco">*</span></div>
+                        <? $opciones = Usuario::reporte() ?>
+                        <?= Formulario::selectModelo("dirigido",$opciones,"nombre","id",$aviso ? $aviso -> dirigido_usuario_id : "","include_blank: TODOS","class: smediano") ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>     
+                <tr>
+                    <td colspan="7" height="10">
+                    	<div id="texto_arriba">Texto del Aviso<span id="asterisco">*</span></div>
+                    	<?= Formulario::textarea('aviso',$aviso ? $aviso -> aviso : '','style: width: 1000px; height: 100px;' ,"validate: required:true") ?>
+                    </td>
+                </tr>                                                       
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td width="1000" height="25" colspan="7" align="right">
+                        <?= Formulario::cancelar("Cancelar",$controller_name."/empleados","class: boton3") ?>
+                        <?= $aviso ? Acl::linkConfirmado($controller_name."/eliminarEmpleado/".$aviso -> id,"Eliminar","Estas seguro que deseas eliminar el empleado?","class: boton2") : "" ?>
+                    	<?= $aviso ? Formulario::submit("Modificar","class: boton1") : Formulario::submit("Registrar","class: boton1") ?>
+                    </td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>

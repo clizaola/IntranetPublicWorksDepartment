@@ -1,0 +1,92 @@
+<?= Load::lib("amecasoft") ?>
+<?php $obra = Obra::consultar($obra); ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "informacion")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuInformacionObra",false,array("obra" => $obra -> id,"opcion" => "insumos")) ?></center>
+    	</td>
+    </tr>
+</table>
+<?= Formulario::inicioAjax("obras/insumar","opciones") ?>
+<input type="hidden" name="id" value="<?= $obra -> id ?>" />
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Insumos
+                        </h2>
+                        <span id="subtitulo">
+                            Los insumos son los productos que se utilizan en la obra, que a su ves también pueden ser herramientas de trabajo.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $insumos = $obra -> insumos(); ?>
+			            <?php if($insumos){ ?>
+				        	<table border="0">
+				            	<?php foreach($insumos as $insumo){ ?>
+				            		<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				                    	<td style="padding: 5px;" width="210"><?= strtoupper($insumo -> producto() -> nombre) ?></td>
+				                    	<td style="padding: 5px;" width="75">$ <?= number_format($insumo -> precio,2) ?></td>
+				                    	<?php if($obra -> estado != "TERMINADA"){ ?>
+					                    	<td style="padding: 5px;"><?= Acl::linkAjaxConfirmado("obras/desinsumar/".$insumo -> id,Html::imagen("icons/close.png","Eliminar Insumo",20,20),"opciones","Estas seguro que deseas eliminar el Insumo?") ?></td>
+					                    <?php } ?>
+									</tr>
+				            	<?php } ?>
+							</table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO INSUMOS</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+                <?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","insumar") && $obra -> estado != "TERMINADA"){ ?>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;"><br />
+						<table border="0">
+							<tr>
+			                    <td>
+			                        <?= Formulario::selectModelo("producto",OInsumo::conceptosPendientes($obra -> id),"nombre","id","","class: smediano","style: width: 225px;","validate: required:true") ?>
+			                        <div id="texto_abajo">Insumo <span id="asterisco">*</span></div>
+			                    </td>
+			                     <td>
+			                        <?= Formulario::dinero("precio","style: width: 75px; text-align: center;","validate: required:true") ?>
+			                        <div id="texto_abajo">Precio <span id="asterisco">*</span></div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td height="25" align="right" colspan="2">
+			                        <?= Formulario::submit("Agregar Insumo","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+					</td>
+                </tr>
+                <?php } ?>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>
+</div>

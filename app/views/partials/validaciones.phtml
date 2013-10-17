@@ -1,0 +1,37 @@
+<script language="javascript">
+    function validacion(){
+        var b = /^[^@\s]+@[^@\.\s]+(\.[^@\.\s]+)+$/;
+        
+        <?php if($correos) foreach($correos as $campo){ ?>
+            if(!b.test(document.formulario.<?= $campo ?>.value) && document.formulario.<?= $campo ?>.value.length > 0){
+                alert("El correo electrónico no es válido.");
+                document.formulario.<?= $campo ?>.focus();
+                return false;
+            }
+        <?php } ?>
+        
+        var a = /^[A-Z]{3,4}[0-9]{6}[A-Z|0-9]{3}$/;
+        
+        <?php if($rfcs) foreach($rfcs as $campo){ ?>
+            if(!a.test(document.formulario.<?= $campo ?>.value) && document.formulario.<?= $campo ?>.value.length > 0){
+                alert("El rfc ingresado no es válido: "+document.formulario.<?= $campo ?>.value);
+                document.formulario.<?= $campo ?>.focus();
+                return false;
+            }
+        <?php } ?>
+        
+        <?php if($obligatorios) foreach($obligatorios as $campo => $nombre){ ?>
+        if(document.formulario.<?= $campo ?>.value.length==0){
+            alert("El campo <?= $nombre ?> es obligatorio.");
+            document.formulario.<?= $campo ?>.focus();
+            return false;
+        }
+        <?php } ?>
+        
+        <?php if($dinero) foreach($dinero as $campo){ ?>
+            document.formulario.<?= $campo ?>.value = unformatNumber(document.formulario.<?= $campo ?>.value);
+        <?php } ?>
+        
+        return true;
+    }
+</script>

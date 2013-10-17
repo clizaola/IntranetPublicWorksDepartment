@@ -1,0 +1,18 @@
+<div id="botones" style="padding: 0px 0px 0px 0px;">
+	<table border="0">
+		<tr>
+			<td align="center">
+				<?= Acl::linkAjax("obras/requisiciones/".$obra,"Requisiciones","opciones",($opcion=="requisiciones" ? "id: boton1" : "id: boton3")) ?><br /><br/>		
+			</td>
+			<td align="center">
+				<?= Acl::linkAjax("obras/nominas/".$obra,"Nominas","opciones",($opcion=="nominas" ? "id: boton1" : "id: boton3")) ?><br /><br/>		
+			</td>
+			<td align="center">
+				<?= Acl::linkAjax("obras/facturas/".$obra,"Facturas","opciones",($opcion=="facturas" ? "id: boton1" : "id: boton3")) ?><br /><br/>
+			</td>
+			<td align="center">
+				<?= Acl::linkAjax("obras/beneficiarios/".$obra,"Beneficiarios","opciones",($opcion=="beneficiarios" ? "id: boton1" : "id: boton3")) ?><br /><br/>
+			</td>
+		</tr>
+	</table>
+</div>

@@ -1,0 +1,20 @@
+<?= Load::lib("amecasoft") ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "informacion")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuInformacionObra",false,array("obra" => $obra -> id,"opcion" => 'programas')) ?></center>
+    	</td>
+    </tr>
+</table>
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,52 @@
+<?php
+	header("Expires: 0");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Content-Type: application/force-download");
+    header("Content-Type: application/octet-stream");
+    header("Content-Type: application/download");;
+    header("Content-Disposition: attachment;filename=proyectos.xls");
+?>
+<?php if($registros){ ?>
+	<table border="1">
+		<tr>
+			<td align="center">Id</td>
+			<td align="center">Código</td>
+			<td align="center">Nombre</td>
+			<td align="center">Alcance</td>
+			<td align="center">Descripción</td>
+			<td align="center">Objetivo</td>
+			<td align="center">Presupuesto Federal</td>
+			<td align="center">Presupuesto Estatal</td>
+			<td align="center">Presupuesto Municipal</td>
+			<td align="center">Presupuesto Beneficiarios</td>
+			<td align="center">Costo Aproximado</td>
+			<td align="center">Acta de Cabildo</td>
+			<td align="center">Localidad</td>
+			<td align="center">Tipo de Obra</td>
+			<td align="center">Supervisor</td>
+			<td align="center">Estado</td>
+			<td align="center">Fecha de Registro</td>
+		</tr>
+	<?php foreach($registros as $registro){ ?>
+		<tr>
+			<td align="center"><?= $registro -> id ?></td>
+			<td align="center"><?= $registro -> codigo ?></td>
+			<td align="center"><?= $registro -> nombre ?></td>
+			<td align="center"><?= strpos($registro -> alcance,"R")!==false ? "REGIONAL" : strpos($registro -> alcance,"M")!==false ? "MUNICIPAL" : "LOCAL" ?></td>
+			<td align="center"><?= $registro -> descripcion ?></td>
+			<td align="center"><?= $registro -> objetivo ?></td>
+			<td align="center"><?= $registro -> pfederal ?></td>
+			<td align="center"><?= $registro -> pestatal ?></td>
+			<td align="center"><?= $registro -> pmunicipal ?></td>
+			<td align="center"><?= $registro -> pbeneficiarios ?></td>
+			<td align="center"><?= $registro -> costo ?></td>
+			<td align="center"><?= $registro -> acta_cabildo ?></td>
+			<td align="center"><?= $registro -> localidad() ? $registro -> localidad() -> nombre : "" ?></td>
+			<td align="center"><?= $registro -> tipoObra() ? $registro -> tipoObra() -> nombre : "" ?></td>
+			<td align="center"><?= $registro -> supervisor() ? $registro -> supervisor() -> nombre : "" ?></td>
+			<td align="center"><?= $registro -> estado ?></td>
+			<td align="center"><?= $registro -> fecha ?></td>
+		</tr>
+	<?php } ?>
+	</table>
+<?php } ?>

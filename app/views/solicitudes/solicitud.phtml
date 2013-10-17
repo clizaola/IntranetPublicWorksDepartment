@@ -1,0 +1,271 @@
+<?= Load::lib("amecasoft") ?>
+<table>
+	<tr>
+		<td valign="top">
+			<?= $solicitud ? Formulario::inicio($controller_name."/modificar") : Formulario::inicio($controller_name."/registrar") ?>
+			<input type="hidden" name="id" value="<?= $id ?>" />
+			<table class="formulario">
+			    <tr>
+			        <th id="mensaje" width="1024" height="25" >
+			            <?= $mensaje; ?>&nbsp;
+			        </th>
+			    </tr>
+			    <tr>
+			        <td width="1024" height="205" id="contenido" align="center">
+			            <div align="right">
+			            	<?= Formulario::cancelar("Regresar",$controller_name."/reporte","class: boton1") ?>
+			            </div>
+			            <table border="0" cellpadding="0" cellspacing="0">
+			                <tr height="25">
+			                    <td colspan="7" width="1000"align="left">
+			                        <h2 id="titulo">
+			                        	<?= $solicitud ? "Modificación de la Solicitud" : "Registro de Nueva Solicitud" ?>
+			                        </h2>
+			                        <span id="subtitulo">
+			                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+			                        </span>
+			                        <br /><br />
+			                        <hr />
+			                        <br />
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Datos de la Solicitud</div>
+			                        <?= Formulario::mayusculas("nombre",$solicitud ? $solicitud -> nombre : "","class: tmediano","validate: required:true") ?>
+			                        <div id="texto_abajo">Nombre <span id="asterisco">*</span></div>
+			                    </td>
+			                    <td width="20"></td>                    
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::mayusculas("codigo",$solicitud ? $solicitud -> codigo : "","class: tchico","validate: required:true") ?>
+			                        <div id="texto_abajo">Código <span id="asterisco">*</span></div>    
+			                    </td>
+			                    <td width="20"></td>
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::select("medio",array("" => "","VERBAL" => "VERBAL","OFICIO" => "OFICIO"),$solicitud ? $solicitud -> medio : "","class: tchico","validate: required:true") ?>
+			                        <div id="texto_abajo">Medio de la Solicitud <span id="asterisco">*</span></div>    
+			                    </td>
+			                </tr>     
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Descripción <span id="asterisco">*</span></div>
+			                        <?= Formulario::textarea("descripcion",$solicitud ? $solicitud -> descripcion : "","style: width: 480px; height: 50px;") ?>
+			                    </td>
+			                    <td width="20"></td>                    
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Localización</div>
+			                        <?= Formulario::textarea("localizacion",$solicitud ? $solicitud -> localizacion : "","style: width: 480px; height: 50px;") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Localidad <span id="asterisco">*</span></div>
+			                        <?= Formulario::selectModelo("localidad",Localidad::reporte(),"nombre","id",$solicitud ? $solicitud -> localidades_id : "","class: smediano","validate: required:true") ?>
+			                    </td>
+			                    <td width="20"></td>                    
+			                    <td>
+			                        <div id="texto_arriba">Tipo de Obra <span id="asterisco">*</span></div>    
+			                        <?= Formulario::selectModelo("tipo",TipoObra::reporte(),"nombre","id",$solicitud ? $solicitud -> tiposobra_id : "","class: schico","validate: required:true") ?>
+			                    </td>
+			                    <td width="20"></td>
+			                    <td>
+			                        <div id="texto_arriba">Fecha Límite <span id="asterisco">*</span></div>
+			                        <?= Formulario::fecha("limite",$solicitud ? formatoFecha($solicitud -> agenda) : date("d/m/Y",time() + 60*60*24*7),"dd/mm/yy",0,false,"class: fchico","validate: required:true") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Receptor <span id="asterisco">*</span></div>
+			                        <?= Formulario::selectModelo("receptor",Empleado::reporte(),"nombre","nombre",$solicitud ? $solicitud -> receptor  : "","class: smediano","validate: required:true") ?>
+			                    </td>
+			                    <td width="20"></td>                    
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Responsable <span id="asterisco">*</span></div>
+			                        <?= Formulario::selectModelo("responsable",Empleado::reporte(),"nombre","id",$solicitud ? ($solicitud -> responsable() ? $solicitud -> responsable() -> id : "") : "","class: smediano","validate: required:true") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td colspan="3">
+			                        <div id="texto_arriba">Datos del Solicitante <span id="asterisco">*</span></div>
+			                        <?= Formulario::mayusculas("solicitante",$solicitud ? $solicitud -> solicitante_nombre : "","class: tmediano","validate: required:true") ?>
+			                        <div id="texto_abajo">Nombre <span id="asterisco">*</span></div>    
+			                    </td>
+			                    <td width="20"></td>                    
+			                    <td>
+			                        <div id="texto_arriba">&nbsp;</div>
+			                        <?= Formulario::mayusculas("direccion",$solicitud ? $solicitud -> solicitante_direccion : "","class: tchico") ?>
+			                        <div id="texto_abajo">Dirección</div>    
+			                    </td>
+			                    <td width="20"></td>                    
+			                    <td>
+			                        <div id="texto_arriba">Categoría del Emisor <span id="asterisco">*</span></div>
+			                        <?= Formulario::mayusculas("emisor",$solicitud ? $solicitud -> emisor : "","class: tchico","validate: required:true") ?>
+			                        <div id="texto_abajo">&nbsp;</div> 
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                        <?= Formulario::numerico("telefono",$solicitud ? $solicitud -> solicitante_telefono : "","class: tchico") ?>
+			                        <div id="texto_abajo">Teléfono</div>
+			                    </td>
+			                    <td width="20"></td>
+			                    <td>
+			                        <?= Formulario::numerico("celular",$solicitud ? $solicitud -> solicitante_celular: "","class: tchico") ?>
+			                        <div id="texto_abajo">Celular</div>
+			                    </td>
+			                    <td width="20"></td>
+			                    <td>
+			                        <?= Formulario::texto("correo",$solicitud ? $solicitud -> solicitante_correo : "","class: tchico","validate: email:true") ?>
+			                        <div id="texto_abajo">Correo Electrónico</div>
+			                    </td>
+			                    <td width="20"></td>
+			                    <td align="right">
+			                    	<?= Formulario::select("estado",array("NUEVA" => "NUEVA", "DELEGADA" => "DELEGADA", "EN PROYECTO" => "EN PROYECTO", "EN OBRA" => "EN OBRA", "CANCELADA" => "CANCELADA", "TERMINADA" => "TERMINADA"),$solicitud ? $solicitud -> estado : "NUEVA","class: schico") ?>
+			                        <div id="texto_abajo">Estado Actual</div>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="7">
+			                        <div id="texto_arriba">Notas Adicionales</div>
+			                        <?= Formulario::textarea("comentarios",$solicitud ? $solicitud -> comentarios : "","style: width: 995px; height: 100px;") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td width="1000" height="25" colspan="7" align="right">
+			                        <?= Formulario::cancelar("Cancelar",$controller_name."/reporte","class: boton3") ?>
+			                        <?= $solicitud ? Acl::linkConfirmado($controller_name."/eliminar/".$solicitud -> id,"Eliminar","Estas seguro que deseas eliminar la solicitud?","class: boton2") : "" ?>
+			                        <?php if(Acl::tienePermiso(Session::get("usuario_id"),$controller_name,"modificar")){ ?>
+			                        	<?= $solicitud ? Formulario::submit("Modificar","class: boton1") : Formulario::submit("Registrar","class: boton1") ?>
+			                        <?php } ?>
+			                        <?= $solicitud ? Acl::linkConfirmado($controller_name."/proyectar/".$solicitud -> id,"Iniciar Proyecto","Estas seguro que deseas iniciar el proyecto para esta solicitud?","class: boton1") : "" ?>
+			                    </td>
+			                </tr>
+			            </table>
+			            <br />    
+			        </td>
+			    </tr>
+			</table>
+			<?= Formulario::fin() ?>
+		</td>
+		<td valign="top">
+			<?php if($solicitud){ ?>
+			<div id="archivos">
+			<?= Formulario::inicioAjax($controller_name."/adjuntar","archivos") ?>
+			<input type="hidden" name="id" value="<?= $solicitud -> id ?>" />
+			<table class="formulario" height="840">
+			    <tr>
+			        <td class="barraComplemento">
+			            &nbsp;
+			        </td>
+			    </tr>
+			    <tr>
+			        <td width="400" id="contenido" align="center" valign="top">
+			            <br />
+			            <table border="0" cellpadding="0" cellspacing="0">
+			                <tr height="25">
+			                    <td colspan="7" width="375" align="left">
+			                        <h2 id="titulo">
+			                        	Archivos Adjuntos
+			                        </h2>
+			                        <span id="subtitulo">
+			                            Generalmente serán los documentos que respaldan la solicitud.
+			                        </span>
+			                        <br /><br />
+			                        <hr />
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>                                       
+			                <tr>
+			                    <td colspan="7" height="10">
+			                    	<?php $archivos = SArchivo::reporte("solicitud_id=".$solicitud -> id); ?>
+			                    	<?php if($archivos){ ?>
+				                    	<table border="0">
+				                    		<?php foreach($archivos as $archivo){ ?>
+				                    			<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				                    				<td style="padding: 5px;"><?= Acl::link("files/archivos_solicitudes/".$archivo -> archivo,Html::imagen(iconoArchivo($archivo -> archivo),tipoArchivo($archivo -> archivo),20,20),"target: blank") ?></td>
+					                    			<td style="padding: 5px;" width="315"><?= strtoupper($archivo -> nombre) ?></td>
+					                    			<td style="padding: 5px;"><?= Acl::linkAjaxConfirmado($controller_name."/desadjuntar/".$archivo -> id,Html::imagen("icons/close.png","Eliminar Archivo",20,20),"archivos","Estas seguro que deseas eliminar el Archivo?") ?></td>
+					                    		</tr>
+				                    		<?php } ?>
+				                    		<?php if(count($archivos)>1){ ?>
+				                    		<tr>
+				                    			<td colspan="3" align="right" style="padding: 10px 0px 10px 10px;"><b><?= Acl::link($controller_name."/descargar/".$archivo -> solicitud_id,"DESCARGAR TODOS LOS ARCHIVOS","class: boton2") ?></b></td>
+				                    		</tr>
+				                    		<?php } ?>
+				                    	</table>
+			                    	<?php } else { echo "<center><b>NO SE HAN AGREGADO ARCHIVOS</b></center>"; } ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"><br /><hr /><br/></td>
+			                </tr>
+			                <?php if(Acl::tienePermiso(Session::get("usuario_id"),"solicitudes","adjuntar")){ ?>
+			                <tr>
+			                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+									<table border="0">
+										<tr>
+						                    <td>
+						                        <div id="texto_arriba">Identificador del Archivo <span id="asterisco">*</span></div>
+						                        <?= Formulario::mayusculas("nombre","","class: tmediano","style: width: 355px;") ?>
+						                    </td>
+						                </tr>
+						                <tr>
+						                    <td height="10"></td>
+						                </tr>                                       
+						                <tr>
+						                    <td>
+						                        <div id="texto_arriba">Archivo a Adjuntar <span id="asterisco">*</span></div>
+						                        <?= Formulario::archivo("archivo","","class: tmediano","style: width: 355px;") ?>
+						                    </td>
+						                </tr>
+						                <tr>
+						                    <td height="10"></td>
+						                </tr>
+						                <tr>
+						                    <td height="25" align="right">
+						                        <?= Formulario::submit("Adjuntar Archivo","class: boton1") ?>
+						                    </td>
+						                </tr>
+									</table>
+								</td>
+			                </tr>
+			                <?php } ?>
+			            </table>
+			            <br />    
+			        </td>
+			    </tr>
+			</table>
+			<?= Formulario::fin() ?>
+			</div>
+			<?php } ?>
+		</td>
+	</tr>
+</table>

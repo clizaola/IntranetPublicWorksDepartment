@@ -1,0 +1,59 @@
+<?= Load::lib("amecasoft") ?>
+
+<?= $localidad ? Formulario::inicio($controller_name."/modificarLocalidad") : Formulario::inicio($controller_name."/registrarLocalidad") ?>
+<input type="hidden" name="id" value="<?= $id ?>" />
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <div align="right">
+            	<?= Formulario::cancelar("Regresar",$controller_name."/localidades","class: boton1") ?>
+            </div>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                        	<?= $localidad ? "Modificación de la Localidad" : "Registro de Nueva Localidad" ?>
+                        </h2>
+                        <span id="subtitulo">
+                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                	<td colspan="3" width="500">
+                        
+                    </td>
+                    <td width="20"></td>
+                    <td colspan="3">
+                        <div id="texto_arriba">Nombre de la Localidad<span id="asterisco">*</span></div>
+                        <?= Formulario::mayusculas("nombre",$localidad ? $localidad -> nombre : "","class: tmediano","validate: required:true","style: text-align: right") ?>
+                    </td>
+                </tr>     
+                
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td width="1000" height="25" colspan="7" align="right">
+                        <?= Formulario::cancelar("Cancelar",$controller_name."/localidades","class: boton3") ?>
+                        <?= $localidad ? Acl::linkConfirmado($controller_name."/eliminarLocalidad/".$localidad -> id,"Eliminar","Estas seguro que deseas eliminar la localidad?","class: boton2") : "" ?>
+                    	<?= $localidad ? Formulario::submit("Modificar","class: boton1") : Formulario::submit("Registrar","class: boton1") ?>
+                    </td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>

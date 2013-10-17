@@ -1,0 +1,67 @@
+<?= Load::lib("amecasoft") ?>
+<?= Formulario::inicio("examples/prueba1") ?>
+	<?= Formulario::oculto("x",738) ?>
+	<table border="1">
+		<tr>
+			<td>
+				<?= Formulario::titulo("Hola") ?>
+				<?= Formulario::texto("campo1","Ramiro Alonso") ?>
+				<?= Formulario::subtitulo("Adios") ?>		
+			</td>
+			<td>
+				<?= Formulario::mayusculas("campo2","Vera Contreras") ?>		
+			</td>
+			<td>
+				<?= Formulario::password("campo3","Vera Contreras") ?>		
+			</td>
+			<td>
+				<?= Formulario::numerico("campo4","374") ?>		
+			</td>
+			<td>
+				<?= Formulario::dinero("campo5","382") ?>		
+			</td>
+			<td>
+				<?php $opciones = array(0 => "Ramiro Alonso Vera Contreras") ?>
+				<?= Formulario::select("seleccion",$opciones) ?>		
+			</td>
+			<td>
+				<?= Formulario::reset("Reestablecer","class: boton3") ?>		
+			</td>
+			<td>
+				<?= Formulario::cancelar("Cancelar","examples/cancelado","class: boton3") ?>		
+			</td>
+			<td>
+				<?= Formulario::submit("Aceptar","class: facebook_azul") ?>		
+			</td>
+			<td>
+				<?= Formulario::boton("Boton","onclick: alert('Has presionado el boton.')","class: facebook_azul") ?>		
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<?= Formulario::archivo("campo10","Ramiro Alonso","style: width: 240px;") ?>		
+			</td>
+			<td>
+				<?= Formulario::fecha("fecha2","","yy-mm-dd","23/12/2010","27/01/2011") ?>		
+			</td>
+			<td>
+				<?= Formulario::fecha("fecha1") ?>	
+			</td>
+			<td>
+				<?= Formulario::selectMes("mes") ?>
+			</td>
+			<td>
+				<?= Formulario::selectEstados("estado") ?>
+			</td>
+			<td>
+				<?= Formulario::hora("hora",9,17,30,"14:30") ?>
+			</td>
+		</tr>
+	</table>
+<?= Formulario::fin(); ?>
+<br />
+<?= Html::barra(67) ?>
+<br />
+<?= Html::barra(27) ?>
+<br />
+<?= Html::barra(48) ?>

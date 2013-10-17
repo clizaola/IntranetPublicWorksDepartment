@@ -1,0 +1,9 @@
+<?php if($filtro == "obras"){ ?>
+	<?= View::partial("busqueda/obras",false, array("busqueda" => $busqueda,"filtro" => $filtro,"sql" => $sql)) ?>
+<?php } ?>
+<?php if($filtro == "proyectos"){ ?>
+	<?= View::partial("busqueda/proyectos",false, array("busqueda" => $busqueda,"filtro" => $filtro,"sql" => $sql)) ?>
+<?php } ?>
+<?php if($filtro == "solicitudes"){ ?>
+	<?= View::partial("busqueda/solicitudes",false, array("busqueda" => $busqueda,"filtro" => $filtro,"sql" => $sql)) ?>
+<?php } ?>

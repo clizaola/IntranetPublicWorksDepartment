@@ -1,0 +1,7 @@
+<div id="botones" align="center">
+	<?= Acl::linkAjax("proyectos/archivos/".$proyecto,"Archivos","opciones",($opcion=="archivos" ? "id: boton2" : "id: boton3")) ?>		
+	<?= Acl::linkAjax("proyectos/programas/".$proyecto,"Programas","opciones",($opcion=="programas" ? "id: boton2" : "id: boton3")) ?>		
+	<?= Acl::linkAjax("proyectos/contratistas/".$proyecto,"Contratistas","opciones",($opcion=="contratistas" ? "id: boton2" : "id: boton3")) ?>		
+	<?= Acl::linkAjax("proyectos/avances/".$proyecto,"Avances","opciones",($opcion=="avances" ? "id: boton2" : "id: boton3")) ?>		
+	<?= Acl::linkAjax("proyectos/tareas/".$proyecto,"Tareas","opciones",($opcion=="tareas" ? "id: boton2" : "id: boton3")) ?>
+</div>

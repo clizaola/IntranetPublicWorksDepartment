@@ -1,0 +1,43 @@
+<?= Load::lib("amecasoft") ?>
+
+--- FORMULARIO ---
+<?= Formulario::inicioAjax("examples/prueba2","contenedor") ?>
+    <?= Formulario::fecha("fecha1") ?>
+    <?= Formulario::submitFBAzul("Enviar") ?>
+<?= Formulario::fin() ?>
+--- FIN FORMULARIO ---
+<br /><br />
+
+--- FORMULARIO ---
+<?= Formulario::inicioAjax("examples/prueba2","contenedor") ?>
+    <?= Formulario::fecha("fecha2","21/01/2011") ?>
+    <?= Formulario::submitFBAzul("Enviar") ?>
+<?= Formulario::fin() ?>
+--- FIN FORMULARIO ---
+<br /><br />
+
+
+--- FORMULARIO ---
+<?= Formulario::inicioAjax("examples/prueba2","contenedor") ?>
+    <?= Formulario::fecha("fecha3","2011-01-21","yy-mm-dd") ?>
+    <?= Formulario::submitFBAzul("Enviar") ?>
+<?= Formulario::fin() ?>
+--- FIN FORMULARIO ---
+<br /><br />
+
+--- FORMULARIO --- 
+<?= Formulario::inicioAjax("examples/prueba2","contenedor") ?>
+    <?= Formulario::fecha("fecha4","","dd/mm/yy",5,10) ?>
+    <?= Formulario::submitFBAzul("Enviar") ?>
+<?= Formulario::fin() ?>
+--- FIN FORMULARIO ---
+<br /><br />
+
+
+--- FORMULARIO ---
+<?= Formulario::inicioAjax("examples/prueba2","contenedor") ?>
+    <?= Formulario::fecha("fecha5","","dd/mm/yy","27/12/2010","27/02/2011") ?>
+    <?= Formulario::submitFBAzul("Enviar") ?>
+<?= Formulario::fin() ?>
+--- FIN FORMULARIO ---
+<br /><br />

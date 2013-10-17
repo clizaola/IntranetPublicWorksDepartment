@@ -1,0 +1,167 @@
+/*
+ #D3DF89 verde claro
+ 82B417 verde
+ 25A345  verde obcuro
+ */
+
+html, body{
+	background: #25A345;
+}
+.inicio .cabecera{
+
+	background: #82B417;
+	color: #ffffff;	
+	border-bottom: #333333 3px solid;
+}
+.inicio #contenido {
+	background-color: #82B417;
+	border: #EEEEEE 1px solid;
+	color: #FFFFFF;	
+}
+.inicio #contenido  th{
+	color: #FFF;
+}
+.inicio .pie {
+	background: #82B417;
+	color: #ffffff;
+	border-top: #333333 3px solid;
+}
+.inicio .pie a {
+	color: #ffffff;
+}
+.contenido th {
+	background-color: #D3DF89;	
+}
+.barra {
+	background-color: #82B417;
+	color: #FFF;
+	border-bottom: #25A345 3px solid
+}
+.barra a {
+	color: #333;	
+}
+.barra a:hover {
+	color: #666
+}
+.menu {
+	background-color: #EEE;
+	border-bottom: #25A345 3px solid;	
+}
+.pie {
+	background-color: #82B417;
+	color: #FFF;
+	border-top: #25A345 3px solid;	
+}
+.pie a {
+	color: #FFF
+}
+.lateral {
+	background: #82B417;
+	color: #FFF;
+	border-right: 2px solid #25A345
+}
+.lateral a {
+	color: #FFF;
+}
+.lateral a:hover {
+	color: #DDD;
+}
+.lateral ul {
+	background: #82B417
+}
+.lateral ul ul {
+	background: #82B417;
+}
+.contenido {
+	background: #DEDEDE;
+}
+/*
+ * Formularios
+ */
+.formulario th {
+	background-color: #D3DF89;
+	color: #000
+}
+.formulario th a {
+	color: #333;
+}
+.formulario th a:hover {
+	color: #000;
+}
+.formulario #mensaje {
+	background: #25A345;
+	color: #FFF;	
+}
+.formulario #mensajex {
+	background: #82B417;
+	color: #FFF;	
+}
+.formulario #contenido {
+	background: #F6F6F6;
+	color: #000;	
+}
+.formulario #titulo {
+	color: #000;
+}
+.formulario #subtitulo {
+	color: #000;
+}
+.formulario #paginador {
+	background-color: #82B417;
+	color: #F6F6F6;
+}
+.formulario #paginador a {
+	color: #FFF;
+}
+.formulario #paginador2 {
+	background-color: #25A345;
+	color: #F6F6F6;
+}
+.formulario #paginador2 a {
+	color: #FFF;
+}
+.formulario #paginador a:hover, .formulario #paginador2 a:hover {
+	color: #BBB;
+}
+.formulario #fila1 {
+	background: #E6E6E6;
+	color: #000
+}
+.formulario #fila2 {
+	background: #EEE;
+	color: #000
+}
+#boton1, .boton1 {
+	background-color: #82B417;
+	border: 1px solid #000;
+	color: #EEE;
+}
+#boton2, .boton2 {
+	background-color: #25A345;
+	border: 1px solid #000;
+	color: #EEE;
+}
+#boton3, .boton3{
+	background-color: #CCC;
+	border: 1px solid #000;
+	color: #000;
+}
+.formato1 {
+	background-color: #82B417;
+	color: #EEE
+}
+.formato2 {
+	background-color: #25A345;
+	color: #EEE
+}
+.formato3 {
+	background-color: #AAA;
+	color: #000
+}
+.formato4{
+	background-color: #D3DF89;
+	color: #000000;
+}
+.barraComplemento{
+	background-color: #25A345;
+}

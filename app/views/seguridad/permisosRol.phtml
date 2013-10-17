@@ -1,0 +1,70 @@
+<?= Load::lib("amecasoft") ?>
+
+<?php $aplicacion = Aplicacion::consultar($rol -> app_id); ?>
+<?php $modulos = $aplicacion -> modulos(); ?>		
+<?= Formulario::inicioAjax("seguridad/registrarPermisosRol","permisos") ?>
+<?= Formulario::oculto("id",$rol -> id) ?>
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <div align="right"><?= Html::linkAjax("seguridad/nada","Cerrar","permisos","id: boton3"); ?>&nbsp;<?= Formulario::submit("Modificar Permisos","class: boton1") ?></div>
+            <table border="0" cellpadding="1" cellspacing="1">			
+				<tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                            Permisos de Rol de Usuario
+                        </h2>
+                        <span id="subtitulo">
+                            Selecciona los permisos que tendrá el el rol de usuario consultado, estos serán asignados a cada usuario que tenga este rol.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+				<tr>
+					<?php if($modulos) foreach($modulos as $modulo){ ?>
+						<?php $recursos = $modulo -> recursos(); ?>
+						<td valign="top" align="center">
+							<table border="0" cellpadding="1" cellspacing="1">
+								<tr>
+									<td align="center" colspan="2" class="formato2" width="150" height="30">
+										<div style="font-size: 10px; font-weight: bold;"><?= $modulo -> nombre ?></div>
+									</td>
+								</tr>
+								<tr>
+									<td class="formato3">
+										<table border="0" cellpadding="1" cellspacing="1">
+											<?php if($recursos) foreach($recursos as $recurso){ ?>
+												<tr>
+													<td style="color: #000;">
+														<?php if($recurso -> nombre == "CONSULTAR OBRAS" || $recurso -> nombre == "REPORTE DE OBRAS"){ ?>
+															<?= Formulario::checkbox("recurso".$recurso -> id,true,true) ?>
+														<?php } else { ?>
+															<?= Formulario::checkbox("recurso".$recurso -> id,Acl::permisoRecurso($usuario -> id, $recurso -> id)) ?>
+														<?php } ?>
+													</td>
+													<td>
+														<div style="font-size: 10px;"><?= $recurso -> nombre ?></div>
+													</td>
+												</tr>
+											<?php } ?>	
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<?= tr_break(5); ?>
+					<?php } ?>
+				</tr>
+			</table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>

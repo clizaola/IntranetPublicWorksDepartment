@@ -1,0 +1,13 @@
+<?= Load::lib("amecasoft") ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "finanzas")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuFinanzasObra",false,array("obra" => $obra -> id,"opcion" => "")) ?></center>
+    	</td>
+    </tr>
+</table>

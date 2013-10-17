@@ -1,0 +1,31 @@
+<?= Load::lib("html") ?>
+<?= Load::lib("formato") ?>
+<?= Load::lib("formulario") ?>
+<div style="margin:10px; background-color: #eee; padding: 10px;">
+	<h1>Escoge las obras que quieres imprimir su ficha descriptiva</h1>
+	<br />
+	<hr />
+	<br />
+	<?= Formulario::inicio('pdf/obraDescriptiva') ?>
+	<table>
+		<tr>
+			<th>Nombre</th>
+			<th>Fecha</th>
+			<th>Estado</th>
+		</tr>
+	<?php if($Obras) foreach($Obras as $obra){ ?>
+		<tr>
+			<td><input type="checkbox" name="<?= $obra -> id ?>" value="<?= $obra -> id ?>"> <?= $obra -> nombre ?></td>
+			<td><?= $obra -> fecha ?></td>
+			<td><?= $obra -> estado ?></td>
+		</tr>	
+	<?php } ?>
+	</table>
+	<?= Formulario::oculto('inicio',$inicio) ?>
+	<?= Formulario::oculto('fin',$fin) ?>
+	<br />
+	<center>
+	<?= Formulario::submit('ENVIAR','style: width: 100px; height: 30px;') ?>
+	</center>
+	<?= Formulario::fin() ?>
+</div>

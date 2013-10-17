@@ -1,0 +1,13 @@
+<?php Load::lib("formulario"); ?>
+<?php Load::lib("html"); ?>
+<?php Load::lib("google_maps"); ?>
+<?= Formulario::inicio("obras/pruebax") ?>
+<?php $google = new GoogleMaps(); ?>
+<?php $google -> addMarker(20.5712230087519, -104.07388225402834, "Hola Mundo1") ?>
+<?php $google -> addMarker(20.5313430087519, -104.17488225402834, "Hola Mundo2") ?>
+<?php $google -> addMarker(20.5378830087519, -104.03238225402834, "Hola Mundo3") ?>
+<?php $google -> addMarker(20.5212230087519, -104.02388225402834, "Hola Mundo4") ?>
+<?php $google -> addMarker(20.5392230087519, -104.13388225402834, "Hola Mundo5") ?>
+<?php $google -> addMarker(20.5419, -104.0440, "Muajajaja") ?>
+<?= $google -> render() ?>
+<?= Formulario::submit("Hola"); ?>

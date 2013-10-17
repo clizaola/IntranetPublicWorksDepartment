@@ -1,0 +1,109 @@
+<?= Load::lib("amecasoft") ?>
+
+<table class="formulario">
+	<tr>
+		<th width="1024" height="25" id="mensaje">
+	    &nbsp;
+	    </th>
+	</tr>
+	<tr>
+		<td width="1024" height="100" id="contenido" align="center">
+			<table border="0">
+				<tr height="25">
+                    <td style="width: 750px;" align="left">
+                        <h2 id="titulo">
+                            Administración del ACL
+                        </h2>
+                        <span id="subtitulo">
+                            El Control de Accedo a Usuarios será controlado desde este módulo.
+                        </span>
+                        <br><br>
+                        <hr>
+                    </td>
+                </tr>
+				<tr>
+					<td>
+						<br />
+						<?= Formulario::inicio("seguridad/registrarModulo") ?>
+						<table>
+							<tr>
+								<td width="120" style="background-color: #CCC; padding: 5px;"><b>Módulo: </b></td>
+								<td style="background-color: #CCC; padding: 5px;"><?= Formulario::mayusculas("nombre","","style: width: 150px;") ?></td>
+								<td style="background-color: #CCC; padding: 5px;"><?= Formulario::submit("Registrar Modulo","class: boton1") ?></td>
+							</tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<br />
+						<?= Formulario::inicio("seguridad/registrarRecurso") ?>
+						<table>
+							<tr>
+								<td width="120" style="background-color: #CCC; padding: 5px;"><b>Recurso: </b></td>
+								<td style="background-color: #CCC; padding: 5px;"><?= Formulario::selectModelo("modulo",$modulos,"nombre","id",Session::get("modulo")) ?></td>
+								<td style="background-color: #CCC; padding: 5px;"><?= Formulario::mayusculas("nombre","","style: width: 150px;") ?></td>
+								<td style="background-color: #CCC; padding: 5px;"><?= Formulario::submit("Registrar Recurso","class: boton1") ?></td>
+							</tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<br />
+						<?= Formulario::inicioAjax("seguridad/acciones","modulos") ?>
+						<table>
+							<tr>
+								<td width="120" style="background-color: #CCC; padding: 5px;"><b>Módulo: </b></td>
+								<td style="background-color: #CCC; padding: 5px;"><?= Formulario::selectModelo("modulo",$modulos,"nombre","id",Session::get("modulo")) ?></td>
+								<td style="background-color: #CCC; padding: 5px;"><?= Formulario::submit("Seleccionar Modulo","class: boton1") ?></td>
+							</tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="modulos"></div>
+						<br />
+					</td>
+				</tr>	
+				<?php $aplicacion = Aplicacion::consultar(Acl::aplicacion()); ?>
+				<?php $modulos = $aplicacion -> modulos(); ?>
+				<?php if($modulos){ ?>
+				<tr>
+					<td style="padding-left: 25px;">
+						<ol>
+							<?php foreach($modulos as $modulo){ ?>
+								<li>
+									<b><?= $modulo -> nombre ?></b>
+									<?php $recursos = $modulo -> recursos(); ?>
+									<?php if($recursos){ ?>
+									<br />
+									<div style="padding-left: 15px; padding-top: 5px;">
+										<ul>
+											<?php foreach($recursos as $recurso){ ?>
+												<li style="padding-top: 5px;">
+													<b><i><?= $recurso -> nombre ?>:</i></b> 
+													<?php $acciones = $recurso -> acciones(); ?>
+													<?php if($acciones) foreach($acciones as $accion){ ?>
+														<i><?= $accion -> controlador ?>/<?= $accion -> accion ?>&nbsp;&nbsp;&nbsp;</i>
+													<?php } ?>
+												</li>
+											<?php } ?>
+										</ul>
+									</div><br />
+									<?php } ?>
+								</li>
+								</b>
+							<?php } ?>
+						</ol>
+					</td>
+				</tr>					
+				<?php } ?>	
+			</table>
+		</td>
+	</tr>
+</table>

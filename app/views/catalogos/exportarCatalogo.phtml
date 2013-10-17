@@ -1,0 +1,63 @@
+<?= Load::lib("amecasoft") ?>
+
+<?= Formulario::inicio("catalogos/importar") ?>
+<table class="formulario">
+    <tr>
+        <th width="1024" height="25" id="mensaje">
+            &nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" style="width: 1000px;" align="left">
+                        <h2 id="titulo">
+                            Importador de Registros
+                        </h2>
+                        <span id="subtitulo">
+                            Esta herramienta permite al administrador, importar al sistema un archivo separado por comas de excel.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                	<td colspan="3" width="650">
+                    </td>
+                    <td width="20"></td>
+                    <td colspan="3">
+                        <div id="texto_arriba">Catalogo<span id="asterisco">*</span></div>
+                        <select name="catalogo" id="lista_mediano" class="smediano">
+                            <option value="dependencias">DEPENDENCIAS</option>
+                            <option value="programas">PROGRAMAS</option>
+                            <option value="localidades">LOCALIDADES</option>
+                            <option value="tipos">TIPOS DE OBRA</option>
+                            <option value="insumos">INSUMOS</option>
+                            <option value="conceptos">CONCEPTOS</option>
+                            <option value="empleados">EMPLEADOS</option>
+                            <option value="contratistas">CONTRATISTAS</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr height="25">
+                    <td width="650" height="25" colspan="7">
+                        <div id="texto_abajo">
+                        	<?= Formulario::submit("Exportar","name: boton","class: boton1") ?>
+                        </div>
+                        
+                    </td>
+                </tr>
+            </table>
+            <br /><br />     
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>

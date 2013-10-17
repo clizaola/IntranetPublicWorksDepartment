@@ -1,0 +1,229 @@
+<?= Load::lib("html") ?>
+<?= Load::lib("formato") ?>
+<style type="text/css">
+<!--
+	h2{ color: #<?= SAM_COLOR1 ?>;}
+	table.page_header {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 18px; text-transform: uppercase; }
+	.page_header table{ padding: 0px; margin: 0px; text-transform: uppercase;}
+	table.informacion {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 10px; text-transform: uppercase; }
+	table.informacion td {border: 1px solid #333; padding: 5px; text-transform: uppercase; border: 1px solid #333;}
+	table.page_footer {width: 100%; border: none; background-color: #<?= SAM_COLOR2 ?>; padding: 2mm; color: #FFF; font-size: 12px; text-transform: uppercase;}	
+	.firma, div.standard .firma td{	border: 0px; }
+	.formato1{
+		background-color: #<?= SAM_COLOR1 ?>;
+		color:#fff;		
+		font-weight: bold;
+		padding: 5px 2px;
+		text-align: center;		
+	}
+	.formato2{
+		background-color: #<?= SAM_COLOR3 ?>;
+		color:#333;		
+		font-weight: bold;	
+		text-align: center;	
+	}	
+-->
+</style>
+<page backtop="60mm" backbottom="14mm" backleft="0mm" backright="0mm" style="font-size: 12pt">
+	<page_header>
+		<table border="0" class="page_header">
+			<tr>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/ameca.jpg","H. Ayuntamiento de Ameca",100) ?>
+				</td>
+				<td width="475" align="center">
+					<h2>FICHA INFORMATIVA<br />DEL PROYECTO</h2>
+				</td>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/titulo.jpg","Departamento de Obras Publicas",150) ?>
+				</td>
+			</tr>			
+		</table>
+		<br />
+		<table cellpadding="0" cellspacing="0" class="informacion">
+			<tr style="height: 0px;">
+				<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="2">
+					PORYECTO:
+				</td>
+				<td width="580" colspan="13">
+					<?= $proyecto -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="2">
+					CÓDIGO:
+				</td>
+				<td colspan="3">
+					<?= $proyecto -> codigo ?>
+				</td>
+				<td class="formato1" colspan="2">
+					ACTA:
+				</td>
+				<td colspan="3">
+					<?//= $proyecto -> acta_id ?>
+				</td>
+				<td class="formato1" colspan="2">
+					LUGAR:
+				</td>
+				<td colspan="3">
+					<?= $proyecto -> localidad() -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="3">
+					TIPO DE OBRA:
+				</td>
+				<td colspan="7">
+					<?= $proyecto -> tipoobra() -> nombre ?>
+				</td>
+				<td class="formato1" colspan="2">
+					ESTADO:
+				</td>
+				<td colspan="3">
+					<?= $proyecto -> estado ?>
+				</td>
+			</tr>
+		</table>				
+	</page_header>
+	<page_footer>
+		<table class="page_footer">
+			<tr>
+				<td style="width: 50%; text-align: left">
+					<?= SAM_ADMINISTRACION ?><br />
+					PÁGINA [[page_cu]]
+				</td>				
+				<td style="width: 50%; text-align: right">
+					www.ameca.gob.mx<br />
+					Impreso desde SAM <?= date('d/m/Y H:i') ?> Hrs.
+				</td>
+			</tr>			
+		</table>
+	</page_footer>
+	
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+		</tr>
+		<tr>
+			<td class="formato2" style="font-size: 14px;" colspan="15">
+				INFORMACIÓN DEL PROYECTO
+			</td>
+		</tr>
+		<?php
+		$alcance = '';
+		if($proyecto -> alcance!='XXX'){
+			$EL = $EM = $L = $M = $R = '';								
+			if(substr($proyecto -> alcance,0,1) == 'L'){
+				$L = 'LOCAL';
+				$EL = 1;
+			}
+			if(substr($proyecto -> alcance,1,1) == 'M'){
+				$EM = 1;
+				if($EL)	$M = ', ';
+				$M .= 'MUNICIPAL';
+			}
+			if(substr($proyecto -> alcance,2,1) == 'R'){
+				if($EL == 1 || $EM == 1 ) $R = ', ';
+				$R .= 'REGIONAL';
+			}
+			$alcance = $L.$M.$R;
+		}
+		?>				
+		<tr>
+			<td colspan="7" rowspan="10" style="padding: 0px;">
+				<?= Html::imagen("http://www.amecasoft.com.mx/sam/img/mapas_proyectos/".$proyecto -> id.".png","H. Ayuntamiento de Ameca",350) ?>
+			</td>				
+			<td class="formato1" colspan="3">SOLICITUD DE LA<br /> QUE PRECEDE</td>
+			<td colspan="5"><?= $proyecto -> solicitud() -> nombre ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">ALCANCE</td>
+			<td colspan="5"><?= $alcance ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">SUPERVISOR</td>
+			<td colspan="5"><?= $proyecto -> supervisor() -> nombre ?></td>
+		</tr>			
+		<tr>
+			<td class="formato1" colspan="3">COSTO APROXIMADO</td>
+			<td colspan="5"><?= Formato::dinero($proyecto -> costo) ?></td>
+		</tr>
+		<tr height="5">
+			<td colspan="8" height="5" style="border: 0px; height: 5px;"></td>
+		</tr>
+		<tr>
+			<td class="formato2" colspan="8" style="font-size: 14px;">
+				APORTACIONES
+			</td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">FEDERAL</td>
+			<td colspan="5"><?= Formato::dinero($proyecto -> pfederal) ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">ESTATAL</td>
+			<td colspan="5"><?= Formato::dinero($proyecto -> pestatal) ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">MUNICIPAL</td>
+			<td colspan="5"><?= Formato::dinero($proyecto -> pmunicipal) ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">BENEFICIARIOS</td>
+			<td colspan="5"><?= Formato::dinero($proyecto -> pbeneficiarios) ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="15">DESCRIPCION</td>				
+		</tr>
+		<tr>
+			<td colspan="15"><?= $proyecto -> descripcion ?></td>
+		</tr>
+		<tr>				
+			<td class="formato1" colspan="15">OBJETIVO</td>
+		</tr>
+		<tr>
+			<td colspan="15"><?= $proyecto -> objetivo ?></td>
+		</tr>			
+		<tr>
+			<td class="formato1" colspan="3">Programas</td>
+			<td colspan="12"><?php foreach($proyecto -> programas() as $p){ echo Programa::consultar($p -> programas_id) -> nombre.', '; }  ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">Contratistas</td>
+			<td colspan="12"><?php foreach($proyecto -> contratistas() as $p){ echo Contratista::consultar($p -> contratistas_id) -> nombre.', '; }  ?></td>
+		</tr>
+		<tr>
+			<td colspan="15" height="10" style="border: 0px;"></td>
+		</tr>			
+		<?php
+		$avances = $proyecto -> avances();
+		if($avances){ ?> 
+		<tr>
+			<td class="formato2" colspan="15" style="font-size: 14px;">
+				Avances
+			</td>
+		</tr>
+		<?php 
+		foreach ($avances as $avance) { ?>
+		<tr>
+			<td class="formato1" colspan="2">AVANCE</td>
+			<td colspan="3"><?= $avance -> porcentaje ?>%</td>
+			<td class="formato1" colspan="2">FECHA</td>
+			<td colspan="8"><?= Formato::fechaExtendida($avance -> fecha) ?></td>				
+		</tr>
+		<tr>
+			<td class="formato1" colspan="2">DESCRIPCIÓN</td>
+			<td colspan="13" style="width: 500px; text-align: justify"><?= $avance -> descripcion ?></td>
+		</tr>
+		<tr height="2">
+			<td colspan="15" height="2" style="border: 0px; height: 2px;"></td>
+		</tr>
+		<?php 
+			}
+		} 
+		?>			
+	</table>
+</page>

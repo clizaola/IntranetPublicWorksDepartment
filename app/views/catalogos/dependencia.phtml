@@ -1,0 +1,146 @@
+<?= Load::lib("amecasoft") ?>
+
+<?= $dependencia ? Formulario::inicio($controller_name."/modificarDependencia") : Formulario::inicio($controller_name."/registrarDependencia") ?>
+<input type="hidden" name="id" value="<?= $id ?>" />
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <div align="right">
+            	<?= Formulario::cancelar("Regresar",$controller_name."/dependencias","class: boton1") ?>
+            </div>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                        	<?= $dependencia ? "Modificación de la Dependencia" : "Registro de Nueva Dependencia" ?>
+                        </h2>
+                        <span id="subtitulo">
+                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    	<div id="texto_arriba">Nombre de la Dependencia <?= Formulario::asterisco() ?></div>
+                        <?= Formulario::mayusculas("organizacion",$dependencia ? $dependencia -> organizacion : "","class: tmediano") ?>
+                    </td>
+                    <td width="20"></td>  
+                    <td colspan="3">
+                        <div id="texto_arriba">Tipo de Gobierno&nbsp;</div>
+                        <?php $opciones = array("" => "","MUNICIPAL" => "GOBIERNO MUNICIPAL","ESTATAL" => "GOBIERNO ESTATAL","FEDERAL" => "GOBIERNO FEDERAL"); ?>
+                        <?= Formulario::select("gobierno",$opciones,$dependencia ? $dependencia -> gobierno : "","class: smediano") ?> 
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    	<div id="texto_arriba">Dirección <?= Formulario::asterisco() ?></div>
+                        <?= Formulario::mayusculas("direccion",$dependencia ? $dependencia -> direccion : "","class: tmediano") ?>
+                        <div id="texto_abajo">&nbsp;</div>
+                    </td>
+                    <td width="20"></td>                    
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::mayusculas("ciudad",$dependencia ? $dependencia -> ciudad : "","class: tchico") ?>
+                        <div id="texto_abajo">Ciudad</div>    
+                    </td>
+                    <td width="20"></td>
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::selectEstados("estado",$dependencia ? $dependencia -> estado : "","class: schico") ?>
+                        <div id="texto_abajo">Estado</div>    
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    	<div id="texto_arriba">Responsable <?= Formulario::asterisco() ?></div>
+                        <?= Formulario::mayusculas("nombres",$dependencia ? $dependencia -> nombre_encargado : "","class: tmediano") ?>
+                        <div id="texto_abajo">Nombre(s)</div>
+                    </td>
+                    <td width="20"></td>                    
+                    <td colspan="3">
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::mayusculas("apellidos",$dependencia ? $dependencia -> apellidos_encargado : "","class: tmediano") ?>
+                        <div id="texto_abajo">Apellidos</div>    
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    	<div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::mayusculas("cargo",$dependencia ? $dependencia -> cargo_encargado : "","class: tmediano") ?>
+                        <div id="texto_abajo">Cargo Administrativo</div>
+                    </td>
+                    <td width="20"></td>                    
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::numerico("telefono",$dependencia ? $dependencia -> telefono_oficina : "","class: tchico") ?>
+                        <div id="texto_abajo">Teléfono Oficina</div>    
+                    </td>
+                    <td width="20"></td>
+                    <td>
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::numerico("celular",$dependencia ? $dependencia -> telefono_movil : "","class: tchico") ?>
+                        <div id="texto_abajo">Teléfono Celular</div>    
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                	<td colspan="3">
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::texto("correo",$dependencia ? $dependencia -> email_encargado : "","class: tmediano") ?>
+                        <div id="texto_abajo">Correo Electrónico</div>    
+                    </td>
+                    <td width="20"></td>
+                    <td colspan="3">
+                    	<div id="texto_arriba">Página Web</div>
+                        <?= Formulario::texto("web",$dependencia ? $dependencia -> pagina_web : "","class: tmediano") ?>
+                        <div id="texto_abajo">&nbsp;</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                	<td colspan="7">
+                        <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::textarea("notas",$dependencia ? $dependencia -> notas : "","style: width: 995px; height: 75px;") ?>
+                        <div id="texto_abajo">Notas Adicionales</div>    
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td width="1000" height="25" colspan="7" align="right">
+                        <?= Formulario::cancelar("Cancelar",$controller_name."/dependencias","class: boton3") ?>
+                        <?= $dependencia ? Acl::linkConfirmado($controller_name."/eliminarDependencia/".$dependencia -> id,"Eliminar","Estas seguro que deseas eliminar la dependencia?","class: boton2") : "" ?>
+                    	<?= $dependencia ? Formulario::submit("Modificar","class: boton1") : Formulario::submit("Registrar","class: boton1") ?>
+                    </td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>

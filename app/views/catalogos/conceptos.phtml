@@ -1,0 +1,138 @@
+<?= Load::lib("amecasoft") ?>
+<?php $titulo = "Listado de Conceptos" ?>
+<?php $subtitulo = "Los Conceptos son los tipos de actividad que se contratarán en las obras." ?>
+<?php $modelo = "Concepto"; ?>
+<?php 
+    $titulos = array(
+        "id" => "Id|100",
+    	"nombre" => "Nombre|500"
+    );
+?>
+
+<table class="formulario">
+    <tr>
+        <th width="1024" height="25" id="mensaje">
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" style="width: 1000px;" align="left">
+                    	<?= Formulario::inicio($controller_name."/buscarConcepto") ?>
+                        <table border="0" width="1000">
+                            <tr>
+                                <td>
+                                    <h2 id="titulo">
+                                        <?= $titulo ?>
+                                    </h2>
+                                    <span id="subtitulo">
+                                    	<?= $subtitulo ?>
+                                    </span>
+                                    <br /><br />
+                                </td>
+                                <td width="25">
+                                
+                                </td>
+                                <td width="300">
+                                	<?= Formulario::texto("filtro","","style: width: 300px;") ?>
+                                </td>
+                                <td width="50">
+                                	<?= Formulario::submit("Filtrar","class: boton1") ?>
+                                </td>
+                            </tr>
+                        </table>
+                        <?= Formulario::fin() ?>
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr height="25">
+                    <td colspan="7" style="width: 1000px;" align="center">
+                            <table class="formulario" >
+                                <tr id="encabezado">
+                                    <?php if($titulos) foreach($titulos as $field => $value){ $titulo = substr($value,0,strpos($value,"|")); $tam = substr($value,strpos($value,"|")+1); ?>
+							            <th width="<?= $tam ?>">
+							                <?= Html::link($controller_name."/conceptos/".$filtro."/".$field."-".($campo==$field ? $orden : "ASC")."/1", $titulo,"principal","style: color: #000; text-decoration: none;") ?>
+							                <?php 
+							                    if($campo == $field){
+							                        if($orden=="ASC"){
+							                            echo Html::link($controller_name."/conceptos/".$filtro."/".$field."-".($campo==$field ? $orden : "ASC")."/1",Html::imagen("decendente.png","Ordenar Ascendente",12,12),"principal","style: color: #000; text-decoration: none;");
+							                        }
+							                        else{
+							                            echo Html::link($controller_name."/conceptos/".$filtro."/".$field."-".($campo==$field ? $orden : "ASC")."/1",Html::imagen("ascendente.png","Ordenar Descendente",12,12),"principal","style: color: #000; text-decoration: none;");
+							                        }
+							                    }
+							                ?>
+							            </th>
+						            <?php } ?>									
+						            <th height="25" width="25" align="center" colspan="2">
+                                    	<?= Acl::link($controller_name."/concepto",Html::imagen("icons/add.png","Registrar Concepto",15,15)) ?>
+                                    </th>
+                                </tr>
+                        <?php if($registros){ ?>
+                            <?php $i=0; foreach($registros as $registro){ $i++; if($i%2==0) $x = "fila1"; else $x="fila2"; ?>
+                                <tr id="<?= $x ?>">
+                                    <td height="25" align="center">
+                                        <?= formatoNumero($registro -> id,4) ?>
+                                    </td>
+                                    <td height="25" align="center">
+                                        <?= $registro -> nombre ?>
+                                    </td>
+                                    <td width="25" align="center">
+                                    	<?= Acl::link($controller_name."/concepto/".$registro -> id,Html::imagen("icons/preview.png","Consultar Concepto",20,20)) ?>
+                                    </td>
+                                    <td width="25" align="center">
+                                    	<?= Acl::linkConfirmado($controller_name."/eliminarConcepto/".$registro -> id,Html::imagen("icons/close.png","Eliminar Concepto",20,20),"Estas seguro que deseas eliminar el concepto?") ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        <?php } ?>
+                        <?php if($registros){ ?>
+                                <tr>
+                                    <th colspan="<?= count($titulos)+2 ?>" align="right" height="30">
+                                        <?php if($nps > 1){ ?>
+                                        <table border="0">
+                                            <tr>
+                                                <?php if($np > 1){ ?>
+                                                    <td id="paginador">
+                                                    	<?= Html::link($controller_name."/conceptos/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".($np - 1),"<") ?>
+                                                    </td>
+                                                <?php } ?>
+                                                <?php for($i=1;$i<=$nps;$i++){ ?>
+                                                    <?php if($np == $i){ ?>
+                                                        <td id="paginador2">
+                                                        	<?= Html::link($controller_name."/conceptos/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".$i,$i) ?>
+                                                        </td>
+                                                    <?php } else{ ?>
+                                                        <td id="paginador">
+                                                        	<?= Html::link($controller_name."/conceptos/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".$i,$i) ?>
+                                                        </td>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                                <?php if($np < $nps){ ?>
+                                                    <td id="paginador">
+                                                    	<?= Html::link($controller_name."/conceptos/".$filtro."/".$campo."-".($orden == "ASC" ? "DESC" : "ASC")."/".($np + 1),">") ?>
+                                                    </td>
+                                                <?php } ?>
+                                                <td width="2"></td>
+                                            </tr>
+                                        </table>
+                                        <?php } ?>
+                                    </th>
+                                </tr>                            
+                        <?php } ?>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <b>Número de Registros: <?= $nregistros; ?></b>
+            <br /><br />     
+        </td>
+    </tr>
+</table>

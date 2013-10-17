@@ -1,0 +1,25 @@
+<?= Load::lib("amecasoft") ?>
+								<?= Formulario::inicioAjax("obras/subirFoto","fotosAvance") ?>
+		                    		<input type="hidden" name="id" value="<?= $avance -> id ?>" />
+			                    	<?php $fotos = $avance -> fotos(); ?>
+			                    	<?php if($fotos){ ?>
+			                    	<table border="0">
+			                    		<?php foreach($fotos as $foto){ ?>
+			                    			<td align="center" width="100" height="100">
+			                    				<?= Html::link("img/fotos_obras/".$foto -> foto,Html::imagen("fotos_obras/c".$foto -> foto),"target: _blank") ?>
+			                    				<br /><?= Html::linkAjax("obras/eliminarFoto/".$foto -> id,Html::imagen("miniconos/delete.png"),"fotosAvance"); ?>
+			                    			</td>
+			                    			<?= tr_break(5) ?>
+			                    		<?php } ?>
+			                    		<tr>
+			                    			<td colspan="5" height="10"></td>
+			                    		</tr>
+			                    		<tr>
+			                    			<td colspan="5" align="right">
+			                    				<?= Formulario::archivo("foto","style: width: 250px;") ?>
+			                    				<?= Formulario::submit("Cargar Foto","class: boton1") ?>
+			                    			</td>
+			                    		</tr>
+			                    	</table>
+			                    	<?php } ?>
+		                    	<?= Formulario::fin() ?>

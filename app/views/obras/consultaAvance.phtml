@@ -1,0 +1,122 @@
+<?= Load::lib("amecasoft") ?>
+<table border="0">
+	<tr>
+		<td valign="top">
+			<table class="formulario">
+			    <tr>
+			        <th id="mensaje" width="1024" height="25" >
+			            <?= $mensaje; ?>&nbsp;
+			        </th>
+			    </tr>
+			    <tr>
+			        <td width="1040" height="205" id="contenido" align="center">
+			            <div align="right">
+			            	<?= Formulario::cancelar("Regresar","obras/consulta/".$avance -> obras_id."/avances","class: boton1") ?>
+			            </div>
+			            <table border="0" cellpadding="0" cellspacing="0">
+			                <tr height="25">
+			                    <td colspan="7" width="1024"align="left">
+			                        <h2 id="titulo">
+			                        	<?= "Información del Avance" ?>
+			                        </h2>
+			                        <span id="subtitulo">
+			                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+			                            <?= Html::link("pdf/avanceObra/".$avance -> obras_id."/".$avance -> id,Html::imagen("icons/archivos/pdf.png","Imprimir Avances",35,35),"target: _blank","style: float: right;") ?>
+			                        </span>
+			                        <br /><br />
+			                        <hr />
+			                        <br />
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td colspan="7" height="10"></td>
+			                </tr>
+			                <tr>
+			                	<td colspan="3" valign="top">
+			                	<?= Formulario::inicio("obras/modificarAvance") ?>
+								<input type="hidden" name="id" value="<?= $avance -> id ?>" />
+			                	<table>
+			                		<tr>
+					                    <td width="200">
+					                        <?= Formulario::fecha("fecha",formatoFecha($avance -> fecha),"dd/mm/yy",false,false,"style: width: 200px;") ?>
+					                        <div id="texto_abajo">Fecha <span id="asterisco">*</span></div>
+					                    </td>
+					                    <td width="25"></td>                    
+					                    <td width="200">
+					                    	<?php
+					                    		$porcentajes = array();
+					                    		for($i=1;$i<=100;$i++){
+					                    			$porcentajes[$i] = $i." %";
+					                    		}
+					                    	?>
+					                        <?= Formulario::select("porcentaje",$porcentajes,$avance -> porcentaje,"style: width: 200px;") ?>
+					                        <div id="texto_abajo">Porcentaje <span id="asterisco">*</span></div>
+					                    </td>
+				                    </tr>
+				                    <tr>
+				                    	<td colspan="3" width="445" valign="top">
+					                    	<?= Formulario::textarea("descripcion",str_replace(":",";",$avance -> descripcion),"style: width: 445px; height: 70px;","validate: required:true") ?>
+					                        <div id="texto_abajo">Descripción <span id="asterisco">*</span></div>
+					                    </td>
+				                    </tr>
+				                    <tr>
+					                    <td colspan="7" height="10"></td>
+					                </tr>
+					                <tr>
+					                    <td width="1024" height="25" colspan="7" align="right">
+					                    	<?php if($avance -> obra() -> estado != "TERMINADA"){ ?>
+						                    	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","modificarAvance")){ ?>
+						                        	<?= Formulario::cancelar("Cancelar","obras/consulta/".$avance -> obras_id."/avances","class: boton3") ?>
+						                        	<?= Formulario::submit("Modificar","class: boton1") ?>
+						                        	<?= $avance ? Acl::linkConfirmado($controller_name."/eliminarAvance/".$avance -> id,"Eliminar","Estas seguro que deseas eliminar el avance?","class: boton2") : "" ?>
+						                        <?php } ?>
+					                        <?php } ?>
+					                    </td>
+					                </tr>
+			                    </table>
+			                    <?= Formulario::fin() ?>
+			                    </td>
+			                    <td width="25"></td>
+			                    <td colspan="3" valign="top">
+			                    	<div id="fotosAvance">
+				                    	<?= Formulario::inicioAjax("obras/subirFoto","fotosAvance") ?>
+				                    	<input type="hidden" name="id" value="<?= $avance -> id ?>" />
+				                    	<?php $fotos = $avance -> fotos(); ?>
+				                    	<table border="0">
+				                    		<?php if($fotos){ ?>
+				                    		<?php foreach($fotos as $foto){ ?>
+				                    			<td align="center" width="100" height="100">
+				                    				<?= Html::link("img/fotos_obras/".$foto -> foto,Html::imagen("fotos_obras/c".$foto -> foto),"target: _blank") ?>
+				                    				<?php if($avance -> obra() -> estado != "TERMINADA"){ ?>
+				                    					<br /><?= Acl::linkAjax("obras/eliminarFoto/".$foto -> id,Html::imagen("miniconos/delete.png"),"fotosAvance"); ?>
+				                    				<?php } ?>
+				                    			</td>
+				                    			<?= tr_break(5) ?>
+				                    		<?php } ?>
+				                    		<?php } ?>
+				                    		<?php if($avance -> obra() -> estado != "TERMINADA"){ ?>
+				                    		<tr>
+				                    			<td colspan="5" height="10"></td>
+				                    		</tr>
+				                    		<tr>
+				                    			<td width="1200" colspan="5" align="right">
+				                    				<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","modificarAvance")){ ?>
+				                    					<?= Formulario::archivo("foto","style: width: 250px;") ?>
+				                    					<?= Formulario::submit("Cargar Foto","class: boton1") ?>
+				                    				<?php } ?>
+				                    			</td>
+				                    		</tr>
+				                    		<?php } ?>
+				                    	</table>
+				                    	<?= Formulario::fin() ?>
+				                    </div>
+			                    </td>
+			                </tr>
+			            </table>
+			            <br />    
+			        </td>
+			    </tr>
+			</table>
+		</td>
+	</tr>
+</table>

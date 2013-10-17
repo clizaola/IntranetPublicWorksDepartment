@@ -1,0 +1,56 @@
+<?= Load::lib("amecasoft") ?>
+<?php $usuario = Usuario::consultar(Session::get("usuario_id")); ?>
+<?= Formulario::inicio("nominas/modificarCategoria") ?>
+<?= Formulario::oculto("id",$categoria -> id) ?>
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <div align="right"><?= Formulario::cancelar("Regresar","nominas/categorias","class: boton1"); ?></div>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                            Información de la Categoria
+                        </h2>
+                        <span id="subtitulo">
+                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá almacenar el registro hasta que esten completos.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                    <td width="500" height="25" colspan="3">
+                        <div id="texto_arriba">Nombre <span id="asterisco">*</span></div>
+            			<?= Formulario::mayusculas("nombre",$categoria -> nombre,"style: width: 479px;","validate: required:true") ?>            
+                    </td>
+                    <td width="26"></td>
+                    <td width="500" height="25" colspan="3">
+                        <div id="texto_arriba">Salario <span id="asterisco">*</span></div>
+                        <?= Formulario::dinero("salario",$categoria -> salario,"style: width: 479px;","validate: required:true") ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="30"></td>
+                </tr>
+                <tr>
+                    <td width="1000" height="25" colspan="7" align="right">
+                    	<?= Formulario::cancelar("Cancelar","nominas/categorias","class: boton3") ?>
+                    	<?= Formulario::submit("Modificar","class: boton1") ?>
+                    </td>
+                </tr>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>

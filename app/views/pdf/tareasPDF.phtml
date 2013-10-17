@@ -1,0 +1,155 @@
+<?= Load::lib("html") ?>
+<?= Load::lib("formato") ?>
+<style type="text/css">
+<!--
+	h2{ color: #<?= SAM_COLOR1 ?>;}
+	table.page_header {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 18px; text-transform: uppercase; }
+	.page_header table{ padding: 0px; margin: 0px; text-transform: uppercase;}
+	table.informacion {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 10px; text-transform: uppercase; }
+	table.informacion td {border: 1px solid #333; padding: 5px; text-transform: uppercase; border: 1px solid #333;}
+	table.page_footer {width: 100%; border: none; background-color: #<?= SAM_COLOR2 ?>; padding: 2mm; color: #FFF; font-size: 12px; text-transform: uppercase;}	
+	.firma, div.standard .firma td{	border: 0px; }
+	.formato1{
+		background-color: #<?= SAM_COLOR1 ?>;
+		color:#fff;		
+		font-weight: bold;
+		padding: 5px 2px;
+		text-align: center;		
+	}
+	.formato2{
+		background-color: #<?= SAM_COLOR3 ?>;
+		color:#333;		
+		font-weight: bold;	
+		text-align: center;	
+	}	
+-->
+</style>
+<page backtop="45mm" backbottom="14mm" backleft="0mm" backright="0mm" style="font-size: 12pt">
+	<page_header>
+		<table border="0" class="page_header">
+			<tr>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/ameca.jpg","H. Ayuntamiento de Ameca",100) ?>
+				</td>
+				<td width="475" align="center">
+					<h2>TAREAS PENDIENTES ASIGNADAS</h2>
+				</td>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/titulo.jpg","Departamento de Obras Publicas",150) ?>
+				</td>
+			</tr>			
+		</table>
+		<br />
+		<table cellpadding="0" cellspacing="0" class="informacion">
+			<tr style="height: 0px;">
+				<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="2">
+					NOMBRE:
+				</td>
+				<td colspan="7">
+					<?= $empleado -> nombre ?>
+				</td>
+				<td class="formato1" colspan="2">
+					PUESTO:
+				</td>
+				<td colspan="4">
+					<?= $empleado -> puesto ?>
+				</td>
+			</tr>			
+		</table>				
+	</page_header>
+	<page_footer>
+		<table class="page_footer">
+			<tr>
+				<td style="width: 50%; text-align: left">
+					<?= SAM_ADMINISTRACION ?><br />
+					PÁGINA [[page_cu]]
+				</td>				
+				<td style="width: 50%; text-align: right">
+					<?= AUTOR_URL ?><br />
+					Impreso desde SAM <?= date('d/m/Y H:i') ?> Hrs.
+				</td>
+			</tr>			
+		</table>
+	</page_footer>
+	
+<?php if($Ptareas){ ?>
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+		</tr>
+		<tr>
+			<td colspan="15" style="text-align: center; font-size: 24px; border: 0px; font-weight: bold;"><?= $tarea_sola == '' ? 'TAREAS DE PROYECTOS' : $tarea_sola ?></td>
+		</tr>
+	</table>
+<?php foreach($Ptareas as $tarea) { ?>
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="2">TAREA</td>
+			<td colspan="9"><?= $tarea -> nombre ?></td>
+			<td class="formato1" colspan="2">ESTADO</td>
+			<td colspan="2"><?= $tarea -> estado == 'KO'? 'PENDIENTE' : 'TERMINADA' ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">FECHA ASIGNACIÓN</td>
+			<td colspan="5"><?= Formato::fechaExtendida($tarea -> creacion) ?></td>
+			<td class="formato1" colspan="2">FECHA LIMITE</td>
+			<td colspan="5"><?= Formato::fechaExtendida($tarea -> limite) ?></td>
+		</tr>		
+		<tr>
+			<td class="formato1" colspan="2">DESCRIPCION</td>
+			<td colspan="13"><div style="width: 635px; text-align: justify;"><?= $tarea -> descripcion ?></div></td>
+		</tr>
+		<tr height="5">
+			<td colspan="15" height="5" style="border: 0px; height: 5px;"></td>
+		</tr>
+	</table>
+<?php } ?>
+<?php } ?>
+	<?php if($Otareas){ ?>
+<?php if($Ptareas){ ?> </page><page pageset="old"> <?php } ?>
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+		</tr>
+		<tr>
+			<td colspan="15" style="text-align: center; font-size: 24px; border: 0px; font-weight: bold;"><?= $tarea_sola == '' ? 'TAREAS DE OBRAS' : $tarea_sola ?></td>
+		</tr>
+	</table>
+<?php foreach($Otareas as $tarea) { ?>
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="2">TAREA</td>
+			<td colspan="9"><?= $tarea -> nombre ?></td>
+			<td class="formato1" colspan="2">ESTADO</td>
+			<td colspan="2"><?= $tarea -> estado == 'KO'? 'PENDIENTE' : 'TERMINADA' ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">FECHA ASIGNACIÓN</td>
+			<td colspan="5"><?= Formato::fechaExtendida($tarea -> creacion) ?></td>
+			<td class="formato1" colspan="2">FECHA LIMITE</td>
+			<td colspan="5"><?= Formato::fechaExtendida($tarea -> limite) ?></td>
+		</tr>		
+		<tr>
+			<td class="formato1" colspan="2">DESCRIPCION</td>
+			<td colspan="13"><div style="width: 635px; text-align: justify;"><?= $tarea -> descripcion ?></div></td>
+		</tr>
+		<tr height="5">
+			<td colspan="15" height="5" style="border: 0px; height: 5px;"></td>
+		</tr>
+	</table>
+<?php } ?>
+<? } ?>	
+<?php if(!$Ptareas && !$Otareas){ ?>	
+	<h2 style="text-align: center;">NO HAY TAREAS PENDIENTES</h2>	
+<?php } ?>
+</page>
+

@@ -1,0 +1,87 @@
+<?= Load::lib("amecasoft") ?>
+<?php $obra = Obra::consultar($obra); ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "informacion")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuInformacionObra",false,array("obra" => $obra -> id,"opcion" => "contratistas")) ?></center>
+    	</td>
+    </tr>
+</table>
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Contratistas
+                        </h2>
+                        <span id="subtitulo">
+                            Las Obras tendrán contemplado a uno o varios contratistas.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $contratistas = $obra -> contratistas(); ?>
+			            <?php if($contratistas){ ?>
+				        	<table border="0">
+				            	<?php foreach($contratistas as $contratista){ ?>
+				            		<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				                    	<td style="padding: 5px;" width="285"><?= strtoupper($contratista -> contratista() -> nombre) ?></td>
+				                    	<?php if($obra -> estado != "TERMINADA"){ ?>
+					                    <td style="padding: 5px;"><?= Acl::linkAjaxConfirmado("obras/descontratar/".$contratista -> id,Html::imagen("icons/close.png","Eliminar Contratista",20,20),"opciones","Estas seguro que deseas eliminar el Contratista?") ?></td>
+					                    <?php } ?>
+									</tr>
+				            	<?php } ?>
+							</table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO CONTRATISTAS</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+			   	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","contratar") && $obra -> estado != "TERMINADA"){ ?>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+                    <?= Formulario::inicioAjax("obras/contratar","opciones") ?>
+						<input type="hidden" name="id" value="<?= $obra -> id ?>" />
+						<table border="0">
+							<tr>
+			                    <td>
+			                        <div id="texto_arriba">Selecciona un Contratista <span id="asterisco">*</span></div>
+			                        <?= Formulario::selectModelo("contratista",OContratista::reporteDisponibles($obra -> id),"nombre","id","","class: smediano","style: width: 320px;","validate: required:true") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td height="25" align="right">
+			                        <?= Formulario::submit("Agregar Contratista","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+						<?= Formulario::fin() ?>
+					</td>
+                </tr>
+                <?php } ?>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+</div>

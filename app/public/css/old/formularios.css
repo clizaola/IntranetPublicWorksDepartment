@@ -1,0 +1,220 @@
+.formulario{
+    font-family:"Lucida Grande", Tahoma, Arial, Verdana, sans-serif;    
+}
+
+.formulario th{
+    background-color: #C8F0AA;
+   	/*background-color: #3D9C48;*/
+    color: #000;
+}
+
+.formulario th a{
+	color: #333; 
+	text-decoration: none;
+	display: inline-block;
+	width: 100%;
+}
+
+.formulario th a:hover{	
+	text-decoration: underline;
+	color: #000;
+}
+
+.formulario #mensaje{
+    background: #CC0000;
+    color: #FFFFFF;
+    text-align: right;
+}
+
+.formulario #mensajex{
+    background: #146431;
+    color: #FFFFFF;
+    text-align: right;
+}
+
+.formulario #contenido{
+    background: #F6F6F6;
+    color: #000000;
+    padding: 10px 10px 10px 10px;
+}
+
+.formulario #titulo{
+    font-size: 18px;
+    font-weight: normal;
+    padding-bottom: 10px;
+    color: #000000;
+}
+
+.formulario #subtitulo{
+    font-size: 11px;
+    color: #000000;
+}
+
+.formulario #paginador{
+    width: 20px;
+    height: 15px;
+    background-color: #006600;
+    color: #F6F6F6;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.formulario #paginador a{
+    color: #FFF;
+    width: 20px;
+    height: 15px;
+    font-size: 11px;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+}
+
+.formulario #paginador2{
+    width: 20px;
+    height: 15px;
+    background-color: #CC0000;
+    color: #F6F6F6;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.formulario #paginador2 a{
+    color: #FFF;
+    width: 20px;
+    height: 15px;
+    font-size: 11px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.formulario #paginador a:hover, .formulario #paginador2 a:hover{
+	text-decoration: underline;
+	color: #BBB;
+}
+
+.formulario #fila1{
+    background: #E6E6E6;
+    color: #000000;
+}
+
+.formulario #fila2{
+    background: #EEEEEE;
+    color: #000000;
+}
+
+.formulario #texto_grande{
+    width: 750px; 
+    height: 25px; 
+    font-size:14px; 
+    padding-right: 5px; 
+    padding-left: 5px;
+}
+
+.formulario #texto_mediano{
+    width: 350px;
+    height: 25px;
+    font-size:14px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.formulario .texto_mediano{
+    width: 350px;
+    height: 25px;
+    font-size:14px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.formulario #texto_chico{
+    width: 150px; 
+    height: 25px; 
+    font-size:14px; 
+    padding-right: 5px; 
+    padding-left: 5px;
+}
+
+.formulario .fecha_chico{
+    width: 130px; 
+    height: 25px; 
+    font-size:14px; 
+    padding-right: 5px; 
+    padding-left: 5px;
+    margin-right: 5px;
+}
+
+.formulario #lista_grande{
+    width: 750px;
+    height: 25px;
+    font-size:14px;
+    padding-left: 5px;
+}
+
+.formulario #lista_mediano_nomina{
+    width: 385px;
+    height: 25px;
+    font-size:14px;
+    padding-left: 5px;
+}
+
+.formulario #lista_mediano{
+    width: 365px;
+    height: 25px;
+    font-size:14px;
+    padding-left: 5px;
+}
+
+.formulario #lista_chico{
+    width: 165px; 
+    height: 25px; 
+    font-size:14px; 
+    padding-left: 5px;
+}
+
+.formulario #area_grande{
+    width: 750px; 
+    height: 75px; 
+    font-size:14px; 
+    padding-right: 5px; 
+    padding-left: 5px;
+}
+
+.formulario #area_mediano{
+    width: 350px;
+    height: 75px;
+    font-size:14px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.formulario #area_chico{
+    width: 150px; 
+    height: 75px; 
+    font-size:14px; 
+    padding-right: 5px; 
+    padding-left: 5px;
+}
+
+.formulario #boton{
+    height: 25px; 
+    font-size:14px; 
+    padding-right: 5px; 
+    padding-left: 5px;
+}
+
+.formulario #texto_arriba{
+    font-size: 11px; 
+    font-weight: bold; 
+    padding-bottom: 5px;
+}
+
+.formulario #texto_abajo{
+    text-align: right;
+    padding-bottom: 5px;
+    font-style: italic;
+    font-size: 9px; 
+}
+
+.formulario #asterisco{
+    color: red; 
+}

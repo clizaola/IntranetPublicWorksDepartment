@@ -1,0 +1,153 @@
+<?= Load::lib("html") ?>
+<?= Load::lib("formato") ?>
+<style type="text/css">
+<!--
+	h2{ color: #<?= SAM_COLOR1 ?>;}
+	table.page_header {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 18px; text-transform: uppercase; }
+	.page_header table{ padding: 0px; margin: 0px; text-transform: uppercase;}
+	table.informacion {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 10px; text-transform: uppercase; }
+	table.informacion td {border: 1px solid #333; padding: 5px; text-transform: uppercase; border: 1px solid #333;}
+	table.page_footer {width: 100%; border: none; background-color: #<?= SAM_COLOR2 ?>; padding: 2mm; color: #FFF; font-size: 12px; text-transform: uppercase;}	
+	.firma, div.standard .firma td{	border: 0px;  text-align: center;}
+	.formato1{
+		background-color: #<?= SAM_COLOR1 ?>;
+		color:#fff;		
+		font-weight: bold;
+		padding: 5px 2px;
+		text-align: center;		
+	}
+	.formato2{
+		background-color: #<?= SAM_COLOR3 ?>;
+		color:#333;		
+		font-weight: bold;	
+		text-align: center;	
+	}
+-->
+</style>
+<page backtop="50mm" backbottom="14mm" backleft="0mm" backright="0mm" style="font-size: 12pt">
+	<page_header>
+		<table border="0" class="page_header">
+			<tr>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/ameca.jpg","H. Ayuntamiento de Ameca",100) ?>
+				</td>
+				<td width="475" align="center">
+					<h2>NOMINA DE TRABAJO EN OBRA</h2>
+				</td>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/titulo.jpg","Departamento de Obras Publicas",150) ?>
+				</td>
+			</tr>			
+		</table>
+		<br />
+		<table cellpadding="0" cellspacing="0" class="informacion">
+			<tr>
+				<td class="formato1" width="60">
+					OBRA:
+				</td>
+				<td width="610" colspan="5">
+					<?= $obra -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" width="60">
+					CÓDIGO:
+				</td>
+				<td width="60">
+					<?= $obra -> codigo ?>
+				</td>
+				<td class="formato1" width="60">
+					LUGAR:
+				</td>
+				<td width="180">
+					<?= $obra -> localidad() -> nombre ?>
+				</td>
+				<td class="formato1" width="60">
+					SEMANA:
+				</td>
+				<td width="220">
+					<?= Formato::fechaAbreviada($nomina -> fecha_inicio)." <b>-</b> ".Formato::fechaAbreviada($nomina -> fecha_fin) ?>					
+					
+				</td>
+			</tr>
+		</table>				
+	</page_header>
+	<page_footer>
+		<table class="page_footer">
+			<tr>
+				<td style="width: 50%; text-align: left">
+					<?= SAM_ADMINISTRACION ?><br />
+					PÁGINA [[page_cu]]
+				</td>				
+				<td style="width: 50%; text-align: right">
+					www.ameca.gob.mx<br />
+					Impreso desde SAM <?= date('d/m/Y H:i') ?> Hrs.
+				</td>
+			</tr>			
+		</table>
+	</page_footer>
+	
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr>
+			<td class="formato1" width="250">NOMBRE</td>
+			<td class="formato1" width="70">CATEGORÍA</td>
+			<td class="formato1" width="10">L</td>
+			<td class="formato1" width="10">M</td>
+			<td class="formato1" width="10">M</td>
+			<td class="formato1" width="10">J</td>
+			<td class="formato1" width="10">V</td>
+			<td class="formato1" width="10">S</td>
+			<td class="formato1" width="10">D</td>
+			<td class="formato1" width="70">DíAS</td>
+			<td class="formato1" width="70">SALARIO</td>
+			<td class="formato1" width="80">IMPORTE</td>
+		</tr>
+		<?php
+		$asistencia = $nomina -> asistencia();
+		$total = 0;
+		if($asistencia) foreach($asistencia as $a){
+		?>
+		<tr>
+			<td style="text-align: left"><?= $a -> empleado() -> nombre ?></td>
+			<td><?= $a -> empleado() -> categoria() -> nombre ?></td>
+			<td><?= $a -> lunes == "OK" ? "*" : "" ?></td>
+			<td><?= $a -> martes == "OK" ? "*" : "" ?></td>
+			<td><?= $a -> miercoles == "OK" ? "*" : "" ?></td>
+			<td><?= $a -> jueves == "OK" ? "*" : "" ?></td>
+			<td><?= $a -> viernes == "OK" ? "*" : "" ?></td>
+			<td><?= $a -> sabado == "OK" ? "*" : "" ?></td>
+			<td><?= $a -> domingo == "OK" ? "*" : "" ?></td>
+			<td><?= $a -> dias ?></td>
+			<td style="text-align: right">$<?= number_format($a -> salario,2) ?></td>
+			<td style="text-align: right">$<?= number_format($a -> importe,2) ?></td>
+		</tr>
+        <?php
+            $total += $a -> importe;
+		}
+		?>
+		<tr>
+			<td style="border: 0px;" colspan="10"></td>
+			<td class="formato1">TOTAL</td>
+			<td class="formato1" style="text-align: right; padding-right: 5px;">$<?= number_format($total,2) ?></td>				
+		</tr>
+	</table>
+	<div style="padding: 25px; font-size: 10px; font-weight: bold; text-align: center">
+		LOS SUELDOS SON REGISTRADOS ANTES DE IMPUESTOS
+	</div>
+	<br /><br /><br />
+	<br /><br /><br />
+	<table cellpadding="0" cellspacing="0" class="firma">
+		<tr>
+			<td width="450"></td>
+			<td style="border-bottom: 2px solid #333; width: 150px"></td>				
+		</tr>
+		<tr>
+			<td></td>
+			<td style="font-weight: bold; font-size: 12px">ARQ. PEDRO MARTÍNEZ RODRIGUEZ</td>				
+		</tr>
+		<tr>
+			<td></td>
+			<td style="font-size: 10px;">DIRECTOR DE OBRAS PÚBLICAS</td>				
+		</tr>
+	</table>
+</page>

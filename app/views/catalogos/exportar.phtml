@@ -1,0 +1,19 @@
+<?php
+    header("Content-Type: application/vnd.ms-excel");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+?>
+<table border="1">
+    <tr>
+        <?php if($titulos) foreach($titulos as $titulo){ ?>
+            <th><?= $titulo ?></th>
+        <?php } ?>
+    </tr>
+    <?php if($registros) foreach($registros as $registro){ ?>
+        <tr>
+            <?php $i=0; foreach($registro as $r){ ?>
+                <th><?= $r ?></th>
+            <?php } ?>        
+        </tr>    
+    <?php } ?>
+</table>

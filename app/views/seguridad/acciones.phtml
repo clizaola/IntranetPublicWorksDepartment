@@ -1,0 +1,12 @@
+<?= Load::lib("amecasoft") ?>
+<?= Formulario::inicioAjax("seguridad/registrarAccion","modulos","onsubmit: alert('Accion Registrada');") ?>
+	<table>
+		<tr>
+			<td width="120" style="background-color: #CCC; padding: 5px;"><b>Acción: </b></td>
+			<td style="background-color: #CCC; padding: 5px;"><?= Formulario::selectModelo("recurso",$recursos,"nombre","id") ?></td>
+			<td style="background-color: #CCC; padding: 5px;"><?= Formulario::texto("controlador","","style: width: 150px;") ?></td>
+			<td style="background-color: #CCC; padding: 5px;"><?= Formulario::texto("accion","","style: width: 150px;") ?></td>
+			<td style="background-color: #CCC; padding: 5px;"><?= Formulario::submit("Registrar Accion","class: boton1") ?></td>
+		</tr>
+	</table>
+<?= Formulario::fin() ?>

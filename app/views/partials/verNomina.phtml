@@ -1,0 +1,162 @@
+<?= Load::lib("amecasoft") ?>
+
+<div id="nomina<?= $nomina ?>">
+<?php $nomina = Nomina::consultar($nomina); ?>
+
+<?php $trabajadores = NominaEmpleados::disponibles($nomina -> id); ?>
+
+<?php $categorias = NominaCategorias::reporte(); ?>
+                            
+<?php $asistencia = $nomina -> asistencia(); ?>
+
+<table class="formulario" height="580">
+    <tr>
+        <td width="780" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="760"align="left">
+                        <h2 id="titulo">
+                        	Información de la Nomina (<?= formatoFecha($nomina -> fecha_inicio) ?> - <?= formatoFecha($nomina -> fecha_fin) ?>)
+                        </h2>
+                        <span id="subtitulo">
+                            A continuación se muestran los detalles de la nómina así como los trabajadores que contempla y sus asistencias.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <?php if($nomina -> estado == "KO" && $nomina -> obra() -> estado != "TERMINADA"){ ?>
+                        <br /><center>
+                        	<?= Formulario::inicioAjax("obras/agregarTrabajador/".$nomina -> id,"nomina".$nomina -> id) ?>
+                        	<table>
+                        		<tr>
+                        			<td>
+                        				<?= Formulario::autocompleteModelo("empleado".$nomina -> id,$trabajadores,"nombre","","style: width: 400px;") ?>
+                        			</td>
+                        			<td>
+                        				<?= Formulario::selectModelo("categoria".$nomina -> id,$categorias,"nombre","id","","style: width: 150px;") ?>
+                        			</td>
+                        			<td>
+                        				<?= Formulario::submit("Agregar Trabajador","class: boton1") ?>
+                        			</td>
+                        		</tr>
+                        	</table>
+                        	<?= Formulario::fin(); ?>
+                        </center><br /><hr />
+                        <?php } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			    		<?= Formulario::inicioAjax("obras/modificarNomina","nomina".$nomina -> id) ?>
+			    		<?= Formulario::oculto("nomina",$nomina -> id) ?>
+			    		<table border="0" cellpadding="0" cellspacing="0">
+							<tr height="25">
+			                    <td colspan="7" style="width: 750px;" align="center">
+			                            <table class="formulario" >
+			                                <tr id="encabezado">
+			                                    <th height="30" width="275">Nombre</th>
+			                                    <th height="30" width="75">Categoria</th>
+			                                    <th height="30" width="25">L</th>
+			                                    <th height="30" width="25">M</th>
+			                                    <th height="30" width="25">M</th>
+			                                    <th height="30" width="25">J</th>
+			                                    <th height="30" width="25">V</th>
+			                                    <th height="30" width="25">S</th>
+			                                    <th height="30" width="25">D</th>
+			                                    <th height="30" width="50">D&iacute;as</th>
+			                                    <th height="30" width="75">Salario</th>
+			                                    <th height="30" width="100">Importe</th>
+			                                    <?php if($nomina -> estado == "KO"){ ?>
+			                                    <th height="30" width="25" align="center">
+			                                        &nbsp;
+			                                    </th>
+			                                    <?php } ?>
+			                                </tr>
+			                            <?php if($asistencia){ ?>
+			                            <?php $i=0;  $total = 0; foreach($asistencia as $a){ $i++; if($i%2==0) $x = "fila1"; else $x="fila2"; ?>
+			                                <tr id="<?= $x ?>">
+			                                    <td height="25" width="275" align="center" style="font-size: 10px;">
+			                                        <?php if($a -> empleado() -> nombre == ".") echo ""; else echo $a -> empleado() -> nombre ?>
+			                                    </td>
+			                                    <td height="25" width="75" align="center" style="font-size: 10px;">
+			                                        <?php if($a -> categoria_id > 0){ echo $a -> categoria() -> nombre; } else { if($a -> empleado() -> categoria() -> nombre == ".") echo ""; else echo $a -> empleado() -> categoria() -> nombre; } ?>
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" <?= $nomina -> estado == "OK" ? 'disabled="disabled"' : '' ?> name="l<?= $a -> id ?>" <?= $a -> lunes == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" <?= $nomina -> estado == "OK" ? 'disabled="disabled"' : '' ?> name="m<?= $a -> id ?>" <?= $a -> martes == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" <?= $nomina -> estado == "OK" ? 'disabled="disabled"' : '' ?> name="i<?= $a -> id ?>" <?= $a -> miercoles == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" <?= $nomina -> estado == "OK" ? 'disabled="disabled"' : '' ?> name="j<?= $a -> id ?>" <?= $a -> jueves == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" <?= $nomina -> estado == "OK" ? 'disabled="disabled"' : '' ?> name="v<?= $a -> id ?>" <?= $a -> viernes == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" <?= $nomina -> estado == "OK" ? 'disabled="disabled"' : '' ?> name="s<?= $a -> id ?>" <?= $a -> sabado == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" <?= $nomina -> estado == "OK" ? 'disabled="disabled"' : '' ?> name="d<?= $a -> id ?>" <?= $a -> domingo == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="50" align="center" style="font-size: 10px;">
+			                                        <?= $a -> dias ?>
+			                                    </td>
+			                                    <td height="25" width="75" align="center" style="font-size: 10px;">
+			                                        $<?= number_format($a -> salario,2) ?>
+			                                    </td>
+			                                    <td height="25" width="100" align="center" style="font-size: 10px;">
+			                                        $<?= number_format($a -> importe,2) ?><?php $total += $a -> importe; ?>
+			                                    </td>
+			                                    <?php if($nomina -> estado == "KO"){ ?>
+			                                    <td width="25" align="center">
+													<?= Html::linkAjax("obras/descartarTrabajador/".$a -> id,Html::imagen("miniconos/delete.png","Descartar Trabajador",18,18),"nomina".$nomina -> id); ?>
+			                                    </td>
+			                                    <?php } ?>
+			                                </tr>
+			                            <?php } ?>
+			                                <tr>
+			                                    <td colspan="10"></td>
+			                                    <th height="30" width="25">Total: </th>
+			                                    <th colspan="<?= $nomina -> estado == "KO" ? "2" : "1" ?>" height="25" width="50" align="center" id="<?= $x=="fila1" ? "fila2" : "fila1" ?>">
+			                                        $<?= number_format($total,2) ?>
+			                                    </th>
+			                                </tr>
+			                        <?php } ?>
+			                        </table>
+			                    </td>
+			                </tr>
+			            </table>
+			            <br />
+			            <?php if($nomina -> estado == "KO"){ ?>
+			            <?php if(count($asistencia)>0){ ?>
+			                <div align="right" style="padding-right: 10px;">
+			                	<?= Formulario::submit("Actualizar Asistencia","class: boton1") ?>
+			                	<?= Acl::link("obras/terminarNomina/".$nomina -> id,"Terminar Nomina","class: boton2","style: color:#EEE;") ?>
+			                </div>
+			            <?php } ?>
+			            <?php } else { ?>
+			            	<div align="right" style="padding-right: 10px;">
+			            		<?= Acl::link("pdf/nomina/".$nomina -> id,"Formato PDF","class: boton1","style: color:#EEE;","target: _blank") ?>
+			            	</div>
+			            <?php } ?>
+			            <br />
+			            <?= Formulario::fin(); ?>
+					</td>
+			   	</tr>
+			   	<tr>
+			   		<td style="padding: 25px; font-size: 14px; font-weight: bold; text-align: center">
+			   			LOS SUELDOS SON REGISTRADOS ANTES DE IMPUESTOS
+			   		</td>
+			   	</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</div>

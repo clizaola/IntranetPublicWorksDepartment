@@ -1,0 +1,274 @@
+<?= Load::lib("amecasoft") ?>
+<style type="text/css">
+	.escritorio{
+		clear: both;
+		width: 1200px;	
+		padding-left: 10px;	
+	}
+	.escritorio a{
+		
+		font-weight: bold;
+		
+	}
+	.escritorio .contenedor{	
+		clear: both;
+		background-color: #F6F6F6;
+		font-size: 14px;
+		padding: 10px;
+		border-radius: 5px;
+		margin-bottom: 20px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;
+	}
+	.escritorio .avisos{		
+		padding: 5px 10px;
+		color: #FFF;
+		background-color: #777;
+		text-align: center;
+		font-weight: bold;
+		font-size: 14px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;
+	}
+	.escritorio .bloque1{
+		clear: both;
+		float: left;
+		width: 575px;
+		margin-right: 50px;
+	}
+	.escritorio .bloque2{				
+		float: left;
+		width: 575px;
+	}	
+	.escritorio .titulo{
+		width: 575px;
+		padding: 5px 10px;
+		color: #FFF;
+		background-color: #777;
+		text-align: center;
+		font-weight: bold;
+		font-size: 14px;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		-khtml-border-radius: 5px;
+	}	
+	.escritorio td{
+		padding: 3px 5px;
+	}
+	.escritorio td a{
+		text-decoration: none;
+		color: #000;
+		font-weight: bold;
+		display: block;
+	}
+	.escritorio td a:hover{
+		text-decoration: underline;
+	}
+	.escritorio .enTiempo{
+		background-color: #CCCC33;
+	}
+	.escritorio .proxima1{
+		background-color: #339966;
+		color: #fff;
+	}
+	.escritorio .proxima2{
+		background-color: #339900;
+		color: #FFF;
+	}
+	.escritorio .proxima3{
+		background-color: #336633;
+		color: #FFF;
+	}
+	.escritorio .unaSemana{
+		background-color: #FFCC00;
+		color: #333;
+	}
+	.escritorio .dosSemana{
+		background-color: #FF9900;
+		color: #FFF;
+	}
+	.escritorio .unMes{
+		background-color: #FF6600;
+		color: #333;
+	}
+	.escritorio .vencida{
+		background-color: #993333;
+		color: #FFF;		 
+	}
+</style>
+<?= Load::lib('utilerias') ?>
+<?= Load::lib('formato') ?>
+<?php
+function colorEstadoTareas($fecha){	
+	$tiempo[1] = (60 * 60 * 24 * 7);
+	$tiempo[2] = (60 * 60 * 24 * 3);
+	$tiempo[3] = (60 * 60 * 24 * 1);
+	
+	$diferencia = Utilerias::diferenciaFechas(date('Y-m-d'),$fecha);	
+
+	if($diferencia > 0){
+		return 'vencida';
+	}if(abs($diferencia)  < $tiempo[3]){
+		return 'enTiempo';
+	}elseif(abs($diferencia)  < $tiempo[2]){
+		return 'proxima1';
+	}elseif(abs($diferencia) < $tiempo[1]){
+		return 'proxima2';
+	}else{
+		return 'proxima3';
+	}
+	
+}
+
+function colorEstado($fecha){	
+	$tiempo[1] = (60 * 60 * 24 * 30);
+	$tiempo[2] = (60 * 60 * 24 * 14);
+	$tiempo[3] = (60 * 60 * 24 * 7);
+	$diferencia = Utilerias::diferenciaFechas(date('Y-m-d'),$fecha);
+	if($diferencia  <= $tiempo[3]){
+		return 'unaSemana';
+	}elseif($diferencia  < $tiempo[2]){
+		return 'dosSemana';
+	}elseif($diferencia < $tiempo[1]){
+		return 'unMes';
+	}else{
+		return 'vencida';
+	}
+}
+?>
+<div class="escritorio">
+	<?php if($avisos){ ?> 	
+	<div>
+		<?php foreach ($avisos as $aviso) {
+			echo '<div style="padding-bottom: 5px">'.Flash::warning('<div style="padding: 3px 10px;"><b>'.Formato::fechaAbreviada($aviso -> fecha_limite).'</b> - '.$aviso -> aviso.'</div>').'</div>';	
+		}		
+		?>
+	</div>
+	<?php } ?>
+	<div class="bloque1">
+		<div class="titulo">TAREAS PENDIENTES <?= Acl::link('pdf/tareas/',Html::imagen('miniconos/printer.png'),'target: _blank') ?></div>
+		<div class="contenedor">
+			<table width="100%">
+				<tr>
+					<th height="40">id</th>
+					<th>Tarea</th>										
+					<th>Fecha Asignacion</th>
+					<th>Fecha Limite</th>
+					<th>Estado</th>
+				</tr>
+		<?php 		
+		if($Ptareas){
+			echo '<tr>';
+				echo '<td colspan="5" style="font-weight: bold; text-align: center; font-size:14px;">Proyectos '.Acl::link('pdf/tareas/'.Session::get('usuario_id').'/p/',Html::imagen('miniconos/printer.png'),'target: _blank','style: display: inline;').'</td>';
+			echo '</tr>';
+			foreach($Ptareas as $tarea){
+				$clase = colorEstadoTareas($tarea -> limite);
+				echo '<tr>';
+					echo '<td>'.$tarea -> id.'</td>';
+					echo '<td>'.Acl::link('proyectos/consulta/'.$tarea -> proyectos_id,$tarea -> nombre).'</td>';										
+					echo '<td>'.$tarea -> creacion.'</td>';
+					echo '<td>'.$tarea -> limite.'</td>';
+					echo '<td class="'.$clase.'" style="text-align: center;">'.Acl::link('pdf/tareas/'.Session::get('usuario_id').'/p/'.$tarea -> id,Html::imagen('miniconos/printer.png'),'target: _blank').'</td>';
+				echo '</tr>';
+			}			
+		}
+		if($Otareas){
+			echo '<tr>';
+				echo '<td colspan="5" style="font-weight: bold; text-align: center; font-size:14px;">Obras '.Acl::link('pdf/tareas/'.Session::get('usuario_id').'/o/',Html::imagen('miniconos/printer.png'),'target: _blank','style: display: inline;').'</td>';
+			echo '</tr>';
+			foreach($Otareas as $tarea){
+				$clase = colorEstadoTareas($tarea -> limite);
+				echo '<tr>';
+					echo '<td>'.$tarea -> id.'</td>';
+					echo '<td>'.Acl::link('obras/consulta/'.$tarea -> obras_id,$tarea -> nombre).'</td>';										
+					echo '<td>'.$tarea -> creacion.'</td>';
+					echo '<td>'.$tarea -> limite.'</td>';
+					echo '<td class="'.$clase.'" style="text-align: center;">'.Acl::link('pdf/tareas/'.Session::get('usuario_id').'/o/'.$tarea -> id,Html::imagen('miniconos/printer.png'),'target: _blank').'</td>';
+				echo '</tr>';
+			}			
+		}
+		?>
+			</table>		
+		</div>
+	</div>
+	<div class="bloque2">
+		<div class="titulo">Solicitudes</div>
+		<div class="contenedor">
+			<table width="100%">
+				<tr>
+					<th height="40">CODIGO</th>
+					<th>OBRA</th>
+					<th>RECEPTOR</th>
+					<th>ULTIMA ACTUALIZACION</th>				
+					<th>ESTADO</th>
+				</tr>
+		<?php 
+		foreach($solicitudes as $solicitud){
+			$clase = colorEstado($solicitud -> fecha_in);			
+			echo '<tr>';
+				echo '<td>'.$solicitud -> codigo.'</td>';
+				echo '<td>'.Acl::link('solicitudes/consulta/'.$solicitud -> id,$solicitud -> nombre).'</td>';
+				echo '<td>'.$solicitud -> receptor.'</td>';
+				echo '<td>'.$solicitud -> fecha_in.'</td>';
+				echo '<td class="'.$clase.'">'.$solicitud -> estado.'</td>';
+			echo '</tr>';
+		}
+		?>
+		</table>
+		</div>
+	</div>	
+	<div class="bloque1">
+		<div class="titulo">Proyectos</div>
+		<div class="contenedor">
+			<table width="100%">
+				<tr>
+					<th height="40">CODIGO</th>
+					<th>OBRA</th>
+					<th>SUPERVISOR</th>
+					<th>ULTIMA ACTUALIZACION</th>				
+					<th>ESTADO</th>
+				</tr>
+		<?php 
+		foreach($proyectos as $proyecto){
+			$clase = colorEstado($proyecto -> fecha_in);			
+			echo '<tr>';
+				echo '<td>'.$proyecto -> codigo.'</td>';
+				echo '<td>'.Acl::link('proyectos/consulta/'.$proyecto -> id,$proyecto -> nombre).'</td>';
+				echo '<td>'.$proyecto -> supervisores_id.'</td>';
+				echo '<td>'.$proyecto -> fecha_in.'</td>';
+				echo '<td class="'.$clase.'">'.$proyecto -> estado.'</td>';
+			echo '</tr>';
+		}
+		?>
+		</table>
+		</div>
+	</div>
+	<div class="bloque2">
+		<div class="titulo">Obras</div>
+		<div class="contenedor">
+			<table width="100%">
+				<tr>
+					<th height="40">CODIGO</th>
+					<th>OBRA</th>
+					<th>SUPERVISOR</th>
+					<th>ULTIMA ACTUALIZACION</th>				
+					<th>ESTADO</th>
+				</tr>
+		<?php 
+		foreach($obras as $obra){
+			$clase = colorEstado($obra -> fecha_in);			
+			echo '<tr>';
+				echo '<td>'.$obra -> codigo.'</td>';
+				echo '<td>'.Acl::link('obras/consulta/'.$obra -> id,$obra -> nombre).'</td>';
+				echo '<td>'.$obra -> supervisores_id.'</td>';
+				echo '<td>'.$obra -> fecha_in.'</td>';
+				echo '<td class="'.$clase.'">'.$obra -> estado.'</td>';
+			echo '</tr>';
+		}
+		?>
+		</table>			
+		</div>
+	</div>
+</div>

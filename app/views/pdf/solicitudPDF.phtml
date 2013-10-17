@@ -1,0 +1,151 @@
+<?= Load::lib("html") ?>
+<?= Load::lib("formato") ?>
+<style type="text/css">
+<!--
+	h2{ color: #<?= SAM_COLOR1 ?>;}
+	table.page_header {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 18px; text-transform: uppercase; }
+	.page_header table{ padding: 0px; margin: 0px; text-transform: uppercase;}
+	table.informacion {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 10px; text-transform: uppercase; }
+	table.informacion td {border: 1px solid #333; padding: 5px; text-transform: uppercase; border: 1px solid #333;}
+	table.page_footer {width: 100%; border: none; background-color: #<?= SAM_COLOR2 ?>; padding: 2mm; color: #FFF; font-size: 12px; text-transform: uppercase;}	
+	.firma, div.standard .firma td{	border: 0px; }
+	.formato1{
+		background-color: #<?= SAM_COLOR1 ?>;
+		color:#fff;		
+		font-weight: bold;
+		padding: 5px 2px;
+		text-align: center;		
+	}
+	.formato2{
+		background-color: #<?= SAM_COLOR3 ?>;
+		color:#333;		
+		font-weight: bold;	
+		text-align: center;	
+	}
+-->
+</style>
+<page backtop="50mm" backbottom="14mm" backleft="0mm" backright="0mm" style="font-size: 12pt">
+	<page_header>
+		<table border="0" class="page_header">
+			<tr>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/ameca.jpg","H. Ayuntamiento de Ameca",100) ?>
+				</td>
+				<td width="475" align="center">
+					<h2>FICHA INFORMATIVA<br />DE LA SOLICITUD</h2>
+				</td>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/titulo.jpg","Departamento de Obras Publicas",150) ?>
+				</td>
+			</tr>			
+		</table>
+		<br />
+		<table cellpadding="0" cellspacing="0" class="informacion">
+			<tr>
+				<td class="formato1" width="60">
+					SOLICITUD:
+				</td>
+				<td width="610" colspan="5">
+					<?= $solicitud -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" width="60">
+					CÓDIGO:
+				</td>
+				<td width="60">
+					<?= $solicitud -> codigo ?>
+				</td>
+				<td class="formato1" width="60">
+					LUGAR:
+				</td>
+				<td width="180">
+					<?= $solicitud -> localidad() -> nombre ?>
+				</td>
+				<td class="formato1" width="60">
+					RECEPTOR:
+				</td>
+				<td width="220">
+					<?= $solicitud -> receptor ?>
+				</td>
+			</tr>
+		</table>				
+	</page_header>
+	<page_footer>
+		<table class="page_footer">
+			<tr>
+				<td style="width: 50%; text-align: left">
+					<?= SAM_ADMINISTRACION ?><br />
+					PÁGINA [[page_cu]]
+				</td>				
+				<td style="width: 50%; text-align: right">
+					www.ameca.gob.mx<br />
+					Impreso desde SAM <?= date('d/m/Y H:i') ?> Hrs.
+				</td>
+			</tr>			
+		</table>
+	</page_footer>	
+	
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+		</tr>
+		<tr>
+			<td class="formato2" style="padding: 5px 0px; text-align: center; font-size: 14px;" colspan="15">
+				INFORMACIÓN DEL SOLICITANTE
+			</td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="2">NOMBRE</td>
+			<td colspan="6"><?= $solicitud -> solicitante_nombre ?></td>
+			<td class="formato1"colspan="2">DIRECCION</td>
+			<td colspan="5"><?= $solicitud -> solicitante_direccion ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="2">TELEFONO</td>
+			<td colspan="3"><?= $solicitud -> solicitante_telefono ?></td>
+			<td class="formato1" colspan="2">CELULAR</td>
+			<td colspan="3"><?= $solicitud -> solicitante_celular ?></td>				
+			<td class="formato1" colspan="2">CORREO-E</td>
+			<td colspan="3"><?= $solicitud -> solicitante_correo ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">CATEGORÍA DEL EMISOR</td>
+			<td colspan="12"><?= $solicitud -> emisor ?></td>
+		</tr>
+		<tr>
+			<td style="border: 0px;" height="20" colspan="15"></td>
+		</tr>
+		<tr>
+			<td class="formato2" style="padding: 5px 0px; text-align: center; font-size: 14px;" colspan="15">
+				INFORMACIÓN DE LA SOLICITUD
+			</td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">MEDIO DE LA SOLICITUD</td>
+			<td colspan="2"><?= $solicitud -> medio ?></td>
+			<td class="formato1"colspan="2">FECHA LIMITE</td>
+			<td colspan="3"><?= $solicitud -> fecha ?></td>
+			<td class="formato1"colspan="2">ESTADO</td>
+			<td colspan="3"><?= $solicitud -> estado ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">RESPONSABLE</td>
+			<td colspan="7"><?= $solicitud -> responsable() -> nombre ?></td>
+			<td class="formato1" colspan="2">TIPO DE OBRA</td>
+			<td colspan="3"><?= $solicitud -> fecha ?></td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">LOCALIZACIÓN</td>				
+			<td colspan="12"><?= $solicitud -> localizacion ?></td>				
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">DESCRIPCIÓN</td>				
+			<td colspan="12"><?= $solicitud -> descripcion ?></td>				
+		</tr>
+		<tr>
+			<td class="formato1" colspan="3">NOTAS ADICIONALES</td>				
+			<td colspan="12"><?= $solicitud -> comentarios ?></td>				
+		</tr>
+	</table>
+</page>

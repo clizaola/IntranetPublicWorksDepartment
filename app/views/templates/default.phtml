@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv='Content-type' content='text/html; charset=<?php echo APP_CHARSET ?>' />
+		<title>SAM - Sistema de Administracion Municipal :: <?= SAM_MUNICIPIO.', '.SAM_ESTADO ?></title>
+		<link rel="shortcut icon" href="<?= PUBLIC_PATH ?>favicon.ico" type="image/x-icon" /> 		 
+        <?= stylesheet_link_tag('menu', 'use_variables: true') ?>
+        <?= stylesheet_link_tag('estilo', 'use_variables: true','media: screen') ?>
+		<?= stylesheet_link_tag(SAM_TEMPLATE, 'use_variables: true','media: screen') ?>        
+		<?= stylesheet_link_tag('style', 'use_variables: true') ?>		
+        
+        <?= stylesheet_link_tag('jquery-ui-1.8.9.custom') ?>        
+		
+		<?= javascript_include_tag('amecasoft')."\n" ?>		
+        <?= javascript_library_tag('jquery/jquery-1.4.2.min')."\n" ?>
+        <?= javascript_library_tag('jquery/jquery-ui-1.8.9.custom.min')."\n" ?>
+        <?= javascript_library_tag('jquery/jquery.form')."\n" ?>
+        <?= javascript_library_tag('jquery/jquery.metadata')."\n" ?>
+        <?= javascript_library_tag('jquery/jquery.validate')."\n" ?>
+        
+        <!-- Fancybox para Ajax -->
+        <?= javascript_include_tag('fancybox/jquery.mousewheel-3.0.4.pack') ?>
+		<?= javascript_include_tag('fancybox/jquery.fancybox-1.3.4.pack') ?>
+		<?= stylesheet_link_tag('fancybox/jquery.fancybox-1.3.4') ?>
+		
+	    <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
+        <script type="text/javascript">
+			//<![CDATA[
+				bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+			//]]>
+	  	</script>
+        
+        <?= javascript_library_tag('application')."\n" ?>
+        <?= javascript_include_tag("kumbia/validations")."\n" ?>
+        <!--[if gte IE 5.5]>
+            <script language="JavaScript" src="dhtml.js" type="text/JavaScript"></script>
+        <![endif]-->
+        <?= Load::lib("aclx") ?>
+        <?= Load::lib("amecasoft") ?>
+	</head>
+	<body>		
+		<div class='barra'>
+			<span class='titulo'>INTRANET SAM - Sistema de Administracion Municipal :: <?= SAM_MUNICIPIO.', '.SAM_ESTADO ?></span>
+			<span class='buscar'>
+			<?= Formulario::inicio("escritorio/busquedaGeneral") ?>
+			<table>
+				<tr>
+					<td>
+						<?= Formulario::texto("busqueda","","style: width: 200px; height: 18px;") ?>		
+					</td>
+					<td>
+						<?= Formulario::submit("Buscar","class: boton2") ?> 	
+					</td>
+				</tr>
+			</table>
+			<?= Formulario::fin(); ?>
+			 </span>
+			 <span style='font-size:12px; position: absolute; right:0px'>
+			 <?php $usuario = Usuario::consultar(Session::get("usuario_id")); ?>
+			 <?php if(isset($usuario) && isset($usuario -> nombre)){ ?>
+			 Bienvenid@:	 <?= Html::link('escritorio/index',$usuario -> nombre) ?>
+			 <?php } ?>
+			 &nbsp;&nbsp;&nbsp;
+			 <?= Html::link("seguridad/logout",Html::imagen("iconos/176.png")) ?>
+			 &nbsp;&nbsp;&nbsp;
+			 </span>
+		</div>		
+		<div class='contenedor'>
+		    <div class="menu">
+		        <ul id="navmenu">
+		        	<li>
+		        		<?= Acl::link("seguridad/roles",Html::imagen('menu/accesos.png','Control de Acceso','',30)."<br />Control de Acceso",0) ?>
+		        		<ul>
+		        			<?= Acl::menu("seguridad/acl","Administracion ACL",0) ?>
+		        			<?= Acl::menu("seguridad/roles","Roles de Acceso",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("seguridad/registroRol","Registrar Rol",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("seguridad/usuarios","Usuarios del Sistema",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("seguridad/registroUsuario","Registrar Usuario",0) ?>	
+				        		</ul>
+		        			</li>
+		        		</ul>
+		        	</li>
+		        	<li>
+		        		<?= Acl::link("catalogos/importarCatalogo",Html::imagen('menu/catalogos.png','Catalogos','',30)."<br />Catalogos",0) ?>
+		        		<ul>
+		        			<?= Acl::menu("catalogos/dependencias","Dependencias",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/dependencia","Registrar Dependencia",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/programas","Programas",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/programa","Registrar Programa",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/localidades","Localidades",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/localidad","Registrar Localidad",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/tipos","Tipos de Obra",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/tipo","Registrar Tipo de Obra",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/insumos","Insumos",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/insumo","Registrar Insumo",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/conceptos","Conceptos",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/concepto","Registrar Concepto",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/empleados","Empleados",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/empleado","Registrar Empleado",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/contratistas","Contratistas",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/contratista","Registrar Contratista",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("catalogos/exportarCatalogo","Administrar Catalogos",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("catalogos/importarCatalogo","Importar Catalogo",0) ?>
+				        			<?= Acl::menu("catalogos/exportarCatalogo","Exportar Catalogo",0) ?>
+				        		</ul>
+		        			</li>		        			
+						</ul>
+		        	</li>
+		        	<li>
+		        		<?= Acl::link("solicitudes/reporte",Html::imagen('menu/solicitudes.png','Solicitudes','',30)."<br />Solicitudes",0) ?>
+		        		<ul>
+		        			<?= Acl::menu("solicitudes/registro","Nueva Solicitud",0) ?>
+		        			<?= Acl::menu("solicitudes/reporte/nuevas","Solicitudes Nuevas",0) ?>
+		        			<?= Acl::menu("solicitudes/reporte/proyecto","Solicitudes en Proyecto",0) ?>
+		        			<?= Acl::menu("solicitudes/reporte/obra","Solicitudes en Obra",0) ?>
+		        			<?= Acl::menu("solicitudes/reporte/canceleadas","Solicitudes Canceladas",0) ?>
+		        			<?= Acl::menu("solicitudes/reporte/terminadas","Solicitudes Terminadas",0) ?>
+		        		</ul>
+		        	</li>
+		        	<li>
+		        		<?= Acl::link("proyectos/reporte",Html::imagen('menu/proyectos.png','Proyectos','',30)."<br />Proyectos",0) ?>
+		        		<ul>
+		        			<?= Acl::menu("proyectos/registro","Nuevo Proyecto",0) ?>
+		        			<?= Acl::menu("proyectos/reporte/nuevos","Proyectos Nuevos",0) ?>
+		        			<?= Acl::menu("proyectos/reporte/proceso","Proyectos en Proceso",0) ?>
+		        			<?= Acl::menu("proyectos/reporte/obra","Proyectos en Obra",0) ?>
+		        			<?= Acl::menu("proyectos/reporte/terminados","Proyectos Terminados",0) ?>
+		        		</ul>
+		        	</li>
+		        	<li>		        		
+		        		<?= Acl::link("obras/reporte",Html::imagen('menu/obras.png','Obras','',30)."<br />Obras",0) ?>
+		        		<ul>
+		        			<?= Acl::menu("obras/registro","Nueva Obra",0) ?>
+		        			<?= Acl::menu("obras/reporte/nuevas","Obras Nuevas",0) ?>
+		        			<?= Acl::menu("obras/reporte/proceso","Obras en Proceso",0) ?>
+		        			<?= Acl::menu("obras/reporte/terminadas","Obras Terminadas",0) ?>
+		        		</ul>
+		        	</li>
+		        	<li>
+		        		<?= Acl::link("nominas/reporte",Html::imagen('menu/nominas.png','Nominas','',30)."<br />Nominas",0) ?>
+		        		<ul>
+		        			<?= Acl::menu("nominas/registro","Registrar Nomina",0) ?>
+		        			<?= Acl::menu("nominas/reporte","Listado de Nominas",1) ?>
+		        				<ul>
+				        			<?= Acl::menu("nominas/reporte/pendientes","Nominas Pendientes",0) ?>
+				        			<?= Acl::menu("nominas/reporte/aceptadas","Nominas Aceptadas",0) ?>
+				        		</ul>
+		        			</li>
+		        			<?= Acl::menu("nominas/categorias","Categorias",1) ?>
+		        				<ul>
+		        					<?= Acl::menu("nominas/registroCategoria","Registrar Categoria",0) ?>
+		        				</ul>
+		        			</li>
+		        			<?= Acl::menu("nominas/empleados","Empleados",1) ?>
+		        				<ul>
+		        					<?= Acl::menu("nominas/registroEmpleado","Registrar Empleado",0) ?>
+		        				</ul>
+		        			</li>
+		        		</ul>
+		        	</li>
+		        	<?php if(Empleado::consultar($usuario -> empleado_id)){ ?>
+		        	<li>
+		        		<?= Acl::link("tareas/reporte",Html::imagen('menu/tareas.png','Tareas','',30)."<br/>Mis Tareas",0) ?>
+		        		<ul>
+		        			<?= Acl::menu("tareas/reporte/pendientes","Tareas Pendientes",0) ?>
+		        			<?= Acl::menu("tareas/reporte/terminadas","Tareas Terminadas",0) ?>
+		        		</ul>
+		        	</li>
+		        	<?php } ?>		        	
+		        	<li>
+		        		<?= Acl::link("avisos/reporte",Html::imagen('menu/avisos.png','Avisos','',30)."<br/>Avisos",0) ?>		        		
+		        	</li>		        	
+		        </ul>
+		    </div>
+		    <div id='contenido' class='contenido'>
+		    	<?php View::content(); ?>
+		    </div>
+		    <br />
+		</div>
+	  	<div class='pie'>
+			Sistema desarrollado por <a href="<?= AUTOR_URL ?>"><img src='<?= AUTOR_URL ?>/as.png' width='30' /> <?= AUTOR_NOMBRE ?></a><br />
+			<?= SAM_ADMINISTRACION ?> 
+		</div>
+	</body>
+</html>

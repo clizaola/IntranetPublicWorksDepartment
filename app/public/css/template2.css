@@ -1,0 +1,167 @@
+/*
+ #DDE8EC # Azul Claro
+ #3289BE AZUL
+ #003C78 Azul obscuro
+ */
+
+html, body{
+	background: #003C78;
+}
+.inicio .cabecera{
+
+	background: #3289BE;
+	color: #ffffff;	
+	border-bottom: #333333 3px solid;
+}
+.inicio #contenido {
+	background-color: #3289BE;
+	border: #EEEEEE 1px solid;
+	color: #FFFFFF;	
+}
+.inicio #contenido  th{
+	color: #FFF;
+}
+.inicio .pie {
+	background: #3289BE;
+	color: #ffffff;
+	border-top: #333333 3px solid;
+}
+.inicio .pie a {
+	color: #ffffff;
+}
+.contenido th {
+	background-color: #DDE8EC;	
+}
+.barra {
+	background-color: #3289BE;
+	color: #FFF;
+	border-bottom: #003C78 3px solid
+}
+.barra a {
+	color: #333;	
+}
+.barra a:hover {
+	color: #666
+}
+.menu {
+	background-color: #EEE;
+	border-bottom: #003C78 3px solid;	
+}
+.pie {
+	background-color: #3289BE;
+	color: #FFF;
+	border-top: #003C78 3px solid;	
+}
+.pie a {
+	color: #FFF
+}
+.lateral {
+	background: #3289BE;
+	color: #FFF;
+	border-right: 2px solid #003C78
+}
+.lateral a {
+	color: #FFF;
+}
+.lateral a:hover {
+	color: #DDD;
+}
+.lateral ul {
+	background: #3289BE
+}
+.lateral ul ul {
+	background: #3289BE;
+}
+.contenido {
+	background: #DEDEDE;
+}
+/*
+ * Formularios
+ */
+.formulario th {
+	background-color: #DDE8EC;
+	color: #000
+}
+.formulario th a {
+	color: #333;
+}
+.formulario th a:hover {
+	color: #000;
+}
+.formulario #mensaje {
+	background: #003C78;
+	color: #FFF;	
+}
+.formulario #mensajex {
+	background: #3289BE;
+	color: #FFF;	
+}
+.formulario #contenido {
+	background: #F6F6F6;
+	color: #000;	
+}
+.formulario #titulo {
+	color: #000;
+}
+.formulario #subtitulo {
+	color: #000;
+}
+.formulario #paginador {
+	background-color: #3289BE;
+	color: #F6F6F6;
+}
+.formulario #paginador a {
+	color: #FFF;
+}
+.formulario #paginador2 {
+	background-color: #003C78;
+	color: #F6F6F6;
+}
+.formulario #paginador2 a {
+	color: #FFF;
+}
+.formulario #paginador a:hover, .formulario #paginador2 a:hover {
+	color: #BBB;
+}
+.formulario #fila1 {
+	background: #E6E6E6;
+	color: #000
+}
+.formulario #fila2 {
+	background: #EEE;
+	color: #000
+}
+#boton1, .boton1 {
+	background-color: #3289BE;
+	border: 1px solid #000;
+	color: #EEE;
+}
+#boton2, .boton2 {
+	background-color: #003C78;
+	border: 1px solid #000;
+	color: #EEE;
+}
+#boton3, .boton3{
+	background-color: #CCC;
+	border: 1px solid #000;
+	color: #000;
+}
+.formato1 {
+	background-color: #3289BE;
+	color: #EEE
+}
+.formato2 {
+	background-color: #003C78;
+	color: #EEE
+}
+.formato3 {
+	background-color: #AAA;
+	color: #000
+}
+.formato4{
+	background-color: #DDE8EC;
+	color: #000000;
+}
+.barraComplemento{
+	background-color: #003C78;
+}

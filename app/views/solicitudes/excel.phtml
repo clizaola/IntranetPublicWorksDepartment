@@ -1,0 +1,52 @@
+<?php
+	header("Expires: 0");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Content-Type: application/force-download");
+    header("Content-Type: application/octet-stream");
+    header("Content-Type: application/download");;
+    header("Content-Disposition: attachment;filename=solicitudes.xls");
+?>
+<?php if($registros){ ?>
+	<table border="1">
+		<tr>
+			<td align="center">Id</td>
+			<td align="center">Código</td>
+			<td align="center">Nombre</td>
+			<td align="center">Descripción</td>
+			<td align="center">Localización</td>
+			<td align="center">Emisor</td>
+			<td align="center">Receptor</td>
+			<td align="center">Medio</td>
+			<td align="center">Nombre del Solicitante</td>
+			<td align="center">Direccion del Solicitante</td>
+			<td align="center">Teléfono del Solicitante</td>
+			<td align="center">Celular del Solicitante</td>
+			<td align="center">Correo del Solicitante</td>
+			<td align="center">Localidad</td>
+			<td align="center">Tipo de Obra</td>
+			<td align="center">Estado</td>
+			<td align="center">Fecha de Registro</td>
+		</tr>
+	<?php foreach($registros as $registro){ ?>
+		<tr>
+			<td align="center"><?= $registro -> id ?></td>
+			<td align="center"><?= $registro -> codigo ?></td>
+			<td align="center"><?= $registro -> nombre ?></td>
+			<td align="center"><?= $registro -> descripcion ?></td>
+			<td align="center"><?= $registro -> localizacion ?></td>
+			<td align="center"><?= $registro -> emisor ?></td>
+			<td align="center"><?= $registro -> receptor ?></td>
+			<td align="center"><?= $registro -> medio ?></td>
+			<td align="center"><?= $registro -> solicitante_nombre ?></td>
+			<td align="center"><?= $registro -> solicitante_direccion ?></td>
+			<td align="center"><?= $registro -> solicitante_telefono ?></td>
+			<td align="center"><?= $registro -> solicitante_celular ?></td>
+			<td align="center"><?= $registro -> solicitante_correo ?></td>
+			<td align="center"><?= $registro -> localidad() -> nombre ?></td>
+			<td align="center"><?= $registro -> tipoObra() -> nombre ?></td>
+			<td align="center"><?= $registro -> estado ?></td>
+			<td align="center"><?= $registro -> fecha ?></td>
+		</tr>
+	<?php } ?>
+	</table>
+<?php } ?>

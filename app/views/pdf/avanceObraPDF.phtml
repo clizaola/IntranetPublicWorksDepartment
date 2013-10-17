@@ -1,0 +1,157 @@
+<?= Load::lib("html") ?>
+<?= Load::lib("formato") ?>
+<style type="text/css">
+<!--
+	h2{ color: #<?= SAM_COLOR1 ?>;}
+	table.page_header {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 18px; text-transform: uppercase; }
+	.page_header table{ padding: 0px; margin: 0px; text-transform: uppercase;}
+	table.informacion {width: 100%; border: none; background-color: #FFF; color: #000; font-size: 10px; text-transform: uppercase; }
+	table.informacion td {border: 1px solid #333; padding: 5px; text-transform: uppercase; border: 1px solid #333;}
+	table.page_footer {width: 100%; border: none; background-color: #<?= SAM_COLOR2 ?>; padding: 2mm; color: #FFF; font-size: 12px; text-transform: uppercase;}	
+	.firma, div.standard .firma td{	border: 0px; }
+	.formato1{
+		background-color: #<?= SAM_COLOR1 ?>;
+		color:#fff;		
+		font-weight: bold;
+		padding: 5px 2px;
+		text-align: center;		
+	}
+	.formato2{
+		background-color: #<?= SAM_COLOR3 ?>;
+		color:#333;		
+		font-weight: bold;	
+		text-align: center;	
+	}	
+-->
+</style>
+<page backtop="60mm" backbottom="14mm" backleft="0mm" backright="0mm" style="font-size: 12pt">
+	<page_header>
+		<table border="0" class="page_header">
+			<tr>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/ameca.jpg","H. Ayuntamiento de Ameca",100) ?>
+				</td>
+				<td width="475" align="center">
+					<h2>FICHA INFORMATIVA<br />DE LA OBRA</h2>
+				</td>
+				<td width="100">
+					<?= Html::imagen("http://www.ameca.gob.mx/intranet/img/titulo.jpg","Departamento de Obras Publicas",150) ?>
+				</td>
+			</tr>			
+		</table>
+		<br />
+		<table cellpadding="0" cellspacing="0" class="informacion">
+			<tr style="height: 0px;">
+				<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="2">
+					OBRA:
+				</td>
+				<td width="580" colspan="13">
+					<?= $obra -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="2">
+					CÓDIGO:
+				</td>
+				<td colspan="3">
+					<?= $obra -> codigo ?>
+				</td>
+				<td class="formato1" colspan="2">
+					ACTA:
+				</td>
+				<td colspan="3">
+					<?//= $obra -> acta_id ?>
+				</td>
+				<td class="formato1" colspan="2">
+					LUGAR:
+				</td>
+				<td colspan="3">
+					<?= $obra -> localidad() -> nombre ?>
+				</td>
+			</tr>
+			<tr>
+				<td class="formato1" colspan="3">
+					TIPO DE OBRA:
+				</td>
+				<td colspan="7">
+					<?= $obra -> tipoobra() -> nombre ?>
+				</td>
+				<td class="formato1" colspan="2">
+					ESTADO:
+				</td>
+				<td colspan="3">
+					<?= $obra -> estado ?>
+				</td>
+			</tr>
+		</table>				
+	</page_header>
+	<page_footer>
+		<table class="page_footer">
+			<tr>
+				<td style="width: 50%; text-align: left">
+					<?= SAM_ADMINISTRACION ?><br />
+					PÁGINA [[page_cu]]
+				</td>				
+				<td style="width: 50%; text-align: right">
+					<?= APLICACION_PAGINA ?><br />
+					Impreso desde SAM <?= date('d/m/Y H:i') ?> Hrs.
+				</td>
+			</tr>			
+		</table>
+	</page_footer>
+<?php
+	$cont = 0;		
+	if($avances){ 
+		foreach ($avances as $avance){
+		$cont++;
+		if($cont >= 2){
+			echo '</page><page pageset="old">';
+		}
+		?>
+	<table cellpadding="0" cellspacing="0" class="informacion">
+		<tr style="height: 0px;">
+			<?php for($i=30;$i<=450; $i+=30){ echo '<td style="border: 0px; height: 0px;" height="0" width="30"></td>'; } ?>
+		</tr>			
+		<tr>
+			<td class="formato2" colspan="15" style="font-size: 14px;">
+				Avance
+			</td>
+		</tr>
+		<tr>
+			<td class="formato1" colspan="2">AVANCE</td>
+			<td colspan="3"><?= $avance -> porcentaje ?>%</td>
+			<td class="formato1" colspan="2">FECHA</td>
+			<td colspan="8"><?= Formato::fechaExtendida($avance -> fecha) ?></td>				
+		</tr>
+		<tr>
+			<td class="formato1" colspan="2">DESCRIPCIÓN</td>
+			<td colspan="13" style="width: 500px; text-align: justify"><?= $avance -> descripcion ?></td>
+		</tr>
+		<?php
+		$fotos = FotosObras::reporte('avance_id = '.$avance -> id);
+		$cont = 0;
+		if($fotos){
+		echo "<tr>";
+			foreach($fotos as $foto){ 			
+				if($cont >= 2){ echo '</tr><tr>'; $cont = 1; }else{ $cont++; } ?>
+			<td colspan="7" style="text-align: center; vertical-align: middle; border: 0px;">
+				<?= Html::imagen(APLICACION_URL.'img/fotos_obras/m'.$foto -> id.'.jpg','Foto de la obra',300) ?>
+			</td>			
+			<?php 
+			if($cont == 1){ echo '<td style="border: 0px;"></td>'; }
+			}
+		echo "</tr>";		
+		}
+		?>
+		<tr height="2">
+			<td colspan="15" height="2" style="border: 0px; height: 2px;"></td>
+		</tr>
+	</table>
+<?php 
+}	
+		} 
+		?>	
+</page>

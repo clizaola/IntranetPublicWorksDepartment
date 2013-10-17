@@ -1,0 +1,205 @@
+<?= Load::lib("amecasoft") ?>
+<table class="formulario">
+    <tr>
+        <th id="mensaje" width="1024" height="25" >
+            <?= $mensaje; ?>&nbsp;
+        </th>
+    </tr>
+    <tr>
+        <td width="1024" height="205" id="contenido" align="center">
+            <?= Formulario::inicio("nominas/modificar") ?>
+            <?= Formulario::oculto("id",$nomina -> id) ?>
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="1000"align="left">
+                        <h2 id="titulo">
+                            Información de la Nomina
+                        </h2>
+                        <span id="subtitulo">
+                            Los campos marcados con <span id="asterisco">*</span> son obligatorios y no se podrá actualizar esta información hasta que esten todos completos.
+                            <?= Html::link("pdf/nomina/".$nomina -> id,Html::imagen("icons/archivos/pdf.png","Imprimir Nomina",35,35),"target: _blank","style: float: right;") ?>
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>
+                <tr>
+                	<td>
+                        <?= Formulario::selectModelo("obra",$obras,"nombre","id",$nomina -> obra_id,"class: smediano","validate: required:true") ?>
+                        <div id="texto_abajo">Obra a la que Pertenece <span id="asterisco">*</span></div>    
+                    </td>
+                    <td width="20"></td>
+                    <td colspan="3">
+                        <?= Formulario::fecha("inicio",formatoFecha($nomina -> fecha_inicio),"dd/mm/yy",false,false,"class: tchico","validate: required:true") ?>
+                        <div id="texto_abajo">Fecha Inicio <span id="asterisco">*</span></div> 
+                    </td>
+                    <td width="20"></td>
+                    <td colspan="3">
+                        <?= Formulario::fecha("fin",formatoFecha($nomina -> fecha_fin),"dd/mm/yy",false,false,"class: tchico","validate: required:true") ?>
+                        <div id="texto_abajo">Fecha Fin <span id="asterisco">*</span></div> 
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="30"></td>
+                </tr>
+                <tr>
+                    <td width="1000" height="25" colspan="7" align="right">
+                    	<?= Formulario::cancelar("Regresar","nominas/consulta/".$nomina -> id,"class: boton3") ?>
+                    	<?= Formulario::submit("Modificar","class: boton1") ?>
+                    </td>
+                </tr>
+            </table>
+            <?= Formulario::fin(); ?>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= View::helpers("amecasoft"); ?>
+<?php Load::lib("utilerias") ?>
+<?php Load::lib("aclx") ?>
+
+<div id="nomina<?= $nomina -> id ?>">
+
+<?php $trabajadores = NominaEmpleados::disponibles($nomina -> id); ?>
+
+<?php $categorias = NominaCategorias::reporte(); ?>
+                            
+<?php $asistencia = $nomina -> asistencia(); ?>
+
+<table class="formulario" height="580">
+    <tr>
+        <td width="1024" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="960"align="left">
+                        <h2 id="titulo">
+                        	Información de la Asistencia
+                        </h2>
+                        <span id="subtitulo">
+                            A continuación se muestran los detalles de la nómina así como los trabajadores que contempla y sus asistencias.
+                        </span>
+                        <br /><br />
+                        <hr />
+                        <br /><center>
+                        	<?= Formulario::inicio("nominas/agregarTrabajador/".$nomina -> id) ?>
+                        	<table>
+                        		<tr>
+                        			<td>
+                        				<?= Formulario::autocompleteModelo("empleado".$nomina -> id,$trabajadores,"nombre","","style: width: 400px;") ?>
+                        			</td>
+                        			<td>
+                        				<?= Formulario::selectModelo("categoria".$nomina -> id,$categorias,"nombre","id","","style: width: 150px;") ?>
+                        			</td>
+                        			<td>
+                        				<?= Formulario::submit("Agregar Trabajador","class: boton1") ?>
+                        			</td>
+                        		</tr>
+                        	</table>
+                        	<?= Formulario::fin(); ?>
+                        </center><br /><hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			    		<?= Formulario::inicio("nominas/actualizar") ?>
+			    		<?= Formulario::oculto("nomina",$nomina -> id) ?>
+			    		<table border="0" cellpadding="0" cellspacing="0">
+							<tr height="25">
+			                    <td colspan="7" style="width: 950px;" align="center">
+			                            <table class="formulario" >
+			                                <tr id="encabezado">
+			                                    <th height="30" width="375">Nombre</th>
+			                                    <th height="30" width="125">Categoria</th>
+			                                    <th height="30" width="25">L</th>
+			                                    <th height="30" width="25">M</th>
+			                                    <th height="30" width="25">M</th>
+			                                    <th height="30" width="25">J</th>
+			                                    <th height="30" width="25">V</th>
+			                                    <th height="30" width="25">S</th>
+			                                    <th height="30" width="25">D</th>
+			                                    <th height="30" width="50">D&iacute;as</th>
+			                                    <th height="30" width="100">Salario</th>
+			                                    <th height="30" width="125">Importe</th>
+			                                    <th height="30" width="25" align="center">
+			                                        &nbsp;
+			                                    </th>
+			                                </tr>
+			                            <?php if($asistencia){ ?>
+			                            <?php $i=0;  $total = 0; foreach($asistencia as $a){ $i++; if($i%2==0) $x = "fila1"; else $x="fila2"; ?>
+			                                <tr id="<?= $x ?>">
+			                                    <td height="25" width="275" align="center" style="font-size: 10px;">
+			                                        <?php if($a -> empleado() -> nombre == ".") echo ""; else echo $a -> empleado() -> nombre ?>
+			                                    </td>
+			                                    <td height="25" width="75" align="center" style="font-size: 10px;">
+			                                        <?php if($a -> categoria_id > 0){ echo $a -> categoria() -> nombre; } else { if($a -> empleado() -> categoria() -> nombre == ".") echo ""; else echo $a -> empleado() -> categoria() -> nombre; } ?>
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" name="l<?= $a -> id ?>" <?= $a -> lunes == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" name="m<?= $a -> id ?>" <?= $a -> martes == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" name="i<?= $a -> id ?>" <?= $a -> miercoles == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" name="j<?= $a -> id ?>" <?= $a -> jueves == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" name="v<?= $a -> id ?>" <?= $a -> viernes == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" name="s<?= $a -> id ?>" <?= $a -> sabado == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="25" align="center" style="font-size: 10px;">
+			                                        <input type="checkbox" name="d<?= $a -> id ?>" <?= $a -> domingo == "OK" ? "CHECKED" : "" ?> />
+			                                    </td>
+			                                    <td height="25" width="50" align="center" style="font-size: 10px;">
+			                                        <?= $a -> dias ?>
+			                                    </td>
+			                                    <td height="25" width="75" align="center" style="font-size: 10px;">
+			                                        $<?= number_format($a -> salario,2) ?>
+			                                    </td>
+			                                    <td height="25" width="100" align="center" style="font-size: 10px;">
+			                                        $<?= number_format($a -> importe,2) ?><?php $total += $a -> importe; ?>
+			                                    </td>
+			                                    <td width="25" align="center">
+													<?= Html::link("nominas/descartarTrabajador/".$a -> id,Html::imagen("miniconos/delete.png","Descartar Trabajador",18,18)); ?>
+			                                    </td>
+			                                </tr>
+			                            <?php } ?>
+			                                <tr>
+			                                    <td colspan="10"></td>
+			                                    <th height="30" width="25">Total: </th>
+			                                    <th colspan="2" height="25" width="50" align="center" id="<?= $x=="fila1" ? "fila2" : "fila1" ?>">
+			                                        $<?= number_format($total,2) ?>
+			                                    </th>
+			                                </tr>
+			                        <?php } ?>
+			                        </table>
+			                    </td>
+			                </tr>
+			            </table>
+			            <br />
+			            <?php if(count($asistencia)>0){ ?>
+			                <div align="right" style="padding-right: 10px;">
+			                	<?= Formulario::submit("Actualizar Asistencia","class: boton1") ?>
+			                </div>
+			            <?php } ?>
+			            <br />
+			            <?= Formulario::fin(); ?>
+					</td>
+			   	</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</div>

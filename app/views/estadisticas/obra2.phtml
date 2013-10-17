@@ -1,0 +1,116 @@
+<?= Load::lib("amecasoft") ?>
+<?php 
+$Obra = Obra::consultar($id);
+$Nominas = Nomina::reporte('obra_id = '.$id,'fecha_inicio ASC');
+$TotalNominas = Nomina::total('obra_id = '.$id);
+$Facturas = Factura::reporte('obras_id = '.$id,'fecha ASC');
+$TotalFacturas = Factura::total('obras_id = '.$id);
+$inversionTotalNomina=0;
+$inversionTotalFacturacion = 0;
+ 
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Fecha');
+        data.addColumn('number', 'Inversion');
+        data.addRows(<?= $TotalNominas ?>);
+        <?php
+        $cont = 0; 
+        foreach($Nominas as $nomina){ ?>			
+	        data.setValue(<?= $cont ?>, 0, new Date (<?= substr($nomina -> fecha_inicio, 0,4) ?>,<?= substr($nomina -> fecha_inicio, 5,2) ?>,<?= substr($nomina -> fecha_inicio, 8,2) ?>));
+	        data.setValue(<?= $cont ?>, 1, <?= $nomina -> total ?>);
+        <?php
+        	$inversionTotalNomina += $nomina -> total;
+        	$cont++;
+		} 
+        ?>
+        
+        var data2 = new google.visualization.DataTable();
+        data2.addColumn('date', 'Fecha');
+        data2.addColumn('number', 'Inversion');
+        data2.addRows(<?= $TotalFacturas ?>);
+        <?php
+        $cont = 0; 
+        foreach($Facturas as $factura){ ?>			
+	        data2.setValue(<?= $cont ?>, 0, new Date (<?= substr($factura -> fecha, 0,4) ?>,<?= substr($factura -> fecha, 5,2) ?>,<?= substr($factura -> fecha, 8,2) ?>));
+	        data2.setValue(<?= $cont ?>, 1, <?= $factura -> importe ?>);	        		
+        <?php
+        	$inversionTotalFacturacion += $factura -> importe;
+        	$cont++;
+		} 
+        ?>
+        
+        var data3 = new google.visualization.DataTable();
+        data3.addColumn('string', 'Year');        
+        data3.addColumn('number', 'Presupuestado');
+        data3.addColumn('number', 'Asignado');
+        data3.addColumn('number', 'Ejecutado');
+        data3.addColumn('number', 'Nomina');
+        data3.addColumn('number', 'Facturacion');
+        data3.addRows(1);
+        data3.setValue(0, 0, 'Obra');        
+        data3.setValue(0, 1, <?= $Obra -> presupuestado ?>);
+        data3.setValue(0, 2, <?= $Obra -> asignado ?>);
+        data3.setValue(0, 3, <?= $Obra -> ejecutado ?>);
+        data3.setValue(0, 4, <?= $inversionTotalNomina ?>);
+        data3.setValue(0, 5, <?= $inversionTotalFacturacion ?>);
+        
+        
+        var data4 = new google.visualization.DataTable();
+        data4.addColumn('string', 'Presupuestos');
+        data4.addColumn('number', 'Inversion');
+        data4.addRows(4);
+        data4.setValue(0, 0, 'Federal');
+        data4.setValue(0, 1, <?= $Obra -> pfederal ?>);
+        data4.setValue(1, 0, 'Estatal');
+        data4.setValue(1, 1, <?= $Obra -> pestatal ?>);
+        data4.setValue(2, 0, 'Municipal');
+        data4.setValue(2, 1, <?= $Obra -> pmunicipal ?>);
+        data4.setValue(3, 0, 'Beneficiarios');
+        data4.setValue(3, 1, <?= $Obra -> pbeneficiarios ?>);
+        
+        var formatoFecha = new google.visualization.DateFormat({pattern: "d/MM/yyyy"});
+        var formatter = new google.visualization.NumberFormat({prefix: '$',});
+        
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        formatter.format(data, 1);
+        formatoFecha.format(data,0);
+        chart.draw(data, {width: 1000, height: 250, title: 'Gasto de Nomina'});
+        
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div2'));        
+        formatter.format(data2, 1);                
+        formatoFecha.format(data2,0);
+        chart.draw(data2, {width: 1000, height: 250, title: 'Gasto de Facturacion'});
+        
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div3'));
+        formatter.format(data3, 1);
+        formatter.format(data3, 2);
+        formatter.format(data3, 3);
+        formatter.format(data3, 4);
+        formatter.format(data3, 5);
+        chart.draw(data3, {width: 500, height: 300, title: 'Economia de la Obra', hAxis: {title: 'Year', titleTextStyle: {color: 'red'}} });
+                         
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div4'));
+        formatter.format(data4, 1);
+        chart.draw(data4, {width: 500, height: 300, title: 'Presupuestos'});
+      }
+    </script>
+<div id="dashboard">
+	<table width="1000">
+		<tr>
+			<td>
+				<div id="chart_div3"></div>
+			</td>
+			<td>
+				<div id="chart_div4"></div>	
+			</td>
+		</tr>
+	</table>	
+	<div id="chart_div"></div>
+	<div id="chart_div2"></div>	
+</div>
+

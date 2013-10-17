@@ -1,0 +1,25 @@
+<center>
+<div id="botones" style="padding: 0px 0px 0px 0px;">
+	<table border="0">
+		<tr>
+			<td align="center">
+				<?= Acl::linkAjax("obras/programas/".$obra,"Informacion","opciones",($opcion=="informacion" ? "id: boton2" : "id: boton3"),"style: width: 500px;") ?><br /><br/>		
+			</td>
+			<!-- 
+			<td align="center">
+				<?= Acl::linkAjax("obras/materiales/".$obra,"Materiales","opciones",($opcion=="materiales" ? "id: boton2" : "id: boton3"),"style: width: 500px;") ?><br /><br/>		
+			</td>
+			-->
+			<td align="center">
+				<?= Acl::linkAjax("obras/tareas/".$obra,"Tareas","opciones",($opcion=="tareas" ? "id: boton2" : "id: boton3"),"style: width: 500px;") ?><br /><br/>		
+			</td>
+			<td align="center">
+				<?= Acl::linkAjax("obras/requisiciones/".$obra,"Finanzas","opciones",($opcion=="finanzas" ? "id: boton2" : "id: boton3"),"style: width: 500px;") ?><br /><br/>
+			</td>
+			<td align="center">
+				<?= Acl::linkAjax("obras/avances/".$obra,"Supervision","opciones",($opcion=="avances" ? "id: boton2" : "id: boton3"),"style: width: 500px;") ?><br /><br/>		
+			</td>
+		</tr>
+	</table>
+</div>
+</center>

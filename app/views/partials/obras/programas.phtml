@@ -1,0 +1,87 @@
+<?= Load::lib("amecasoft") ?>
+<?php $obra = Obra::consultar($obra); ?>
+<table>
+    <tr>
+        <td class="formato1" width="365" height="25" ><br/>
+            <center><?= View::partial("menuObra",false,array("obra" => $obra -> id,"opcion" => "informacion")) ?></center>
+        </td>
+    </tr>
+    <tr>
+    	<td class="formato2"><br />
+            <center><?= View::partial("menuInformacionObra",false,array("obra" => $obra -> id,"opcion" => "programas")) ?></center>
+    	</td>
+    </tr>
+</table>
+<?= Formulario::inicioAjax("obras/programar","opciones") ?>
+<input type="hidden" name="id" value="<?= $obra -> id ?>" />
+<table class="formulario" height="895">
+    <tr>
+        <td width="350" id="contenido" align="center" valign="top">
+            <br />
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Programas
+                        </h2>
+                        <span id="subtitulo">
+                            Los programas aportan fondos a las obras y proyectos.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                                       
+                <tr>
+			    	<td colspan="7" height="10">
+			        	<?php $programas = $obra -> programas(); ?>
+			            <?php if($programas){ ?>
+				        	<table border="0">
+				            	<?php foreach($programas as $programa){ ?>
+				            		<?= tr_color("#CCCCCC","#DDDDDD") ?>
+				                    	<td style="padding: 5px;" width="285"><?= strtoupper($programa -> programa() -> nombre) ?></td>
+				                    	<?php if($obra -> estado != "TERMINADA"){ ?>
+					                    	<td style="padding: 5px;"><?= Acl::linkAjaxConfirmado("obras/desprogramar/".$programa -> id,Html::imagen("icons/close.png","Eliminar Programa",20,20),"opciones","Estas seguro que deseas eliminar el Programa?") ?></td>
+					                    <?php } ?>
+									</tr>
+				            	<?php } ?>
+							</table>
+				        <?php } else { ?>
+				        	<center><b>NO SE HAN AGREGADO PROGRAMAS</b></center>
+				        <?php } ?>
+					</td>
+			   	</tr>
+			   	<?php if(Acl::tienePermiso(Session::get("usuario_id"),"obras","programar") && $obra -> estado != "TERMINADA"){ ?>
+                <tr>
+                    <td colspan="7" height="10"><br /><hr /><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+						<table border="0">
+							<tr>
+			                    <td>
+			                        <div id="texto_arriba">Selecciona un Programa <span id="asterisco">*</span></div>
+			                        <?= Formulario::selectModelo("programa",OPrograma::reporteDisponibles($obra -> id),"nombre","id","","class: smediano","style: width: 320px;","validate: required:true") ?>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td height="10"></td>
+			                </tr>
+			                <tr>
+			                    <td height="25" align="right">
+			                        <?= Formulario::submit("Agregar Programa","class: boton1") ?>
+			                    </td>
+			                </tr>
+						</table>
+					</td>
+                </tr>
+                <?php } ?>
+            </table>
+            <br />    
+        </td>
+    </tr>
+</table>
+<?= Formulario::fin() ?>
+</div>

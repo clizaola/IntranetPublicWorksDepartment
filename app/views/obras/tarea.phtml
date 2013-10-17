@@ -1,0 +1,78 @@
+<?= Load::lib("amecasoft") ?>
+<table>
+	<tr height="25">
+                    <td colspan="7" width="320"align="left">
+                        <h2 id="titulo">
+                        	Información de la Tarea
+                        </h2>
+                        <span id="subtitulo">
+                            La información de la tarea no podrá ser modificada.
+                        </span>
+                        <br /><br />
+                        <hr />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" height="10"></td>
+                </tr>                    
+	<tr>
+		<td colspan="7" height="10" align="center" bgcolor="DDDDDD" style="padding: 5px;">
+			<table border="0">
+				<tr>
+                    <td colspan="2">
+                    <div id="texto_arriba">&nbsp;</div>
+                        <?= Formulario::autocompleteModelo("empleado",Empleado::reporte(),"nombre",$tarea -> empleado() -> nombre,"class: tmediano","style: width: 300px;","validate: required:true","disabled: disabled") ?>
+                        <div id="texto_abajo">Empleado<span id="asterisco">*</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="10"></td>
+                </tr>                                       
+                <tr>
+                    <td colspan="2">
+                        <?= Formulario::mayusculas("nombre",$tarea -> nombre,"class: tmediano","style: width: 300px;","validate: required:true","disabled: disabled") ?>
+                        <div id="texto_abajo">Nombre de la Tarea<span id="asterisco">*</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="10"></td>
+                </tr>                                       
+                <tr>
+                    <td colspan="2">
+                        <?= Formulario::textarea("descripcion",$tarea -> descripcion,"style: width: 307px; height: 70px;","validate: required:true","disabled: disabled") ?>
+                        <div id="texto_abajo">Descripción de Actividades<span id="asterisco">*</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="10"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <?= Formulario::fecha("creacion",formatoFecha($tarea -> creacion),"dd/mm/yy",false,0,"class: fchico","style: width: 142px;","validate: required:true","disabled: disabled") ?>
+                        <div id="texto_abajo">Fecha Asignación<span id="asterisco">*</span></div>
+                    </td>
+                    <td>
+                        <?= Formulario::fecha("limite",formatoFecha($tarea -> limite),"dd/mm/yy",0,false,"class: fchico","style: width: 142px;","validate: required:true","disabled: disabled") ?>
+                        <div id="texto_abajo">Fecha Límite<span id="asterisco">*</span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="10"></td>
+                </tr>
+                <tr>
+                    <td height="25" align="right" colspan="2">
+                    	<?php if($tarea -> estado == "KO"){ ?>
+                    		<?= Html::linkAjax("obras/tareas/".$tarea -> obras_id,"Regresar","opciones","id: boton3") ?>
+                    	<?php } else { ?>
+                    		<?= Html::linkAjax("obras/tareasTerminadas/".$tarea -> obras_id,"Regresar","opciones","id: boton3") ?>
+                    	<?php } ?>	
+                    	<?php if($tarea -> estado == "KO"){ ?>
+                    		<?= Acl::linkAjaxConfirmado("obras/cancelarTarea/".$tarea -> id,"Cancelar","opciones","id: boton2") ?>
+                    		<?= Acl::linkAjax("obras/terminarTarea/".$tarea -> id,"Terminar","opciones","id: boton1") ?>
+                    	<?php } ?>
+                    </td>
+                </tr>
+			</table>
+		</td>
+	</tr>
+</table>
